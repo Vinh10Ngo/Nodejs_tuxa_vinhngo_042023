@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include themes/css+js/css%>
+</head>
+<%include themes/html/html%>
+
+<body class="hold-transition sidebar-mini layout-fixed text-sm">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <?php require_once 'html/navbar.php'; ?>
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        <?php require_once 'html/sidebar.php'; ?>
+
+        <!-- Content Wrapper. Contains page content -->
+        <% include themes/title-page%> 
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+         
+            <!-- /.content -->
+       <%- body%>
+        <!-- /.content-wrapper -->
+        <?php require_once 'html/footer.php'; ?>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- script -->
+    <% include themes/css+js/js%>
+</body>
+
+</html>

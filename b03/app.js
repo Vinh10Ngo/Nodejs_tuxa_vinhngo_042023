@@ -3,10 +3,31 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose')
 
 var indexRouter = require('./routes');
 var usersRouter = require('./routes/users');
 var themesRouter = require('./routes/themes');
+var expressLayouts = require('express-ejs-layouts');
+
+mongoose.connect('mongodb+srv://project-nodejs-2:Ishi.Red.09@cluster0.1r1zsfn.mongodb.net/');
+mongoose.connection.once('open', function() {
+  console.log('Mongodb Running')
+}).on('error', function(err){
+  console.log(err)
+})
+
+
+const kittySchema = new mongoose.Schema({
+  name: String
+});
+const Kitten = mongoose.model('Kitten', kittySchema);
+const silence = new Kitten({ name: 'Silence' });
+silence.save(function(err, silence) {
+  if (err) return console.error(err)
+})
+
+
 
 var app = express();
 

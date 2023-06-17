@@ -3,14 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var mongoose = require('mongoose')
 
 var indexRouter = require('./routes');
 var usersRouter = require('./routes/users');
 var themesRouter = require('./routes/themes');
 var expressLayouts = require('express-ejs-layouts');
+var mongoose = require('mongoose')
 
-mongoose.connect('mongodb+srv://project-nodejs-2:Ishi.Red.09@cluster0.1r1zsfn.mongodb.net/');
+mongoose.connect('mongodb+srv://project-nodejs-2:Ishi.Red.09@cluster0.1r1zsfn.mongodb.net/items');
 mongoose.connection.once('open', function() {
   console.log('Mongodb Running')
 }).on('error', function(err){
@@ -18,14 +18,6 @@ mongoose.connection.once('open', function() {
 })
 
 
-const kittySchema = new mongoose.Schema({
-  name: String
-});
-const Kitten = mongoose.model('Kitten', kittySchema);
-const silence = new Kitten({ name: 'Silence' });
-silence.save(function(err, silence) {
-  if (err) return console.error(err)
-})
 
 
 
@@ -46,6 +38,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/themes', themesRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,11 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes');
-var usersRouter = require('./routes/users');
-var themesRouter = require('./routes/themes');
 var expressLayouts = require('express-ejs-layouts');
 var mongoose = require('mongoose')
+
+const systemConfigs = require('./configs/system')
 
 mongoose.connect('mongodb+srv://project-nodejs-2:Ishi.Red.09@cluster0.1r1zsfn.mongodb.net/items');
 mongoose.connection.once('open', function() {
@@ -35,9 +34,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/themes', themesRouter);
+app.locals.systemConfigs = systemConfigs
+app.use(`/${systemConfigs.prefixAdmin}`, require('./routes/backend/index'));
+app.use('/', require('./routes/frontend/index'));
+
 
 
 

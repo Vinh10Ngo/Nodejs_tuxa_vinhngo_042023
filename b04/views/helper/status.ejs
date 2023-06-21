@@ -1,8 +1,8 @@
 <% statusHelper = (status, link) => {%>
     <a href="<%=link%>" class="my-btn-state rounded-circle btn btn-sm btn-success"><i class="fas fa-check"></i>
-        <%if(status==1) {%>
+        <%if(status=== 'active') {%>
             <span>active</span>
-        <% } else if (status==0) { %>
+        <% } else if (status==='inactive') { %>
              <span>inactive</span>
         <%}%>
     </a>

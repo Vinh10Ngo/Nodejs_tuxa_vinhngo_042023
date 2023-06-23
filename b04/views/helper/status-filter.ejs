@@ -1,12 +1,13 @@
-<% filterStatusHelper = (statusFilter) => {%>
-    <%
-    statusFilter.forEach((item, index) => {
-     %>
-     <a href="/<%= systemConfigs.prefixAdmin%>/themes/<%= item.value%>" class="mr-1 btn btn-sm btn-info"><%= item.name%>> <span class="badge badge-pill badge-light"><%=item.count%></span></a>
-     <%   
+<% filterStatusHelper = (statusFilter, keyword) => {
+    statusFilter.forEach((item) => {
+    let link = systemConfigs.prefixAdmin + '/themes/' + item.value
+    if(keyword !== '' && keyword !== undefined) link += '?keyword=' + keyword
+%>
+     <a href="/<%= link%>" class="mr-1 btn btn-sm btn-info"><%= item.name%> <span class="badge badge-pill badge-light"><%=item.count%></span></a>
+<%   
     })
-    %>
-<%}%>
+}
+%>
 <!-- <a href="i" class="my-btn-state rounded-circle btn btn-sm btn-danger"></a> -->
 
 

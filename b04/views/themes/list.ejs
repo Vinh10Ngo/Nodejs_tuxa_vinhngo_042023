@@ -1,11 +1,11 @@
 <section class="content">
     <div class="container-fluid">
-
         <!-- Search & Filter -->
         <div class="card card-info card-outline">
             <div class="card-header">
                 <h6 class="card-title">Search &amp; Filter</h6>
                 <div class="card-tools">
+                    <a href="/<%= systemConfigs.prefixAdmin%>/themes/all" class="btn btn-tool"><i class="fas fa-sync"></i></a>
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                         <i class="fas fa-minus"></i></button>
                 </div>
@@ -15,7 +15,7 @@
                     <div class="mb-1">
                         <!-- Filter Status -->
                         <% include ./../helper/status-filter%>
-                        <% filterStatusHelper(statusFilter, keyword) %>
+                        <%- filterStatusHelper(statusFilter, keyword) %>    
                     </div>
                     <div class="mb-1">
                         <select id="filter_special" name="filter_special" class="custom-select custom-select-sm mr-1" style="width: unset">
@@ -67,7 +67,7 @@
             <div class="card-header">
                 <h4 class="card-title">List</h4>
                 <div class="card-tools">
-                    <a href="/<%= systemConfigs.prefixAdmin%>/themes/all" class="btn btn-tool"><i class="fas fa-sync"></i></a>
+                    
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fas fa-minus"></i></button>
                 </div>
             </div>
@@ -107,6 +107,7 @@
                         </thead>
                         <tbody>
 							<% include ./../helper/status%>
+                            <% include ./../helper/hightlight%>
 							<% items.forEach((item, index) => { %>	
 								<tr>
 									<td class="text-center">
@@ -116,10 +117,10 @@
 										</div>
 									</td>
 									<td class="text-center"><%= index +1 %></td>
-									<td class="text-wrap" style="min-width: 180px"><%= item.name %></td>
+									<td class="text-wrap" style="min-width: 180px"><%- hightlightHelper(item.name, keyword) %></td>
 									</td>
 									<td class="text-center position-relative">
-										<%= statusHelper(item.status, "#")%>
+										<%- statusHelper('themes', item.status, item.id)%>
 
 									</td>
 									
@@ -140,17 +141,9 @@
                     </table>
                 </form>
             </div>
-            <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                    <li class="page-item disabled"><a href="" class="page-link"><i class="fas fa-angle-double-left"></i></a></li>
-                    <li class="page-item disabled"><a href="" class="page-link"><i class="fas fa-angle-left"></i></a></li>
-                    <li class="page-item active"><a class="page-link">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
-                    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a></li>
-                </ul>
-            </div>
+            <h4><%= JSON.stringify(pagination) %></h4>
+            <% include ./../helper/pagination%>
+            <%- paginationHelper(pagination, 'themes', currentStatus, keyword)%>
         </div>
     </div>
 </section>

@@ -73,15 +73,15 @@
             </div>
             <div class="card-body">
                 <!-- Control -->
-
                 <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
                     <div class="mb-1">
-                        <select id="bulk-action" name="bulk-action" class="custom-select custom-select-sm mr-1" style="width: unset">
+                       <select id="bulk-action" name="bulk-action" class="custom-select custom-select-sm mr-1" style="width: unset">
                             <option value="" selected="">Bulk Action</option>
                             <option value="delete">Delete</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select> <button id="bulk-apply" class="btn btn-sm btn-info">Apply <span class="badge badge-pill badge-danger navbar-badge" style="display: none"></span></button>
+                            <option value="/<%= systemConfigs.prefixAdmin%>/themes/change-status/active">Active</option>
+                            <option value="/<%= systemConfigs.prefixAdmin%>/themes/change-status/inactive">Inactive</option>
+                           </select> 
+                        <button id="bulk-apply" class="btn btn-block btn-primary">Apply <span class="badge badge-pill badge-danger navbar-badge" ></span></button>
                     </div>
                     <div class="mb-1">
                         <a href="category-form.php" class="btn btn-sm btn-info"><i class="fas fa-plus"></i> Add New</a>
@@ -94,7 +94,7 @@
                             <tr>
                                 <th class="text-center">
                                     <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="check-all">
+                                        <input class="custom-control-input" type="checkbox" id="cbAll">
                                         <label for="check-all" class="custom-control-label"></label>
                                     </div>
                                 </th>
@@ -112,8 +112,8 @@
 								<tr>
 									<td class="text-center">
 										<div class="custom-control custom-checkbox">
-											<input class="custom-control-input" type="checkbox" id="checkbox-1" name="checkbox[]" value="1">
-											<label for="checkbox-1" class="custom-control-label"></label>
+											<input class="custom-control-input" type="checkbox" id="checkbox-<%- item.id%>" name="checkbox[]" value="<%= item.id%>">
+											<label for="checkbox-<%- item.id%>" class="custom-control-label"></label>
 										</div>
 									</td>
 									<td class="text-center"><%= index +1 %></td>

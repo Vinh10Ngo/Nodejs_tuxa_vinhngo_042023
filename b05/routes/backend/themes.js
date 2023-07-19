@@ -63,6 +63,14 @@ router.get('(/:status)?', function(req, res, next) {
       res.redirect(linkIndex)
     });  
   });
+  //change status - multi 
+  router.post('/change-status/:status', function(req, res, next) {
+    let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
+    console.log(req.body)
+    res.end(currentStatus)
+
+
+  });
   //delete
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')

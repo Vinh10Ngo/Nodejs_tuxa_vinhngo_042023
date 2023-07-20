@@ -66,10 +66,9 @@ router.get('(/:status)?', function(req, res, next) {
   //change status - multi 
   router.post('/change-status/:status', function(req, res, next) {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    console.log(req.body)
-    res.end(currentStatus)
-
-
+    itemsModel.updateMany({_id: {$in: req.body.cid}}, {status: currentStatus}).then(result => {
+      res.redirect(linkIndex)
+    });  
   });
   //delete
   router.get('/delete/:id/', function(req, res, next) {
@@ -78,6 +77,12 @@ router.get('(/:status)?', function(req, res, next) {
       res.redirect(linkIndex)
     });  
   });
+  //delete - multi 
+  // router.post('/delete', function(req, res, next) {
+  //   itemsModel.deleteMany({_id: {$in: req.body.cid}}).then(result => {
+  //     res.redirect(linkIndex)
+  //   });  
+  // });
 });
 
 module.exports = router;

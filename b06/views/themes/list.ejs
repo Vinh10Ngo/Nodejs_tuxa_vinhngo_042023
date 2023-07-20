@@ -72,29 +72,31 @@
                 </div>
             </div>
             <div class="card-body">
-                <!-- Control -->
+               
+                <!-- List Content -->
+                <form action="" method="post" class="table-responsive" id="zt-form">
+
+                     <!-- Control -->
                 <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
                     <div class="mb-1">
-                       <select id="bulk-action" name="bulk-action" class="custom-select custom-select-sm mr-1" style="width: unset">
+                       <select id="bulk-action" name="bulk-action" class="custom-select custom-select-sm mr-1 slbAction" style="width: unset">
                             <option value="" selected="">Bulk Action</option>
-                            <option value="delete">Delete</option>
+                            <option value="/<%= systemConfigs.prefixAdmin%>/themes/delete"">Delete</option>
                             <option value="/<%= systemConfigs.prefixAdmin%>/themes/change-status/active">Active</option>
                             <option value="/<%= systemConfigs.prefixAdmin%>/themes/change-status/inactive">Inactive</option>
                            </select> 
-                        <button id="bulk-apply" class="btn btn-block btn-primary">Apply <span class="badge badge-pill badge-danger navbar-badge" ></span></button>
+                        <button id="btn-action" class="btn btn-block btn-primary">Apply <span class="badge badge-pill badge-danger navbar-badge" ></span></button>
                     </div>
                     <div class="mb-1">
                         <a href="category-form.php" class="btn btn-sm btn-info"><i class="fas fa-plus"></i> Add New</a>
                     </div>
                 </div>
-                <!-- List Content -->
-                <form action="" method="post" class="table-responsive" id="form-table">
                     <table class="table table-bordered table-hover text-nowrap btn-table mb-0">
                         <thead>
                             <tr>
                                 <th class="text-center">
                                     <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="cbAll">
+                                        <input class="custom-control-input" type="checkbox" id="check-all">
                                         <label for="check-all" class="custom-control-label"></label>
                                     </div>
                                 </th>
@@ -112,7 +114,7 @@
 								<tr>
 									<td class="text-center">
 										<div class="custom-control custom-checkbox">
-											<input class="custom-control-input" type="checkbox" id="checkbox-<%- item.id%>" name="checkbox[]" value="<%= item.id%>">
+											<input class="custom-control-input" type="checkbox" id="checkbox-<%- item.id%>" name="cid" value="<%= item.id%>">
 											<label for="checkbox-<%- item.id%>" class="custom-control-label"></label>
 										</div>
 									</td>

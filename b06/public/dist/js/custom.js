@@ -7,6 +7,14 @@ $(document).ready(function () {
         CKEDITOR.replace('content_ck');
     }
 
+    $('#check-all').change(function () {
+        var checkStatus = this.checked;
+        $('#form-table input[name="checkbox[]"]').each(function () {
+            this.checked = checkStatus;
+        });
+        showSelectedRowInBulkAction();
+    });
+
     //call active menu
     activeMenu();
 
@@ -14,12 +22,19 @@ $(document).ready(function () {
     change_form_action("#zt-form .slbAction", "#zt-form","#btn-action");
 
     //check all
+
+    function toggle(source) {
+        checkboxes = document.getElementsByName('checkbox[]');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+          checkboxes[i].checked = source.checked;
+        }
+      }
+
     ckbAll.click(function () {
         $('input:checkbox').not(this).prop('checked', this.checked);
         if ($(this).is(':checked')) {
             $(".ordering").attr("name", "ordering");
         }else{
-           
             $(".ordering").removeAttr("name");
         }
         

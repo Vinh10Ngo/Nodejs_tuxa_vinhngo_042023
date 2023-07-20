@@ -77,12 +77,12 @@ router.get('(/:status)?', function(req, res, next) {
       res.redirect(linkIndex)
     });  
   });
-  //delete - multi 
-  // router.post('/delete', function(req, res, next) {
-  //   itemsModel.deleteMany({_id: {$in: req.body.cid}}).then(result => {
-  //     res.redirect(linkIndex)
-  //   });  
-  // });
+  // delete - multi 
+  router.post('/delete', function(req, res, next) {
+    itemsModel.deleteMany({_id: {$in: req.body.cid}}).then(result => {
+      res.redirect(linkIndex)
+    });  
+  });
 });
 
 module.exports = router;

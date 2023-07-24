@@ -70,6 +70,7 @@ router.get('(/:status)?', function(req, res, next) {
       res.redirect(linkIndex)
     });  
   });
+  
   //delete
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
@@ -83,7 +84,12 @@ router.get('(/:status)?', function(req, res, next) {
       res.redirect(linkIndex)
     });  
   });
+  //change ordering - multi 
+  router.post('/change-ordering', function(req, res, next) {
+    res.send(req.body) 
+  });
 });
+
 
 module.exports = router;
 

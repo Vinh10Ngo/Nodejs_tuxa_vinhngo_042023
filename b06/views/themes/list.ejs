@@ -81,7 +81,8 @@
                     <div class="mb-1">
                        <select id="bulk-action" name="bulk-action" class="custom-select custom-select-sm mr-1 slbAction" style="width: unset">
                             <option value="" selected="">Bulk Action</option>
-                            <option value="/<%= systemConfigs.prefixAdmin%>/themes/delete"">Delete</option>
+                            <option value="/<%= systemConfigs.prefixAdmin%>/themes/change-ordering">Change Ordering</option>
+                            <option value="/<%= systemConfigs.prefixAdmin%>/themes/delete">Delete</option>
                             <option value="/<%= systemConfigs.prefixAdmin%>/themes/change-status/active">Active</option>
                             <option value="/<%= systemConfigs.prefixAdmin%>/themes/change-status/inactive">Inactive</option>
                            </select> 
@@ -126,7 +127,7 @@
 
 									</td>
 									
-									<td class="text-center position-relative"><input type="number" name="chkOrdering[1]" value="<%= item.ordering%>" class="chkOrdering form-control form-control-sm m-auto text-center" style="width: 65px" id="chkOrdering[1]" data-id="1" min="1"></td>
+									<td class="text-center position-relative"><input type="number" value="<%= item.ordering%>" class="chkOrdering form-control form-control-sm m-auto text-center" style="width: 65px" id="chkOrdering[1]" data-id="1" min="1"></td>
 									
 									<td class="text-center">
 										<a href="#" class="rounded-circle btn btn-sm btn-info" title="Edit">

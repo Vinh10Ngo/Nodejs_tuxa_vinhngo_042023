@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var ckbAll = $(".cbAll");
+    var ckbAll = $("#check-all");
     var fmAdmin = $("#zt-form");
 
     // CKEDITOR
@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     $('#check-all').change(function () {
         var checkStatus = this.checked;
-        $('#form-table input[name="checkbox[]"]').each(function () {
+        $('#zt-form input[name="cid"]').each(function () {
             this.checked = checkStatus;
         });
         showSelectedRowInBulkAction();
@@ -24,7 +24,7 @@ $(document).ready(function () {
     //check all
 
     function toggle(source) {
-        checkboxes = document.getElementsByName('checkbox[]');
+        checkboxes = document.getElementsByName('cid');
         for(var i=0, n=checkboxes.length;i<n;i++) {
           checkboxes[i].checked = source.checked;
         }
@@ -39,6 +39,7 @@ $(document).ready(function () {
         }
         
     });
+    
     // hiden notify
     hiddenNotify(".close-btn");
 

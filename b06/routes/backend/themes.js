@@ -15,10 +15,12 @@ router.get('/dashboard', function(req, res, next) {
   res.render('themes/dashboard', { pageTitle: 'Dashboard' });
 });
 router.get('/form', function(req, res, next) {
-  res.render('themes/form', { pageTitle: 'Category Manager:: Add' });
+  req.flash('info', 'invalid username or password');
+  res.send('Test Flash')
+  res.end()
 });
 // List themes
-router.get('(/:status)?', function(req, res, next) {
+router.get('(status/:status)?', function(req, res, next) {
   let objWhere = {}
   let keyword = paramsHelpers.getParams(req.query, 'keyword', '')
   console.log(keyword)
@@ -86,7 +88,16 @@ router.get('(/:status)?', function(req, res, next) {
   });
   //change ordering - multi 
   router.post('/change-ordering', function(req, res, next) {
-    res.send(req.body) 
+    let cids = req.body.cid
+    let orderings = req.body.ordering
+    if(Array.isArray(cids)) {
+      cids.forEach((item, index) => {
+        itemsModel.updateOne({_id: item}, {ordering: parseInt(orderings[index])}).then(result => {})    
+      })
+    } else {
+      itemsModel.updateOne({_id: cids}, {ordering: parseInt(orderings)}).then(result => {});      
+    }
+    res.redirect(linkIndex)
   });
 });
 

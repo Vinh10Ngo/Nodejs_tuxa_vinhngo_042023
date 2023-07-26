@@ -1,3 +1,10 @@
+<% include ./../helper/status-filter%>
+<% include ./../helper/action%>
+<% include ./../helper/status%>
+<% include ./../helper/hightlight%>
+<% include ./../helper/pagination%>
+
+
 <section class="content">
     <div class="container-fluid">
         <!-- Search & Filter -->
@@ -14,8 +21,9 @@
                 <div class="row justify-content-between">
                     <div class="mb-1">
                         <!-- Filter Status -->
-                        <% include ./../helper/status-filter%>
-                        <%- filterStatusHelper(statusFilter, keyword) %>    
+                        <%- filterStatusHelper('themes', statusFilter, keyword) %> 
+                        <h3><%- locals.flash %></h3>
+   
                     </div>
                     <div class="mb-1">
                         <select id="filter_special" name="filter_special" class="custom-select custom-select-sm mr-1" style="width: unset">
@@ -77,21 +85,7 @@
                 <form action="" method="post" class="table-responsive" id="zt-form">
 
                      <!-- Control -->
-                <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
-                    <div class="mb-1">
-                       <select id="bulk-action" name="bulk-action" class="custom-select custom-select-sm mr-1 slbAction" style="width: unset">
-                            <option value="" selected="">Bulk Action</option>
-                            <option value="/<%= systemConfigs.prefixAdmin%>/themes/change-ordering">Change Ordering</option>
-                            <option value="/<%= systemConfigs.prefixAdmin%>/themes/delete">Delete</option>
-                            <option value="/<%= systemConfigs.prefixAdmin%>/themes/change-status/active">Active</option>
-                            <option value="/<%= systemConfigs.prefixAdmin%>/themes/change-status/inactive">Inactive</option>
-                           </select> 
-                        <button id="btn-action" class="btn btn-block btn-primary">Apply <span class="badge badge-pill badge-danger navbar-badge" ></span></button>
-                    </div>
-                    <div class="mb-1">
-                        <a href="category-form.php" class="btn btn-sm btn-info"><i class="fas fa-plus"></i> Add New</a>
-                    </div>
-                </div>
+                     <%- actionHelper('themes') %> 
                     <table class="table table-bordered table-hover text-nowrap btn-table mb-0">
                         <thead>
                             <tr>
@@ -109,8 +103,7 @@
                             </tr>
                         </thead>
                         <tbody>
-							<% include ./../helper/status%>
-                            <% include ./../helper/hightlight%>
+
 							<% items.forEach((item, index) => { %>	
 								<tr>
 									<td class="text-center">
@@ -127,7 +120,7 @@
 
 									</td>
 									
-									<td class="text-center position-relative"><input type="number" value="<%= item.ordering%>" class="chkOrdering form-control form-control-sm m-auto text-center" style="width: 65px" id="chkOrdering[1]" data-id="1" min="1"></td>
+									<td class="text-center position-relative"><input type="number" value="<%= item.ordering%>" class="ordering form-control form-control-sm m-auto text-center" style="width: 65px" id="chkOrdering[1]" data-id="1" min="1"></td>
 									
 									<td class="text-center">
 										<a href="#" class="rounded-circle btn btn-sm btn-info" title="Edit">
@@ -144,7 +137,6 @@
                     </table>
                 </form>
             </div>
-            <% include ./../helper/pagination%>
             <%- paginationHelper(pagination, 'themes', currentStatus, keyword)%>
         </div>
     </div>

@@ -8,22 +8,24 @@
             { value: "delete/", name: "Delete" },
         ];
         let xhtmlAction = '';
-        let linkAddNew  = systemConfig.prefixAdmin + '/' + collection + '/form' ;
+        let linkAddNew  = systemConfigs.prefixAdmin + '/' + collection + '/form' ;
 
         actions.forEach((action)=> {
-            let link = systemConfig.prefixAdmin + '/' + collection + '/' + action.value;
-            xhtmlAction += `<option value="${link}">${action.name}</option>`;
+            let link = systemConfigs.prefixAdmin + '/' + collection + '/' + action.value;
+            xhtmlAction += `<option value="/${link}">${action.name}</option>`;
         });
 
-        return `<div class="zcontrols">
-                <select name="action" class="form-control slbAction">
+        return `<div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+            <div class="mb-1">
+               <select id="bulk-action" name="bulk-action" class="custom-select custom-select-sm mr-1 slbAction" style="width: unset">
                     ${xhtmlAction}
-                </select>
-                <button class="btn btn-info btnAction" type="button" id="btn-action" value="btnAction" disabled>Apply</button>
-                <div class="pull-right">
-                    <a href="${linkAddNew}" class="btn btn-warning btn-addNew">Add New</a>
-                </div>
-            </div>`;
+                   </select> 
+                <button id="btn-action" class="btn btn-block btn-primary">Apply <span class="badge badge-pill badge-danger navbar-badge" ></span></button>
+            </div>
+            <div class="mb-1">
+                <a href="/${linkAddNew}" class="btn btn-sm btn-info"><i class="fas fa-plus"></i> Add New</a>
+            </div>
+        </div>`;
     } 
 %>
 

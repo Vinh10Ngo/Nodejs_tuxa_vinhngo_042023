@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const flash = require('express-flash-notification');
+const session = require('express-session');
+
 var expressLayouts = require('express-ejs-layouts');
 var mongoose = require('mongoose')
 
@@ -21,6 +24,13 @@ mongoose.connection.once('open', function() {
 
 
 var app = express();
+app.use(cookieParser());
+app.use(session({
+  resave: true, 
+  saveUninitialized: true, 
+  secret: 'somesecret', 
+  cookie: { maxAge: 60000 }}));
+app.use(flash(app));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

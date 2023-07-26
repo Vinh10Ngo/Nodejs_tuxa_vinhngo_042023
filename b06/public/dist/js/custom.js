@@ -54,7 +54,7 @@ $(document).ready(function () {
     });
     
     // CONFIRM DELETE
-    $('a.btn-danger').on('click', () => {
+    $('a.rounded-circle.btn-sm.btn-danger').on('click', () => {
         if (!confirm("Are you sure you want to delete this item?")) return false;
     });
 
@@ -99,7 +99,7 @@ $(document).ready(function () {
             $(form_selector).attr("action", optValue);
         });
 
-        $(form_selector + " .btn-primary").on("click", function () {
+        $(form_selector + " .btn.btn-block.btn-primary").on("click", function () {
             isDelete = pattenCheckDelete.test($(slb_selector).val());
             if(isDelete){
                 var confirmDelete = confirm('Are you really want to delete?');

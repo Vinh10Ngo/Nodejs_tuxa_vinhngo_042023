@@ -15,12 +15,12 @@ router.get('/dashboard', function(req, res, next) {
   res.render('themes/dashboard', { pageTitle: 'Dashboard' });
 });
 router.get('/form', function(req, res, next) {
-  req.flash('info', 'invalid username or password');
+  req.flash('success', 'invalid username or password');
   res.send('Test Flash')
   res.end()
 });
 // List themes
-router.get('(status/:status)?', function(req, res, next) {
+router.get('(/:status)?', function(req, res, next) {
   let objWhere = {}
   let keyword = paramsHelpers.getParams(req.query, 'keyword', '')
   console.log(keyword)
@@ -62,6 +62,7 @@ router.get('(status/:status)?', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
     let status = (currentStatus === 'active') ? 'inactive' : 'active'
     itemsModel.updateOne({_id: id}, {status: status}).then(result => {
+      req.flash('success', 'Cập nhập status thành công!', false);
       res.redirect(linkIndex)
     });  
   });
@@ -69,6 +70,8 @@ router.get('(status/:status)?', function(req, res, next) {
   router.post('/change-status/:status', function(req, res, next) {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     itemsModel.updateMany({_id: {$in: req.body.cid}}, {status: currentStatus}).then(result => {
+      console.log(result)
+      req.flash('success', `Cập nhập ${result.matchedCount} status thành công!`, false);
       res.redirect(linkIndex)
     });  
   });
@@ -77,12 +80,14 @@ router.get('(status/:status)?', function(req, res, next) {
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
     itemsModel.deleteOne({_id: id}).then(result => {
+      req.flash('success', 'Xóa thành công!', false);
       res.redirect(linkIndex)
     });  
   });
   // delete - multi 
   router.post('/delete', function(req, res, next) {
     itemsModel.deleteMany({_id: {$in: req.body.cid}}).then(result => {
+      req.flash('success', 'Xóa nhiều phần tử thành công!', false);
       res.redirect(linkIndex)
     });  
   });
@@ -97,6 +102,7 @@ router.get('(status/:status)?', function(req, res, next) {
     } else {
       itemsModel.updateOne({_id: cids}, {ordering: parseInt(orderings)}).then(result => {});      
     }
+    req.flash('success', 'Thay đổi ordering thành công!', false);
     res.redirect(linkIndex)
   });
 });

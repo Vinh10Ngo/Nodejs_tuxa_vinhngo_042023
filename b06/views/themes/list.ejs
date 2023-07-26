@@ -4,6 +4,8 @@
 <% include ./../helper/hightlight%>
 <% include ./../helper/pagination%>
 
+<h3><%- locals.flash %></h3>
+
 
 <section class="content">
     <div class="container-fluid">
@@ -21,9 +23,7 @@
                 <div class="row justify-content-between">
                     <div class="mb-1">
                         <!-- Filter Status -->
-                        <%- filterStatusHelper('themes', statusFilter, keyword) %> 
-                        <h3><%- locals.flash %></h3>
-   
+                        <%- filterStatusHelper('themes', statusFilter, keyword) %>    
                     </div>
                     <div class="mb-1">
                         <select id="filter_special" name="filter_special" class="custom-select custom-select-sm mr-1" style="width: unset">

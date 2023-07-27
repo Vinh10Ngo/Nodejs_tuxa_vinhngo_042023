@@ -30,7 +30,9 @@ app.use(session({
   saveUninitialized: true, 
   secret: 'somesecret', 
   cookie: { maxAge: 60000 }}));
-app.use(flash(app));
+app.use(flash(app, {
+  viewName: 'flash'
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -39,8 +39,17 @@ router.get('/form(/:id)?', function(req, res, next) {
 
 //ADD
 router.post('/save', (req, res, next) => {
-  res.send(req.body)
-  res.end()
+  console.log(req.body)
+  req.body = JSON.parse(JSON.stringify(req.body));
+  let item = {
+    name: paramsHelpers.getParams(req.body, 'form[name]', ''), 
+    ordering: paramsHelpers.getParams(req.body, 'form[ordering]', 0),
+    status: paramsHelpers.getParams(req.body, 'form[status]', 'active')
+  } 
+  new itemsModel(item).save().then(() => {
+    req.flash('success', 'thêm mới thành công!', false);
+    res.redirect(linkIndex)
+  })
 })
 
 // List themes

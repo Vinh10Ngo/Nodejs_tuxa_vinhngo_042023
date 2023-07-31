@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = express.Router ();
 
 const itemsModel = require('../../schemas/items')
 const utilsHelpers = require('../../helpers/utils')
@@ -26,15 +26,23 @@ router.get('/dashboard', async(req, res, next) => {
   });
 });
 router.get('/form(/:id)?', function(req, res, next) {
-  console.log(req.params.id)
   let id = paramsHelpers.getParams(req.params, 'id', '')
+  let item =  {name: '', ordering: 0, status: 'novalue'}
   if(id) {
-    res.render('themes/form', { pageTitle: pageTitleEdit });
+    itemsModel.findById(id).then((item)=> {
+      res.render('themes/form', { pageTitle: pageTitleEdit, item: item });
+    })
   } else {
-    res.render('themes/form', { pageTitle: pageTitleAdd });
+    res.render('themes/form', { pageTitle: pageTitleAdd, item });
   }
-
 });
+
+//ADD
+router.post('/save', (req, res, next) => {
+  res.send(req.body)
+  res.end()
+})
+
 // List themes
 router.get('(/:status)?', function(req, res, next) {
   let objWhere = {}
@@ -125,6 +133,8 @@ router.get('(/:status)?', function(req, res, next) {
     res.redirect(linkIndex)
   });
 });
+
+
 
 
 module.exports = router;

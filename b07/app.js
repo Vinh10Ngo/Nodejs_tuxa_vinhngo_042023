@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require('body-parser');
 
 const flash = require('express-flash-notification');
 const session = require('express-session');
@@ -19,11 +20,11 @@ mongoose.connection.once('open', function() {
   console.log(err)
 })
 
-
-
-
-
 var app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(cookieParser());
 app.use(session({
   resave: true, 

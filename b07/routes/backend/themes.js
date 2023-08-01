@@ -39,17 +39,25 @@ router.get('/form(/:id)?', function(req, res, next) {
 
 //ADD
 router.post('/save', (req, res, next) => {
-  console.log(req.body)
   req.body = JSON.parse(JSON.stringify(req.body));
-  let item = {
-    name: paramsHelpers.getParams(req.body, 'form[name]', ''), 
-    ordering: paramsHelpers.getParams(req.body, 'form[ordering]', 0),
-    status: paramsHelpers.getParams(req.body, 'form[status]', 'active')
-  } 
-  new itemsModel(item).save().then(() => {
-    req.flash('success', 'thêm mới thành công!', false);
-    res.redirect(linkIndex)
-  })
+  req.checkBody('form[name]', 'chiều dài từ 5 đến 20 kí tự').isLength({min: 5, max: 20})
+  req.checkBody('form[ordering]', 'Phải là số nguyên lớn hơn 0 và bé hơn 100').isInt({gt: 0, lt: 100})
+  let errors = req.validationErrors()
+  if (errors !== false) {
+    console.log('errors')
+    // console.log(errors)
+  } else {
+    console.log('no errors')
+    // let item = {
+    //   name: paramsHelpers.getParams(req.body, 'form[name]', ''), 
+    //   ordering: paramsHelpers.getParams(req.body, 'form[ordering]', 0),
+    //   status: paramsHelpers.getParams(req.body, 'form[status]', 'active')
+    // } 
+    // new itemsModel(item).save().then(() => {
+    //   req.flash('success', 'thêm mới thành công!', false);
+    //   res.redirect(linkIndex)
+    // })
+  }
 })
 
 // List themes

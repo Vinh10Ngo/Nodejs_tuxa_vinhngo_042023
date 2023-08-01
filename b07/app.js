@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+const validator = require('express-validator');
 
 const flash = require('express-flash-notification');
 const session = require('express-session');
@@ -22,6 +23,8 @@ mongoose.connection.once('open', function() {
 
 var app = express();
 
+app.use(validator())
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -34,6 +37,7 @@ app.use(session({
 app.use(flash(app, {
   viewName: 'flash'
 }));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

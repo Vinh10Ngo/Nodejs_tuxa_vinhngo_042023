@@ -2,10 +2,10 @@ var express = require('express');
 var router = express.Router ();
 
 const util = require('util')
-const itemsModel = require('../../schemas/items')
-const utilsHelpers = require('../../helpers/utils')
-const paramsHelpers = require('../../helpers/params')
-const validateItems = require('../../app/validates/items')
+const itemsModel = require(__path__schemas + 'items')
+const utilsHelpers = require(__path__helpers + 'utils')
+const paramsHelpers = require(__path__helpers + 'params')
+const validateItems = require(__path__validates + 'items')
 const systemConfigs = require(__path__configs + 'system')
 const notifyConfigs = require(__path__configs + 'notify');
 const { resourceLimits } = require('worker_threads');
@@ -14,7 +14,7 @@ const linkIndex = '/' + systemConfigs.prefixAdmin + '/themes/'
 const pageTitleIndex = 'Book Manager::'
 const pageTitleAdd = pageTitleIndex + 'Add'
 const pageTitleEdit = pageTitleIndex + 'Edit'
-const folderViews = 'themes/'
+const folderViews = __path__views + 'themes/'
 
 /* GET users listing. */
 router.get('/login', function(req, res, next) {
@@ -76,12 +76,12 @@ if (errors) {
 })
 
 // List themes
-router.get('(/:status)?', function(req, res, next) {
+router.get('(/:status)?', async (req, res, next) => {
   let objWhere = {}
   let keyword = paramsHelpers.getParams(req.query, 'keyword', '')
   console.log(keyword)
   let currentStatus = paramsHelpers.getParams(req.params, 'status', 'all')
-  let statusFilter = utilsHelpers.createFilterStatus(currentStatus)
+  let statusFilter = await utilsHelpers.createFilterStatus(currentStatus)
   let pagination = {
     totalItems: 1,
     totalItemsPerPage : 3,
@@ -89,14 +89,17 @@ router.get('(/:status)?', function(req, res, next) {
     currentPage : parseInt(paramsHelpers.getParams(req.query, 'page', 1)) 
   } 
 
-  if(currentStatus === 'all') {
-    if(keyword !== '') objWhere = {name: new RegExp(keyword, 'i')}
-  } else {
-    objWhere = {status: currentStatus, name: new RegExp(keyword, 'i')}
+  if (currentStatus !== 'all') {
+    objWhere.status = currentStatus
   }
-  itemsModel.count(objWhere).then((data) => {
+  if (keyword !== '') {
+    objWhere.name = new RegExp(keyword, 'i')
+  }
+
+  await itemsModel.count(objWhere).then((data) => {
     pagination.totalItems = data
-    itemsModel
+  })
+  itemsModel
   .find(objWhere)
   .sort({ordering: 'asc'})
   .skip((pagination.currentPage-1)*pagination.totalItemsPerPage)
@@ -110,7 +113,6 @@ router.get('(/:status)?', function(req, res, next) {
       currentStatus,
       keyword
     });
-  })
   })
   //change status
   router.get('/change-status/:id/:status', function(req, res, next) {
@@ -153,6 +155,7 @@ router.get('(/:status)?', function(req, res, next) {
     let orderings = req.body.ordering
     if(Array.isArray(cids)) {
       cids.forEach((item, index) => {
+        // for(let index = 0; index < cids.length; index ++) {
         itemsModel.updateOne({_id: item}, {ordering: parseInt(orderings[index])}).then(result => {
           req.flash('success', util.format(notifyConfigs.ORDERING_MULTI_SUCCESS, result.matchedCount), false);
           res.redirect(linkIndex)

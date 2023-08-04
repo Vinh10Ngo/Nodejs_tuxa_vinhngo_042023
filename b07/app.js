@@ -12,9 +12,23 @@ const session = require('express-session');
 var expressLayouts = require('express-ejs-layouts');
 var mongoose = require('mongoose')
 
-const systemConfigs = require('./configs/system')
+var pathConfig = require('./path');
 
-mongoose.connect('mongodb+srv://project-nodejs-2:Ishi.Red.09@cluster0.1r1zsfn.mongodb.net/items');
+//define path 
+global.__base =  __dirname + '/'
+global.__path__app =  __base + pathConfig.folder__app + '/'
+global.__path__configs =  __path__app + pathConfig.folder__configs + '/'
+global.__path__helpers =  __path__app + pathConfig.folder__helpers + '/'
+global.__path__routes =  __path__app + pathConfig.folder__routes + '/'
+global.__path__schemas =  __path__app + pathConfig.folder__schemas + '/'
+global.__path__validates =  __path__app + pathConfig.folder__validates + '/'
+global.__path__views =  __path__app + pathConfig.folder__views + '/'
+
+
+const systemConfigs = require(__path__configs + 'system')
+const databaseConfigs = require(__path__configs + 'database')
+
+mongoose.connect(`mongodb+srv://${databaseConfigs.database}:${databaseConfigs.password}@cluster0.1r1zsfn.mongodb.net/items`);
 mongoose.connection.once('open', function() {
   console.log('Mongodb Running')
 }).on('error', function(err){
@@ -23,7 +37,13 @@ mongoose.connection.once('open', function() {
 
 var app = express();
 
-app.use(validator())
+app.use(validator({
+  customValidators: {
+    isNotEqual: (value1, value2) => {
+      return value1!== value2
+    }
+  }
+}))
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -35,7 +55,7 @@ app.use(session({
   secret: 'somesecret', 
   cookie: { maxAge: 60000 }}));
 app.use(flash(app, {
-  viewName: 'flash'
+  viewName: __path__views + 'flash'
 }));
 
 
@@ -44,7 +64,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(expressLayouts);
-app.set('layout', 'backend');
+app.set('layout', __path__views + 'backend');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -52,8 +72,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.systemConfigs = systemConfigs
-app.use(`/${systemConfigs.prefixAdmin}`, require('./routes/backend/index'));
-app.use('/', require('./routes/frontend/index'));
+app.use(`/${systemConfigs.prefixAdmin}`, require(__path__routes + '/backend/index'));
+app.use('/', require(__path__routes + '/frontend/index'));
 
 
 
@@ -75,7 +95,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error', { pageTitle: 'err' });
+  res.render(__path__views + 'error', { pageTitle: 'Page Not Found' });
 });
 
 module.exports = app;

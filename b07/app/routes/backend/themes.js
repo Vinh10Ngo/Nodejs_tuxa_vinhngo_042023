@@ -14,6 +14,7 @@ const linkIndex = '/' + systemConfigs.prefixAdmin + '/themes/'
 const pageTitleIndex = 'Book Manager::'
 const pageTitleAdd = pageTitleIndex + 'Add'
 const pageTitleEdit = pageTitleIndex + 'Edit'
+const pageTitleList = pageTitleIndex + 'List'
 const folderViews = __path__views + 'themes/'
 
 /* GET users listing. */
@@ -66,11 +67,20 @@ if (errors) {
   if (errors) {
     res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, errors});
   } else {
+    item.created = {
+      user_id: 0, 
+      user_name: 'admin', 
+      time: Date.now()
+    }
     new itemsModel(item).save().then(() => {
       req.flash('success',notifyConfigs.ADD_SUCCESS, false);
       res.redirect(linkIndex)
+    }).catch(err => {
+      console.error('Lỗi khi lưu dữ liệu:', err);
+      // Xử lý lỗi ở đây nếu cần
     })
-  }
+  } 
+  console.log(item)
   }
 
 })
@@ -79,7 +89,6 @@ if (errors) {
 router.get('(/:status)?', async (req, res, next) => {
   let objWhere = {}
   let keyword = paramsHelpers.getParams(req.query, 'keyword', '')
-  console.log(keyword)
   let currentStatus = paramsHelpers.getParams(req.params, 'status', 'all')
   let statusFilter = await utilsHelpers.createFilterStatus(currentStatus)
   let pagination = {
@@ -106,7 +115,7 @@ router.get('(/:status)?', async (req, res, next) => {
   .limit(pagination.totalItemsPerPage)
   .then((items) => {
     res.render(`${folderViews}list`, { 
-      pageTitle: pageTitleIndex,
+      pageTitle: pageTitleList,
       items: items, 
       statusFilter: statusFilter,
       pagination,
@@ -128,7 +137,6 @@ router.get('(/:status)?', async (req, res, next) => {
   router.post('/change-status/:status', function(req, res, next) {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     itemsModel.updateMany({_id: {$in: req.body.cid}}, {status: currentStatus}).then(result => {
-      console.log(result)
       req.flash('success', util.format(notifyConfigs.STATUS_MULTI_SUCCESS, result.matchedCount), false);
       res.redirect(linkIndex)
     });  
@@ -155,18 +163,15 @@ router.get('(/:status)?', async (req, res, next) => {
     let orderings = req.body.ordering
     if(Array.isArray(cids)) {
       cids.forEach((item, index) => {
-        // for(let index = 0; index < cids.length; index ++) {
         itemsModel.updateOne({_id: item}, {ordering: parseInt(orderings[index])}).then(result => {
-          req.flash('success', util.format(notifyConfigs.ORDERING_MULTI_SUCCESS, result.matchedCount), false);
-          res.redirect(linkIndex)
-        })    
-      })
+        }) 
+      })  
     } else {
-      itemsModel.updateOne({_id: cids}, {ordering: parseInt(orderings)}).then(result => {
-        req.flash('success', notifyConfigs.ORDERING_SUCCESS, false);
-        res.redirect(linkIndex)
+       itemsModel.updateOne({_id: cids}, {ordering: parseInt(orderings)}).then(result => {
      });      
     }
+    req.flash('success', notifyConfigs.ORDERING_SUCCESS, false);
+    res.redirect(linkIndex)
   });
 });
 

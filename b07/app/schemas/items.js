@@ -5,5 +5,15 @@ const schema = new mongoose.Schema({
     name: String, 
     status: String, 
     ordering: Number, 
+    create: {
+        user_id: Number, 
+        user_name: String, 
+        time: Date
+    },
+    modified : {
+        user_id: Number, 
+        user_name: String, 
+        time: Date   
+    }
 });
 module.exports= mongoose.model(databaseConfigs.col_items, schema)

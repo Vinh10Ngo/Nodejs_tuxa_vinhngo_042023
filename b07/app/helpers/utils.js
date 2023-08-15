@@ -11,11 +11,9 @@ let createFilterStatus = async (currentStatus) => {
         let item = statusFilter[index] 
         let condition = (item.value !== 'all') ? {status: item.value} : {}   
         if (item.value === currentStatus) statusFilter[index].class = 'success'
-        console.log(item.value)
 
         await itemsModel.count(condition).then((data) => {
-          statusFilter[index]= data
-          console.log('data: ' + data)
+          statusFilter[index].count = data
         })
       }
       return statusFilter

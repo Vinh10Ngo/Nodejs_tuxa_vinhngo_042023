@@ -21,7 +21,7 @@ paginationHelper = (paginationObj, type, currentStatus, keyword) => {
     if(keyword !== '') link += '?keyword=' + keyword + '&page='
     else link += '?page='
     if(currentPage > 1){
-      xHtmlStart = `<li><a href="/${link}" class="page-link"><i class="fas fa-angle-double-left"></i></a></li>`
+      xHtmlStart = `<li><a href="/${link}1" class="page-link"><i class="fas fa-angle-double-left"></i></a></li>`
       xHtmlPrevious = `<li><a href="/${link}${currentPage-1}" class="page-link"><i class="fas fa-angle-left"></i></a></li>`
      }
      let middle = Math.ceil(pageRanges/2)

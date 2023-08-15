@@ -99,7 +99,8 @@ $(document).ready(function () {
             $(form_selector).attr("action", optValue);
         });
 
-        $(form_selector + " .btn.btn-block.btn-primary").on("click", function () {
+        $(form_selector + " .btn.btn-block.btn-primary").on("click", function (e) {
+            e.preventDefault()
             isDelete = pattenCheckDelete.test($(slb_selector).val());
             if(isDelete){
                 var confirmDelete = confirm('Are you really want to delete?');

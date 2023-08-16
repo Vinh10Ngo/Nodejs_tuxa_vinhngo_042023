@@ -31,6 +31,7 @@ router.get('/dashboard', async(req, res, next) => {
      countItems: countItems 
   });
 });
+//form
 router.get('/form(/:id)?', function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
   let item =  {name: '', ordering: 0, status: 'novalue'}
@@ -86,12 +87,24 @@ if (errors) {
 
 })
 
+//sort
+router.get('/sort/:sort_field/:sort_type', function(req, res, next) {
+req.session.sort_field = paramsHelpers.getParams(req.params, 'sort_field', 'ordering')
+req.session.sort_type = paramsHelpers.getParams(req.params, 'sort_type', 'asc')
+
+res.redirect(linkIndex)  
+})
 // List themes
 router.get('(/:status)?', async (req, res, next) => {
   let objWhere = {}
   let keyword = paramsHelpers.getParams(req.query, 'keyword', '')
   let currentStatus = paramsHelpers.getParams(req.params, 'status', 'all')
   let statusFilter = await utilsHelpers.createFilterStatus(currentStatus)
+  
+  let sortField = paramsHelpers.getParams(req.session, 'sort_field', 'ordering')
+  let sortType = paramsHelpers.getParams(req.session, 'sort_type', 'asc')
+  let sort = {}
+  sort[sortField] = sortType
   let pagination = {
     totalItems: 1,
     totalItemsPerPage : 3,
@@ -112,7 +125,7 @@ router.get('(/:status)?', async (req, res, next) => {
   itemsModel
   .find(objWhere)
   .select('name status ordering created modified')
-  .sort({ordering: 'asc'})
+  .sort(sort)
   .skip((pagination.currentPage-1)*pagination.totalItemsPerPage)
   .limit(pagination.totalItemsPerPage)
   .then((items) => {
@@ -122,7 +135,9 @@ router.get('(/:status)?', async (req, res, next) => {
       statusFilter: statusFilter,
       pagination,
       currentStatus,
-      keyword
+      keyword,
+      sortField,
+      sortType
     });
   })
   //change status

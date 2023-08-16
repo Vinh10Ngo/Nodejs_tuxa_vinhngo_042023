@@ -4,6 +4,7 @@
 <% include ./../helper/hightlight%>
 <% include ./../helper/pagination%>
 <% include ./../helper/source_by%>
+<% include ./../helper/sort%>
 
 <h3><%- locals.flash %></h3>
 
@@ -71,9 +72,9 @@ const linkPrefix = systemConfigs.prefixAdmin + `/${collection}/`
                                     </div>
                                 </th>
                                 <th class="text-center">ID</th>
-                                <th class="text-center pointer"><a href="#" class="title_col">Name<i class="fa fa-fw fa-sort-asc"></i></a></th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Ordering</th> 
+                                <%- sortHelper(collection, 'Name', 'name', sortField, sortType, 'width:20%') %>
+                                <%- sortHelper(collection, 'Status', 'status', sortField, sortType) %>
+                                <%- sortHelper(collection, 'Ordering', 'ordering', sortField, sortType) %>
                                 <th class="text-center">Created</th> 
                                 <th class="text-center">Modified</th>                             
                                 <th class="text-center">Action</th>

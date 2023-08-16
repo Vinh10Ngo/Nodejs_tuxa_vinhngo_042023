@@ -57,7 +57,12 @@ if (errors) {
     itemsModel.updateOne({_id: item.id},
        {status: item.status, 
         ordering: parseInt(item.ordering),
-        name: item.name
+        name: item.name,
+          modified : {
+            user_id: 0, 
+            user_name: 'admin', 
+            time: Date.now()   
+        }
       }).then(result => {
       req.flash('success', notifyConfigs.EDIT_SUCCESS , false);
       res.redirect(linkIndex)
@@ -75,12 +80,8 @@ if (errors) {
     new itemsModel(item).save().then(() => {
       req.flash('success',notifyConfigs.ADD_SUCCESS, false);
       res.redirect(linkIndex)
-    }).catch(err => {
-      console.error('Lỗi khi lưu dữ liệu:', err);
-      // Xử lý lỗi ở đây nếu cần
     })
   } 
-  console.log(item)
   }
 
 })
@@ -110,6 +111,7 @@ router.get('(/:status)?', async (req, res, next) => {
   })
   itemsModel
   .find(objWhere)
+  .select('name status ordering created modified')
   .sort({ordering: 'asc'})
   .skip((pagination.currentPage-1)*pagination.totalItemsPerPage)
   .limit(pagination.totalItemsPerPage)
@@ -128,7 +130,15 @@ router.get('(/:status)?', async (req, res, next) => {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     let id = paramsHelpers.getParams(req.params, 'id', '')
     let status = (currentStatus === 'active') ? 'inactive' : 'active'
-    itemsModel.updateOne({_id: id}, {status: status}).then(result => {
+    let data = {
+      status: status,
+      modified : {
+        user_id: 0, 
+        user_name: 'admin', 
+        time: Date.now()   
+    }
+  }
+    itemsModel.updateOne({_id: id}, data).then(result => {
       req.flash('success', notifyConfigs.STATUS_SUCCESS, false);
       res.redirect(linkIndex)
     });  
@@ -136,7 +146,15 @@ router.get('(/:status)?', async (req, res, next) => {
   //change status - multi 
   router.post('/change-status/:status', function(req, res, next) {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    itemsModel.updateMany({_id: {$in: req.body.cid}}, {status: currentStatus}).then(result => {
+    let data = {
+      status: currentStatus,
+      modified : {
+        user_id: 0, 
+        user_name: 'admin', 
+        time: Date.now()   
+    }
+  }
+    itemsModel.updateMany({_id: {$in: req.body.cid}}, data).then(result => {
       req.flash('success', util.format(notifyConfigs.STATUS_MULTI_SUCCESS, result.matchedCount), false);
       res.redirect(linkIndex)
     });  
@@ -161,13 +179,30 @@ router.get('(/:status)?', async (req, res, next) => {
   router.post('/change-ordering', function(req, res, next) {
     let cids = req.body.cid
     let orderings = req.body.ordering
+    
     if(Array.isArray(cids)) {
       cids.forEach((item, index) => {
-        itemsModel.updateOne({_id: item}, {ordering: parseInt(orderings[index])}).then(result => {
+        let data = {
+          ordering: parseInt(orderings[index]),
+          modified : {
+            user_id: 0, 
+            user_name: 'admin', 
+            time: Date.now()   
+        }
+      }
+        itemsModel.updateOne({_id: item}, data).then(result => {
         }) 
       })  
     } else {
-       itemsModel.updateOne({_id: cids}, {ordering: parseInt(orderings)}).then(result => {
+      let data = {
+        ordering: parseInt(orderings),
+        modified : {
+          user_id: 0, 
+          user_name: 'admin', 
+          time: Date.now()   
+      }
+    }
+       itemsModel.updateOne({_id: cids}, data).then(result => {
      });      
     }
     req.flash('success', notifyConfigs.ORDERING_SUCCESS, false);

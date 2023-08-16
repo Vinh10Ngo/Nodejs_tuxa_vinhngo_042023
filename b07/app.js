@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var moment = require('moment'); // require
+
 const validator = require('express-validator');
 
 const flash = require('express-flash-notification');
@@ -71,7 +73,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//local variable
 app.locals.systemConfigs = systemConfigs
+app.locals.moment = moment
+
 app.use(`/${systemConfigs.prefixAdmin}`, require(__path__routes + '/backend/index'));
 app.use('/', require(__path__routes + '/frontend/index'));
 

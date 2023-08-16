@@ -3,6 +3,7 @@
 <% include ./../helper/status%>
 <% include ./../helper/hightlight%>
 <% include ./../helper/pagination%>
+<% include ./../helper/source_by%>
 
 <h3><%- locals.flash %></h3>
 
@@ -70,9 +71,11 @@ const linkPrefix = systemConfigs.prefixAdmin + `/${collection}/`
                                     </div>
                                 </th>
                                 <th class="text-center">ID</th>
-                                <th class="">Name</th>
+                                <th class="text-center pointer"><a href="#" class="title_col">Name<i class="fa fa-fw fa-sort-asc"></i></a></th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Ordering</th>        
+                                <th class="text-center">Ordering</th> 
+                                <th class="text-center">Created</th> 
+                                <th class="text-center">Modified</th>                             
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -95,7 +98,13 @@ const linkPrefix = systemConfigs.prefixAdmin + `/${collection}/`
 									</td>
 									
 									<td class="text-center position-relative"><input type="number" value="<%= item.ordering%>" class="ordering form-control form-control-sm m-auto text-center" style="width: 65px" id="chkOrdering[1]" data-id="1" min="1"></td>
-									
+                                    <td>
+                                        <%- sourceByHelper(item.created.user_name, item.created.time)%>
+                                   </td>
+                                    <td>
+                                    <%- sourceByHelper(item.modified.user_name, item.modified.time)%>
+                                    </td>
+                                
 									<td class="text-center">
 										<a href="/<%= linkPrefix%>form/<%= item.id%>" class="rounded-circle btn btn-sm btn-info" title="Edit">
 											<i class="fas fa-pencil-alt"></i>

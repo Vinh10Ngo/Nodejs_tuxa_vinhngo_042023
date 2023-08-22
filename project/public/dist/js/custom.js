@@ -1,4 +1,4 @@
-CKEDITOR.replace( 'editor1' );
+CKEDITOR.replace( 'content' );
 
 $(document).ready(function () {
     var ckbAll = $("#check-all");

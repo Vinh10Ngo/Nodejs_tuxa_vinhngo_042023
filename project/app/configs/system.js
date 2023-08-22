@@ -3,7 +3,12 @@ module.exports = {
     format_long_time: 'HH:mm DD-MM-YYYY',
     status_value: [
         {id: 'novalue', name: '- Select status -'},
-        {id: 'active', name: 'Active123'},
-        {id: 'inactive', name: 'Inactive123'}
-    ]
+        {id: 'active', name: 'Active'},
+        {id: 'inactive', name: 'Inactive'}
+    ],
+    // input_value: [
+    //     {type: "text", id:"form[name]", name: "name" },
+    //     {type:"number", id:"form[ordering]", name:"ordering"  },
+    //     {type:"hidden", id:"form[token]", name:"id"  }
+    // ]
 }

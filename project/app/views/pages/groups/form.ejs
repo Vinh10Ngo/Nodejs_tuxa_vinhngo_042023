@@ -1,8 +1,5 @@
-<% include ./../../helper/selectBox%>
-
-
 <%
-const collection = 'items'
+const collection = 'groups'
 const linkPrefix = systemConfigs.prefixAdmin + `/${collection}/`
 %>
 
@@ -30,7 +27,11 @@ const linkPrefix = systemConfigs.prefixAdmin + `/${collection}/`
                     <div class="form-group row">
                         <label for="form[status]" class="col-sm-2 col-form-label text-sm-right">Status</label>
                         <div class="col-xs-12 col-sm-8">
-                            <%- selectBoxHelper('status', systemConfigs.status_value, item.status)%>
+                            <select id="form[status]" name="status" class="custom-select custom-select-sm">
+                                <option value="novalue"> - Select status - </option>
+                                <option value="active" <%= (item.status == "active") ? 'selected = "selected"': ''%>>Active</option>
+                                <option value="inactive" <%= (item.status == "inactive") ? 'selected = "selected"': ''%>>Inactive</option>
+                            </select>
                         </div>
                         <div class="form-group" style="margin: 0 auto; width: 50%;">
                             <label>content</label>

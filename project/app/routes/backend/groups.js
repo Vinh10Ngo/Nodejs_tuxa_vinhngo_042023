@@ -15,7 +15,7 @@ const pageTitleIndex = 'Book Manager::'
 const pageTitleAdd = pageTitleIndex + 'Add'
 const pageTitleEdit = pageTitleIndex + 'Edit'
 const pageTitleList = pageTitleIndex + 'List'
-const folderViews = __path__views + 'groups/'
+const folderViews = __path__views + 'pages/groups/'
 
 /* GET users listing. */
 router.get('/login', function(req, res, next) {
@@ -48,7 +48,7 @@ router.get('/form(/:id)?', function(req, res, next) {
 //ADD
 router.post('/save', (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
-  validateItems.validator(req)
+  validateGroups.validator(req)
   let item = Object.assign(req.body)
   let errors = req.validationErrors()
   if(typeof item !== 'undefined' && item.id !== '') { //edit
@@ -100,7 +100,7 @@ res.redirect(linkIndex)
 router.get('(/:status)?', async (req, res, next) => {
   let objWhere = {}
   let params = {}
-  params.keyword = paramsHelpers.getParams(req.query, 'params.keyword', '')
+  params.keyword = paramsHelpers.getParams(req.query, 'keyword', '')
   params.currentStatus = paramsHelpers.getParams(req.params, 'status', 'all')
   let statusFilter = await utilsHelpers.createFilterStatus(params.currentStatus)
   
@@ -137,11 +137,7 @@ router.get('(/:status)?', async (req, res, next) => {
       items: items, 
       statusFilter: statusFilter,
       params
-      // pagination,
-      // currentStatus,
-      // keyword,
-      // sortField,
-      // sortType
+
     });
   })
   //change status

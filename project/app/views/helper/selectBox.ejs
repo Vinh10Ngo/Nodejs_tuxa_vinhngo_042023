@@ -1,0 +1,18 @@
+<% selectBoxHelper = (name, item, optionSelected) => {
+    let xHtmlResult = ''
+    
+    item.forEach((item) => {
+        let selected = (optionSelected == item.id) ? 'selected = "selected"': ''
+         let id = (item.id == undefined) ? 'allvalue' : item.id
+        xHtmlResult += `<option value=${id} ${selected}>${item.name}</option>`
+    })  
+    return `<select id="form[status]" name=${name} class="custom-select custom-select-sm">${xHtmlResult}
+    </select>`
+}    
+%>
+
+<!-- <select id="form[status]" name="status" class="custom-select custom-select-sm">
+    <option value="novalue"> - Select status - </option>
+    <option value="active" <%= (item.status == "active") ? 'selected = "selected"': ''%>>Active</option>
+    <option value="inactive" <%= (item.status == "inactive") ? 'selected = "selected"': ''%>>Inactive</option>
+</select> -->

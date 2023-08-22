@@ -139,11 +139,6 @@ router.get('(/:status)?', async (req, res, next) => {
       items: items, 
       statusFilter: statusFilter,
       params
-      // pagination,
-      // currentStatus,
-      // keyword,
-      // sortField,
-      // sortType
     });
   })
   //change status

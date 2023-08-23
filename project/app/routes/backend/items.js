@@ -32,12 +32,14 @@ router.get('/dashboard', async(req, res, next) => {
   });
 });
 //form
-router.get('/form(/:id)?', function(req, res, next) {
+router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
+  // let {id} = req.params
   let item =  {name: '', ordering: 0, status: 'novalue'}
   let errors = null
-  if(id) {
-    itemsModel.findById(id).then((item)=> {
+  if(id) {    
+    await itemsModel.findById(id).then((item)=> {
+      console.log(id)
       res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item: item, errors });
     })
   } else {

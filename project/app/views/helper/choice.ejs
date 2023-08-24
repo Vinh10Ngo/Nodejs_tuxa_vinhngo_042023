@@ -1,0 +1,15 @@
+<% choiceHelper = (groups_acp) => {
+    let yesChecked = '';
+    let noChecked = '';
+    if(groups_acp == 'yes'){yesChecked = "checked"}
+    if(groups_acp == 'no'){noChecked = "checked"}
+    let xHtmlResult = `<label><input type="radio" name="groups_acp" value="yes" ${yesChecked}>Yes</label>
+     <label><input type="radio" name="groups_acp" value="no" ${noChecked}>No</label>`
+    return xHtmlResult
+}    
+%>
+
+
+
+
+

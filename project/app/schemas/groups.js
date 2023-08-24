@@ -6,6 +6,7 @@ const schema = new mongoose.Schema({
     status: String, 
     ordering: Number, 
     content: String,
+    groups_acp: String,
     created: {
         user_id: Number, 
         user_name: String, 

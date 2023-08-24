@@ -1,6 +1,7 @@
 <% include ./../../helper/input%>
 <% include ./../../helper/selectBox%>
 <% include ./../../helper/textArea%>
+<% include ./../../helper/choice%>
 <% include ./../../helper/formBody%>
 
 <%
@@ -10,6 +11,7 @@ let elementsForm = [
 {for: 'form[name]', label: 'Name', input: inputHelper("text", "name", item.name, {'id': 'form[name]'})},
 {for: 'form[ordering]', label: 'Ordering', input: inputHelper("number", "ordering", item.ordering, {'id': 'form[ordering]'})},
 {for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status)},
+{for: 'form[groups_acp]', label: 'Groups_acp',input: choiceHelper(item.groups_acp)},
 {for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
 ]
 %>
@@ -22,6 +24,7 @@ let elementsForm = [
                 <form action="/<%= linkPrefix%>save" method="post" enctype="application/x-www-form-urlencoded" class="mb-0" id="admin-form" enctype="multipart/form-data">
 
                     <%- formBodyHelper(elementsForm)%>
+                    
 
                     <div class="col-12 col-sm-8 offset-sm-2">
                         <img src="public/files/category/default.jpg" alt="preview image" id="admin-preview-image" style="display: none;width: 100%; max-width: 500px">

@@ -1,21 +1,22 @@
 var express = require('express');
 var router = express.Router ();
 
+const controllerName = 'items'
 const util = require('util')
-const itemsModel = require(__path__schemas + 'items')
+const itemsModel = require(__path__schemas + controllerName)
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
-const validateItems = require(__path__validates + 'items')
+const validateItems = require(__path__validates + controllerName)
 const systemConfigs = require(__path__configs + 'system')
 const notifyConfigs = require(__path__configs + 'notify');
 const { resourceLimits } = require('worker_threads');
-const linkIndex = '/' + systemConfigs.prefixAdmin + '/items/'
+const linkIndex = '/' + systemConfigs.prefixAdmin + `/${controllerName}/`
 
 const pageTitleIndex = 'Book Manager::'
 const pageTitleAdd = pageTitleIndex + 'Add'
 const pageTitleEdit = pageTitleIndex + 'Edit'
 const pageTitleList = pageTitleIndex + 'List'
-const folderViews = __path__views + 'pages/items/'
+const folderViews = __path__views + `pages/${controllerName}/`
 
 /* GET users listing. */
 router.get('/login', function(req, res, next) {
@@ -37,13 +38,17 @@ router.get('/form(/:id)?', async function(req, res, next) {
   // let {id} = req.params
   let item =  {name: '', ordering: 0, status: 'novalue'}
   let errors = null
-  if(id) {    
-    await itemsModel.findById(id).then((item)=> {
+  if(id !== '') {    
+    try {
+      await itemsModel.findById(id).then((item)=> {
       console.log(id)
-      res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item: item, errors });
-    })
+      res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors });
+    })   
+    } catch (error) {
+      console.log(error)
+    }
   } else {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, errors });
+    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors });
   }
 });
 
@@ -55,7 +60,7 @@ router.post('/save', (req, res, next) => {
   let errors = req.validationErrors()
   if(typeof item !== 'undefined' && item.id !== '') { //edit
 if (errors) {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item, errors});
+    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item, controllerName, errors});
   } else {
     itemsModel.updateOne({_id: item.id},
        {status: item.status, 
@@ -75,7 +80,7 @@ if (errors) {
 
   } else { //add
   if (errors) {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, errors});
+    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, controllerName, errors});
   } else {
     item.created = {
       user_id: 0, 
@@ -114,7 +119,7 @@ router.get('(/:status)?', async (req, res, next) => {
     pageRanges: 3,
     currentPage : parseInt(paramsHelpers.getParams(req.query, 'page', 1)) 
   } 
-  let statusFilter = await utilsHelpers.createFilterStatus(params.currentStatus)
+  let statusFilter = await utilsHelpers.createFilterStatus(params.currentStatus, controllerName)
 
   let sort = {}
   sort[params.sortField] = params.sortType
@@ -140,6 +145,7 @@ router.get('(/:status)?', async (req, res, next) => {
       pageTitle: pageTitleList,
       items: items, 
       statusFilter: statusFilter,
+      controllerName,
       params
     });
   })

@@ -1,5 +1,5 @@
 <%
-paginationHelper = (paginationObj, type, currentStatus, keyword) => {
+paginationHelper = (paginationObj, linkPrefix, currentStatus, keyword) => {
   let totalItems = paginationObj.totalItems
   let totalItemsPerPage = paginationObj.totalItemsPerPage
   let pageRanges = paginationObj.pageRanges
@@ -16,7 +16,7 @@ paginationHelper = (paginationObj, type, currentStatus, keyword) => {
     let xHtmlPages = ''
     let xHtmlNext = '<li class="page-item disabled"><a class="page-link" href=""><i class="fas fa-angle-right"></i></a></li>'
     let xHtmlEnd = '<li class="page-item disabled"><a class="page-link" href=""><i class="fas fa-angle-double-right"></i></a></li>'
-    let link =  systemConfigs.prefixAdmin + '/'+ type + '/'+ currentStatus 
+    let link =  linkPrefix + currentStatus 
 
     if(keyword !== '') link += '?keyword=' + keyword + '&page='
     else link += '?page='

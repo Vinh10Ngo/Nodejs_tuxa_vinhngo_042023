@@ -1,21 +1,22 @@
 var express = require('express');
 var router = express.Router ();
 
+const controllerName = 'groups'
 const util = require('util')
-const groupsModel = require(__path__schemas + 'groups')
+const groupsModel = require(__path__schemas + controllerName)
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
-const validateGroups = require(__path__validates + 'groups')
+const validateGroups = require(__path__validates + controllerName)
 const systemConfigs = require(__path__configs + 'system')
 const notifyConfigs = require(__path__configs + 'notify');
 const { resourceLimits } = require('worker_threads');
-const linkIndex = '/' + systemConfigs.prefixAdmin + '/groups/'
+const linkIndex = '/' + systemConfigs.prefixAdmin + `/${controllerName}/`
 
 const pageTitleIndex = 'Book Manager::'
 const pageTitleAdd = pageTitleIndex + 'Add'
 const pageTitleEdit = pageTitleIndex + 'Edit'
 const pageTitleList = pageTitleIndex + 'List'
-const folderViews = __path__views + 'pages/groups/'
+const folderViews = __path__views + `pages/${controllerName}/`
 
 /* GET users listing. */
 router.get('/login', function(req, res, next) {
@@ -38,10 +39,10 @@ router.get('/form(/:id)?', function(req, res, next) {
   let errors = null
   if(id) {
     groupsModel.findById(id).then((item)=> {
-      res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item: item, errors });
+      res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item: item, controllerName, errors });
     })
   } else {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, errors });
+    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, controllerName, errors });
   }
 });
 
@@ -53,13 +54,14 @@ router.post('/save', (req, res, next) => {
   let errors = req.validationErrors()
   if(typeof item !== 'undefined' && item.id !== '') { //edit
 if (errors) {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item, errors});
+    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item, controllerName, errors});
   } else {
     groupsModel.updateOne({_id: item.id},
        {status: item.status, 
         ordering: parseInt(item.ordering),
         name: item.name,
         content: item.content,
+        groups_acp: item.groups_acp,
           modified : {
             user_id: 0, 
             user_name: 'admin', 
@@ -73,7 +75,8 @@ if (errors) {
 
   } else { //add
   if (errors) {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, errors});
+    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, controllerName, errors});
+    console.log(errors)
   } else {
     item.created = {
       user_id: 0, 
@@ -102,7 +105,7 @@ router.get('(/:status)?', async (req, res, next) => {
   let params = {}
   params.keyword = paramsHelpers.getParams(req.query, 'keyword', '')
   params.currentStatus = paramsHelpers.getParams(req.params, 'status', 'all')
-  let statusFilter = await utilsHelpers.createFilterStatus(params.currentStatus)
+  let statusFilter = await utilsHelpers.createFilterStatus(params.currentStatus, controllerName)
   
   params.sortField = paramsHelpers.getParams(req.session, 'sort_field', 'ordering')
   params.sortType = paramsHelpers.getParams(req.session, 'sort_type', 'asc')
@@ -127,7 +130,7 @@ router.get('(/:status)?', async (req, res, next) => {
   })
   groupsModel
   .find(objWhere)
-  .select('name status ordering created modified')
+  .select('name status ordering created modified groups_acp' )
   .sort(sort)
   .skip((params.pagination.currentPage-1)*params.pagination.totalItemsPerPage)
   .limit(params.pagination.totalItemsPerPage)
@@ -136,6 +139,7 @@ router.get('(/:status)?', async (req, res, next) => {
       pageTitle: pageTitleList,
       items: items, 
       statusFilter: statusFilter,
+      controllerName,
       params
 
     });
@@ -225,7 +229,24 @@ router.get('(/:status)?', async (req, res, next) => {
   });
 });
 
-
+//change groups_acp
+router.get('/change-groups_acp/:id/:groups_acp', function(req, res, next) {
+  let currentGroups_acp = paramsHelpers.getParams(req.params, 'groups_acp', 'yes')
+  let id = paramsHelpers.getParams(req.params, 'id', '')
+  let groups_acp = (currentGroups_acp === 'yes') ? 'no' : 'yes'
+  let data = {
+    groups_acp: groups_acp,
+    modified : {
+      user_id: 0, 
+      user_name: 'admin', 
+      time: Date.now()   
+  }
+}
+groupsModel.updateOne({_id: id}, data).then(result => {
+    req.flash('success', notifyConfigs.GROUPS_ACP_SUCCESS, false);
+    res.redirect(linkIndex)
+  });  
+});
 
 
 module.exports = router;

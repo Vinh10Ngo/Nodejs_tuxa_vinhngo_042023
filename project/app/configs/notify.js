@@ -10,6 +10,6 @@ module.exports = {
     ERROR_NAME: 'chiều dài từ %d đến %d kí tự',
     ERROR_ORDERING: 'Phải là số nguyên lớn hơn %d và bé hơn %d',
     ERROR_STATUS: 'Status phải khác rỗng',
-    ERROR_GROUPS_ACP: 'Groups_acp phải khác rỗng'
-
+    ERROR_GROUPS_ACP: 'Groups_acp phải khác rỗng',
+    ERROR_GROUPS: 'Groups phải khác rỗng'
 }

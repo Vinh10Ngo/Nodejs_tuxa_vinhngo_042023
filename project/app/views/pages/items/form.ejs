@@ -9,7 +9,7 @@ const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
 let elementsForm = [
 {for: 'form[name]', label: 'Name', input: inputHelper("text", "name", item.name, {'id': 'form[name]'})},
 {for: 'form[ordering]', label: 'Ordering', input: inputHelper("number", "ordering", item.ordering, {'id': 'form[ordering]'})},
-{for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status)},
+{for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
 {for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
 ]
 %>

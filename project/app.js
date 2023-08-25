@@ -16,6 +16,8 @@ var mongoose = require('mongoose')
 
 var pathConfig = require('./path');
 
+require('dotenv').config()
+
 //define path 
 global.__base =  __dirname + '/'
 global.__path__app =  __base + pathConfig.folder__app + '/'

@@ -145,4 +145,7 @@ $(document).ready(function () {
             $(this).parent().css({'display':'none'});
         })    
     }
+    $('select[name="groups"]').change(function() {
+        $('input[name="groups_name"]').val($(this).find('option:selected').text())
+    })
 });

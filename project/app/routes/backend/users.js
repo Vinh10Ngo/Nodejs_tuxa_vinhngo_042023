@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router ();
 
-const controllerName = 'items'
+const controllerName = 'users'
 const util = require('util')
-const mainModel = require(__path__schemas + controllerName)
+const usersModel = require(__path__schemas + controllerName)
+const groupsModel = require(__path__schemas + 'groups')
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
-const mainValidate = require(__path__validates + controllerName)
+const validateUsers = require(__path__validates + controllerName)
 const systemConfigs = require(__path__configs + 'system')
 const notifyConfigs = require(__path__configs + 'notify');
 const { resourceLimits } = require('worker_threads');
@@ -24,7 +25,7 @@ router.get('/login', function(req, res, next) {
 });
 router.get('/dashboard', async(req, res, next) => {
   let countItems = 0
-  await mainModel.count({}).then((data) => {
+  await usersModel.count({}).then((data) => {
     countItems = data
   })
   res.render(`${folderViews}dashboard`, {
@@ -38,31 +39,41 @@ router.get('/form(/:id)?', async function(req, res, next) {
   // let {id} = req.params
   let item =  {name: '', ordering: 0, status: 'novalue'}
   let errors = null
-  if(id !== '') {    
+  let groupsItems = []
+  await groupsModel.find({}, {_id: 1, name: 1}).then((item) => {
+    groupsItems = item
+    groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
+  })
+  if(id !== '') {    //edit
     try {
-      await mainModel.findById(id).then((item)=> {
-      console.log(id)
-      res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors });
+      await usersModel.findById(id).then((item)=> {
+      res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
     })   
     } catch (error) {
       console.log(error)
     }
-  } else {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors });
+  } else { // add
+    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors, groupsItems });
   }
 });
 
-//ADD
-router.post('/save', (req, res, next) => {
+//save
+router.post('/save', async (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
-  mainValidate.validator(req)
+  validateUsers.validator(req)
   let item = Object.assign(req.body)
   let errors = req.validationErrors()
   if(typeof item !== 'undefined' && item.id !== '') { //edit
 if (errors) {
+  let groupsItems = []
+  await groupsModel.find({}, {_id: 1, name: 1}).then((item) => {
+    groupsItems = item
+    groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
+    console.log(item)
+  })
     res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item, controllerName, errors});
   } else {
-    mainModel.updateOne({_id: item.id},
+    usersModel.updateOne({_id: item.id},
        {status: item.status, 
         ordering: parseInt(item.ordering),
         name: item.name,
@@ -80,14 +91,23 @@ if (errors) {
 
   } else { //add
   if (errors) {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, controllerName, errors});
+    let groupsItems = []
+  await groupsModel.find({}, {_id: 1, name: 1}).then((item) => {
+    groupsItems = item
+    groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
+  })
+    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, controllerName, groupsItems, errors});
   } else {
+    item.groups = {
+      id: item.groups,
+      name: item.groups_name
+    }
     item.created = {
       user_id: 0, 
       user_name: 'admin', 
       time: Date.now()
     }
-    new mainModel(item).save().then(() => {
+    new usersModel(item).save().then(() => {
       req.flash('success',notifyConfigs.ADD_SUCCESS, false);
       res.redirect(linkIndex)
     })
@@ -103,7 +123,7 @@ req.session.sort_type = paramsHelpers.getParams(req.params, 'sort_type', 'asc')
 
 res.redirect(linkIndex)  
 })
-// List items
+// List users
 router.get('(/:status)?', async (req, res, next) => {
   let objWhere = {}
   let params = {}
@@ -131,10 +151,10 @@ router.get('(/:status)?', async (req, res, next) => {
     objWhere.name = new RegExp(params.keyword, 'i')
   }
 
-  await mainModel.count(objWhere).then((data) => {
+  await usersModel.count(objWhere).then((data) => {
     params.pagination.totalItems = data
   })
-  mainModel
+  usersModel
   .find(objWhere)
   .select('name status ordering created modified')
   .sort(sort)
@@ -162,7 +182,7 @@ router.get('(/:status)?', async (req, res, next) => {
         time: Date.now()   
     }
   }
-    mainModel.updateOne({_id: id}, data).then(result => {
+    usersModel.updateOne({_id: id}, data).then(result => {
       req.flash('success', notifyConfigs.STATUS_SUCCESS, false);
       res.redirect(linkIndex)
     });  
@@ -178,7 +198,7 @@ router.get('(/:status)?', async (req, res, next) => {
         time: Date.now()   
     }
   }
-    mainModel.updateMany({_id: {$in: req.body.cid}}, data).then(result => {
+    usersModel.updateMany({_id: {$in: req.body.cid}}, data).then(result => {
       req.flash('success', util.format(notifyConfigs.STATUS_MULTI_SUCCESS, result.matchedCount), false);
       res.redirect(linkIndex)
     });  
@@ -187,14 +207,14 @@ router.get('(/:status)?', async (req, res, next) => {
   //delete
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
-    mainModel.deleteOne({_id: id}).then(result => {
+    usersModel.deleteOne({_id: id}).then(result => {
       req.flash('success', notifyConfigs.DELETE_SUCCESS, false);
       res.redirect(linkIndex)
     });  
   });
   // delete - multi 
   router.post('/delete', function(req, res, next) {
-    mainModel.deleteMany({_id: {$in: req.body.cid}}).then(result => {
+    usersModel.deleteMany({_id: {$in: req.body.cid}}).then(result => {
       req.flash('success', util.format(notifyConfigs.DELETE_MULTI_SUCCESS, result.deletedCount), false);
       res.redirect(linkIndex)
     });  
@@ -214,7 +234,7 @@ router.get('(/:status)?', async (req, res, next) => {
             time: Date.now()   
         }
       }
-        mainModel.updateOne({_id: item}, data).then(result => {
+        usersModel.updateOne({_id: item}, data).then(result => {
         }) 
       })  
     } else {
@@ -226,7 +246,7 @@ router.get('(/:status)?', async (req, res, next) => {
           time: Date.now()   
       }
     }
-       mainModel.updateOne({_id: cids}, data).then(result => {
+       usersModel.updateOne({_id: cids}, data).then(result => {
      });      
     }
     req.flash('success', notifyConfigs.ORDERING_SUCCESS, false);

@@ -37,21 +37,20 @@ router.get('/dashboard', async(req, res, next) => {
 router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
   // let {id} = req.params
-  let item =  {name: '', ordering: 0, status: 'novalue'}
+  let item =  {name: '', ordering: 0, status: 'novalue', groups_id: '', groups_name: ''}
   let errors = null
   let groupsItems = []
   await groupsModel.find({}, {_id: 1, name: 1}).then((item) => {
     groupsItems = item
     groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
+
   })
   if(id !== '') {    //edit
-    try {
-      await usersModel.findById(id).then((item)=> {
+      await usersModel.findById(id).  then((item)=> {
+        item.groups_id = item.groups.id
+        item.groups_name = item.groups.name
       res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
     })   
-    } catch (error) {
-      console.log(error)
-    }
   } else { // add
     res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors, groupsItems });
   }
@@ -69,15 +68,18 @@ if (errors) {
   await groupsModel.find({}, {_id: 1, name: 1}).then((item) => {
     groupsItems = item
     groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
-    console.log(item)
   })
-    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item, controllerName, errors});
+    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item, controllerName, groupsItems, errors});
   } else {
     usersModel.updateOne({_id: item.id},
        {status: item.status, 
         ordering: parseInt(item.ordering),
         name: item.name,
         content: item.content,
+        groups: {
+          id: item.groups_id,
+          name: item.groups_name
+        },
           modified : {
             user_id: 0, 
             user_name: 'admin', 
@@ -86,6 +88,7 @@ if (errors) {
       }).then(result => {
       req.flash('success', notifyConfigs.EDIT_SUCCESS , false);
       res.redirect(linkIndex)
+      console.log(item)
     }); 
   }
 
@@ -99,7 +102,7 @@ if (errors) {
     res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, controllerName, groupsItems, errors});
   } else {
     item.groups = {
-      id: item.groups,
+      id: item.groups_id,
       name: item.groups_name
     }
     item.created = {

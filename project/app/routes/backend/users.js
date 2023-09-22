@@ -2,14 +2,14 @@ var express = require('express');
 var router = express.Router ();
 
 const controllerName = 'users'
-const util = require('util')
-const usersModel = require(__path__schemas + controllerName)
-const groupsModel = require(__path__schemas + 'groups')
+// const util = require('util')
+const mainModel = require(__path__models + controllerName)
+const groupsModel = require(__path__models + 'users')
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
-const validateUsers = require(__path__validates + controllerName)
+const mainValidate = require(__path__validates + controllerName)
 const systemConfigs = require(__path__configs + 'system')
-const notifyConfigs = require(__path__configs + 'notify');
+const notifyHelpers = require(__path__helpers + 'notify')
 const { resourceLimits } = require('worker_threads');
 const linkIndex = '/' + systemConfigs.prefixAdmin + `/${controllerName}/`
 
@@ -25,7 +25,7 @@ router.get('/login', function(req, res, next) {
 });
 router.get('/dashboard', async(req, res, next) => {
   let countItems = 0
-  await usersModel.count({}).then((data) => {
+  await mainModel.count({}).then((data) => {
     countItems = data
   })
   res.render(`${folderViews}dashboard`, {
@@ -40,83 +40,41 @@ router.get('/form(/:id)?', async function(req, res, next) {
   let item =  {name: '', ordering: 0, status: 'novalue', groups_id: '', groups_name: ''}
   let errors = null
   let groupsItems = []
-  await groupsModel.find({}, {_id: 1, name: 1}).then((item) => {
+  await groupsModel.listItemInSelectBox().then((item) => {
     groupsItems = item
     groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
-
   })
-  if(id !== '') {    //edit
-      await usersModel.findById(id).  then((item)=> {
-        item.groups_id = item.groups.id
-        item.groups_name = item.groups.name
-      res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
-    })   
-  } else { // add
+  if(id !== '') {
+   mainModel.getItems(id).then((item)=> {
+    item.groups_id = item.groups.id
+    item.groups_name = item.groups.name
+    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
+    })
+  } else {
     res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors, groupsItems });
   }
 });
 
-//save
+//SAVE
 router.post('/save', async (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
-  validateUsers.validator(req)
   let item = Object.assign(req.body)
+  mainValidate.validator(req)
   let errors = req.validationErrors()
-  if(typeof item !== 'undefined' && item.id !== '') { //edit
-if (errors) {
-  let groupsItems = []
-  await groupsModel.find({}, {_id: 1, name: 1}).then((item) => {
-    groupsItems = item
-    groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
-  })
-    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item, controllerName, groupsItems, errors});
-  } else {
-    usersModel.updateOne({_id: item.id},
-       {status: item.status, 
-        ordering: parseInt(item.ordering),
-        name: item.name,
-        content: item.content,
-        groups: {
-          id: item.groups_id,
-          name: item.groups_name
-        },
-          modified : {
-            user_id: 0, 
-            user_name: 'admin', 
-            time: Date.now()   
-        }
-      }).then(result => {
-      req.flash('success', notifyConfigs.EDIT_SUCCESS , false);
-      res.redirect(linkIndex)
-      console.log(item)
-    }); 
-  }
-
-  } else { //add
-  if (errors) {
+  let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
+  if(Array.isArray(errors) && errors.length > 0) {
     let groupsItems = []
-  await groupsModel.find({}, {_id: 1, name: 1}).then((item) => {
-    groupsItems = item
-    groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
-  })
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, controllerName, groupsItems, errors});
-  } else {
-    item.groups = {
-      id: item.groups_id,
-      name: item.groups_name
-    }
-    item.created = {
-      user_id: 0, 
-      user_name: 'admin', 
-      time: Date.now()
-    }
-    new usersModel(item).save().then(() => {
-      req.flash('success',notifyConfigs.ADD_SUCCESS, false);
-      res.redirect(linkIndex)
+    await groupsModel.listItemInSelectBox().then((item) => {
+      groupsItems = item
+      groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
     })
-  } 
-  }
-
+    let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
+    res.render(`${folderViews}form`, { pageTitle, item, controllerName, errors, groupsItems});
+  } else {
+      mainModel.saveItem(item, {task: taskCurrent}).then(result => {
+        notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
+  })
+}
 })
 
 //sort
@@ -126,140 +84,75 @@ req.session.sort_type = paramsHelpers.getParams(req.params, 'sort_type', 'asc')
 
 res.redirect(linkIndex)  
 })
-// List users
+// filter groups
+router.get('/filter-groups/:groups_id', function(req, res, next) {
+  req.session.groups_id = paramsHelpers.getParams(req.params, 'groups_id', '')  
+  res.redirect(linkIndex)  
+  })
+// List items
 router.get('(/:status)?', async (req, res, next) => {
-  let objWhere = {}
-  let params = {}
-  params.keyword = paramsHelpers.getParams(req.query, 'keyword', '')
-  params.currentStatus = paramsHelpers.getParams(req.params, 'status', 'all')
-  
-  params.sortField = paramsHelpers.getParams(req.session, 'sort_field', 'ordering')
-  params.sortType = paramsHelpers.getParams(req.session, 'sort_type', 'asc')
- 
-  params.pagination = {
-    totalItems: 1,
-    totalItemsPerPage : 3,
-    pageRanges: 3,
-    currentPage : parseInt(paramsHelpers.getParams(req.query, 'page', 1)) 
-  } 
+  let params = paramsHelpers.createParams(req)
   let statusFilter = await utilsHelpers.createFilterStatus(params.currentStatus, controllerName)
+  let groupsItems = []
+  await groupsModel.listItemInSelectBox().then((item) => {
+    groupsItems = item
+    groupsItems.unshift({_id: 'allvalue', name: 'All group'})
+  }) 
 
-  let sort = {}
-  sort[params.sortField] = params.sortType
-
-  if (params.currentStatus !== 'all') {
-    objWhere.status = params.currentStatus
-  }
-  if (params.keyword !== '') {
-    objWhere.name = new RegExp(params.keyword, 'i')
-  }
-
-  await usersModel.count(objWhere).then((data) => {
+  await mainModel.countItems(params).then((data) => {
     params.pagination.totalItems = data
   })
-  usersModel
-  .find(objWhere)
-  .select('name status ordering created modified')
-  .sort(sort)
-  .skip((params.pagination.currentPage-1)*params.pagination.totalItemsPerPage)
-  .limit(params.pagination.totalItemsPerPage)
+  mainModel
+  .listItems(params)
   .then((items) => {
     res.render(`${folderViews}list`, { 
       pageTitle: pageTitleList,
       items: items, 
       statusFilter: statusFilter,
       controllerName,
+      groupsItems,
       params
     });
   })
   //change status
-  router.get('/change-status/:id/:status', function(req, res, next) {
+  router.post('/change-status/:id/:status', function(req, res, next) {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     let id = paramsHelpers.getParams(req.params, 'id', '')
-    let status = (currentStatus === 'active') ? 'inactive' : 'active'
-    let data = {
-      status: status,
-      modified : {
-        user_id: 0, 
-        user_name: 'admin', 
-        time: Date.now()   
-    }
-  }
-    usersModel.updateOne({_id: id}, data).then(result => {
-      req.flash('success', notifyConfigs.STATUS_SUCCESS, false);
-      res.redirect(linkIndex)
+    mainModel.changeStatus(id, currentStatus, {task: "update-one"}).then(result => {
+      res.send({'result': result, 'linkIndex': linkIndex})
     });  
   });
   //change status - multi 
   router.post('/change-status/:status', function(req, res, next) {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    let data = {
-      status: currentStatus,
-      modified : {
-        user_id: 0, 
-        user_name: 'admin', 
-        time: Date.now()   
-    }
-  }
-    usersModel.updateMany({_id: {$in: req.body.cid}}, data).then(result => {
-      req.flash('success', util.format(notifyConfigs.STATUS_MULTI_SUCCESS, result.matchedCount), false);
-      res.redirect(linkIndex)
+    mainModel.changeStatus(req.body.cid, currentStatus, {task: "update-multi"}).then(result => {
+      notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
     });  
   });
   
   //delete
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
-    usersModel.deleteOne({_id: id}).then(result => {
-      req.flash('success', notifyConfigs.DELETE_SUCCESS, false);
-      res.redirect(linkIndex)
-    });  
+    mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
+      console.log(req.body.cid)
+      notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
   });
   // delete - multi 
   router.post('/delete', function(req, res, next) {
-    usersModel.deleteMany({_id: {$in: req.body.cid}}).then(result => {
-      req.flash('success', util.format(notifyConfigs.DELETE_MULTI_SUCCESS, result.deletedCount), false);
-      res.redirect(linkIndex)
+    mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
+      notifyHelpers.show(req, res, linkIndex, {task: 'delete_multi', total: result.deletedCount})
     });  
   });
-  //change ordering - multi 
+  //change ordering -   multi 
   router.post('/change-ordering', function(req, res, next) {
     let cids = req.body.cid
     let orderings = req.body.ordering
-    
-    if(Array.isArray(cids)) {
-      cids.forEach((item, index) => {
-        let data = {
-          ordering: parseInt(orderings[index]),
-          modified : {
-            user_id: 0, 
-            user_name: 'admin', 
-            time: Date.now()   
-        }
-      }
-        usersModel.updateOne({_id: item}, data).then(result => {
-        }) 
-      })  
-    } else {
-      let data = {
-        ordering: parseInt(orderings),
-        modified : {
-          user_id: 0, 
-          user_name: 'admin', 
-          time: Date.now()   
-      }
-    }
-       usersModel.updateOne({_id: cids}, data).then(result => {
+       mainModel.changeOdering(cids, orderings).then(result => {
+        notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
      });      
-    }
-    req.flash('success', notifyConfigs.ORDERING_SUCCESS, false);
-    res.redirect(linkIndex)
+    })
   });
-});
-
-
-
-
+})
 module.exports = router;
 
 

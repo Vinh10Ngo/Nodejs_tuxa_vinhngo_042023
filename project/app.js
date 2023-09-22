@@ -27,7 +27,7 @@ global.__path__routes =  __path__app + pathConfig.folder__routes + '/'
 global.__path__schemas =  __path__app + pathConfig.folder__schemas + '/'
 global.__path__validates =  __path__app + pathConfig.folder__validates + '/'
 global.__path__views =  __path__app + pathConfig.folder__views + '/'
-
+global.__path__models =  __path__app + pathConfig.folder__models + '/'
 
 const systemConfigs = require(__path__configs + 'system')
 const databaseConfigs = require(__path__configs + 'database')

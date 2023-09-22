@@ -1,22 +1,14 @@
 
-<!-- <a href="i" class="my-btn-state rounded-circle btn btn-sm btn-danger"></a> -->
-<% 
-    statusHelper = (linkPrefix, status, id) => {
+<%
+statusHelper = (linkPrefix, status, id) => {
     let link = linkPrefix +  'change-status' + '/'+ id + '/' +status
-    let xHtmlStatus = ''
-        if(status=== 'active') {
-        xHtmlStatus = "<span>active</span>"
-        return `<a href="/${link}" class="btn btn-block btn-success">
-        ${xHtmlStatus}</a>`
-        } else if (status=== 'inactive') {
-        xHtmlStatus = "<span>inactive</span>"
-        return `<a href="/${link}" class="btn btn-block btn-danger">
-            ${xHtmlStatus}</a>`
-        }
-    
+    let icon = 'fa-check'
+    let className = 'btn-success'
+    if (status === 'inactive') {
+        className = 'btn-danger'
+        icon = 'fa-minus'
     }
+    return `<a href="javascript:changeStatus('/${link}')" class="my-btn-state rounded-circle btn btn-sm ${className} status-${id}"><i class="fas ${icon}"></i></a>`
+}
 %>
-<!-- <i class="fas fa-check"></i> -->
-    
-<!-- <button type="button" class="btn btn-block btn-danger">Danger</button> -->
-<!-- <button type="button" class="btn btn-block btn-success">Success</button> -->
+

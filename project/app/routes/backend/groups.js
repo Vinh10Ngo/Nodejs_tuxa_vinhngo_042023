@@ -2,13 +2,14 @@ var express = require('express');
 var router = express.Router ();
 
 const controllerName = 'groups'
-const util = require('util')
-const groupsModel = require(__path__schemas + controllerName)
+// const util = require('util')
+const mainModel = require(__path__models + controllerName)
+const usersModel = require(__path__models + 'users')
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
-const validateGroups = require(__path__validates + controllerName)
+const mainValidate = require(__path__validates + controllerName)
 const systemConfigs = require(__path__configs + 'system')
-const notifyConfigs = require(__path__configs + 'notify');
+const notifyHelpers = require(__path__helpers + 'notify')
 const { resourceLimits } = require('worker_threads');
 const linkIndex = '/' + systemConfigs.prefixAdmin + `/${controllerName}/`
 
@@ -24,7 +25,7 @@ router.get('/login', function(req, res, next) {
 });
 router.get('/dashboard', async(req, res, next) => {
   let countItems = 0
-  await groupsModel.count({}).then((data) => {
+  await mainModel.count({}).then((data) => {
     countItems = data
   })
   res.render(`${folderViews}dashboard`, {
@@ -35,61 +36,36 @@ router.get('/dashboard', async(req, res, next) => {
 //form
 router.get('/form(/:id)?', function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
+  // let {id} = req.params
   let item =  {name: '', ordering: 0, status: 'novalue'}
   let errors = null
-  if(id) {
-    groupsModel.findById(id).then((item)=> {
-      res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item: item, controllerName, errors });
+  if(id !== '') {
+   mainModel.getItems(id).then((item)=> {
+    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors });
     })
   } else {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, controllerName, errors });
+    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors });
   }
 });
 
-//ADD
+//SAVE
 router.post('/save', (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
-  validateGroups.validator(req)
   let item = Object.assign(req.body)
+  mainValidate.validator(req)
   let errors = req.validationErrors()
-  if(typeof item !== 'undefined' && item.id !== '') { //edit
-if (errors) {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, item, controllerName, errors});
+  let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
+  if(Array.isArray(errors) && errors.length > 0) {
+    let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
+    res.render(`${folderViews}form`, { pageTitle, item, controllerName, errors});
   } else {
-    groupsModel.updateOne({_id: item.id},
-       {status: item.status, 
-        ordering: parseInt(item.ordering),
-        name: item.name,
-        content: item.content,
-        groups_acp: item.groups_acp,
-          modified : {
-            user_id: 0, 
-            user_name: 'admin', 
-            time: Date.now()   
-        }
-      }).then(result => {
-      req.flash('success', notifyConfigs.EDIT_SUCCESS , false);
-      res.redirect(linkIndex)
-    }); 
-  }
-
-  } else { //add
-  if (errors) {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, item, controllerName, errors});
-    console.log(errors)
-  } else {
-    item.created = {
-      user_id: 0, 
-      user_name: 'admin', 
-      time: Date.now()
-    }
-    new groupsModel(item).save().then(() => {
-      req.flash('success',notifyConfigs.ADD_SUCCESS, false);
-      res.redirect(linkIndex)
+      mainModel.saveItem(item, {task: taskCurrent}).then(result => {
+        usersModel.saveItem(item, {task: 'change-groups-name'}).then(result => {
+          notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
     })
-  } 
-  }
-
+        console.log(item)
+  })
+}
 })
 
 //sort
@@ -99,41 +75,16 @@ req.session.sort_type = paramsHelpers.getParams(req.params, 'sort_type', 'asc')
 
 res.redirect(linkIndex)  
 })
-// List groups
+// List items
 router.get('(/:status)?', async (req, res, next) => {
-  let objWhere = {}
-  let params = {}
-  params.keyword = paramsHelpers.getParams(req.query, 'keyword', '')
-  params.currentStatus = paramsHelpers.getParams(req.params, 'status', 'all')
+  let params = paramsHelpers.createParams(req)
   let statusFilter = await utilsHelpers.createFilterStatus(params.currentStatus, controllerName)
-  
-  params.sortField = paramsHelpers.getParams(req.session, 'sort_field', 'ordering')
-  params.sortType = paramsHelpers.getParams(req.session, 'sort_type', 'asc')
-  let sort = {}
-  sort[params.sortField] = params.sortType
-  params.pagination = {
-    totalItems: 1,
-    totalItemsPerPage : 3,
-    pageRanges: 3,
-    currentPage : parseInt(paramsHelpers.getParams(req.query, 'page', 1)) 
-  } 
 
-  if (params.currentStatus !== 'all') {
-    objWhere.status = params.currentStatus
-  }
-  if (params.keyword !== '') {
-    objWhere.name = new RegExp(params.keyword, 'i')
-  }
-
-  await groupsModel.count(objWhere).then((data) => {
+  await mainModel.countItems(params).then((data) => {
     params.pagination.totalItems = data
   })
-  groupsModel
-  .find(objWhere)
-  .select('name status ordering created modified groups_acp' )
-  .sort(sort)
-  .skip((params.pagination.currentPage-1)*params.pagination.totalItemsPerPage)
-  .limit(params.pagination.totalItemsPerPage)
+  mainModel
+  .listItems(params)
   .then((items) => {
     res.render(`${folderViews}list`, { 
       pageTitle: pageTitleList,
@@ -141,114 +92,56 @@ router.get('(/:status)?', async (req, res, next) => {
       statusFilter: statusFilter,
       controllerName,
       params
-
     });
   })
   //change status
-  router.get('/change-status/:id/:status', function(req, res, next) {
+  router.post('/change-status/:id/:status', function(req, res, next) {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     let id = paramsHelpers.getParams(req.params, 'id', '')
-    let status = (currentStatus === 'active') ? 'inactive' : 'active'
-    let data = {
-      status: status,
-      modified : {
-        user_id: 0, 
-        user_name: 'admin', 
-        time: Date.now()   
-    }
-  }
-  groupsModel.updateOne({_id: id}, data).then(result => {
-      req.flash('success', notifyConfigs.STATUS_SUCCESS, false);
-      res.redirect(linkIndex)
+    mainModel.changeStatus(id, currentStatus, {task: "update-one"}).then(result => {
+      res.send({'result': result, 'linkIndex': linkIndex})
     });  
   });
   //change status - multi 
   router.post('/change-status/:status', function(req, res, next) {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    let data = {
-      status: currentStatus,
-      modified : {
-        user_id: 0, 
-        user_name: 'admin', 
-        time: Date.now()   
-    }
-  }
-  groupsModel.updateMany({_id: {$in: req.body.cid}}, data).then(result => {
-      req.flash('success', util.format(notifyConfigs.STATUS_MULTI_SUCCESS, result.matchedCount), false);
-      res.redirect(linkIndex)
+    mainModel.changeStatus(req.body.cid, currentStatus, {task: "update-multi"}).then(result => {
+      notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
     });  
   });
   
   //delete
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
-    groupsModel.deleteOne({_id: id}).then(result => {
-      req.flash('success', notifyConfigs.DELETE_SUCCESS, false);
-      res.redirect(linkIndex)
-    });  
+    mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
+      console.log(req.body.cid)
+      notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
   });
   // delete - multi 
   router.post('/delete', function(req, res, next) {
-    groupsModel.deleteMany({_id: {$in: req.body.cid}}).then(result => {
-      req.flash('success', util.format(notifyConfigs.DELETE_MULTI_SUCCESS, result.deletedCount), false);
-      res.redirect(linkIndex)
+    mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
+      notifyHelpers.show(req, res, linkIndex, {task: 'delete_multi', total: result.deletedCount})
     });  
   });
-  //change ordering - multi 
+  //change ordering -   multi 
   router.post('/change-ordering', function(req, res, next) {
     let cids = req.body.cid
     let orderings = req.body.ordering
-    
-    if(Array.isArray(cids)) {
-      cids.forEach((item, index) => {
-        let data = {
-          ordering: parseInt(orderings[index]),
-          modified : {
-            user_id: 0, 
-            user_name: 'admin', 
-            time: Date.now()   
-        }
-      }
-      groupsModel.updateOne({_id: item}, data).then(result => {
-        }) 
-      })  
-    } else {
-      let data = {
-        ordering: parseInt(orderings),
-        modified : {
-          user_id: 0, 
-          user_name: 'admin', 
-          time: Date.now()   
-      }
-    }
-    groupsModel.updateOne({_id: cids}, data).then(result => {
+       mainModel.changeOdering(cids, orderings).then(result => {
+        notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
      });      
-    }
-    req.flash('success', notifyConfigs.ORDERING_SUCCESS, false);
-    res.redirect(linkIndex)
+    })
   });
-});
+})
 
 //change groups_acp
-router.get('/change-groups_acp/:id/:groups_acp', function(req, res, next) {
+router.post('/change-groups_acp/:id/:groups_acp', function(req, res, next) {
   let currentGroups_acp = paramsHelpers.getParams(req.params, 'groups_acp', 'yes')
   let id = paramsHelpers.getParams(req.params, 'id', '')
-  let groups_acp = (currentGroups_acp === 'yes') ? 'no' : 'yes'
-  let data = {
-    groups_acp: groups_acp,
-    modified : {
-      user_id: 0, 
-      user_name: 'admin', 
-      time: Date.now()   
-  }
-}
-groupsModel.updateOne({_id: id}, data).then(result => {
-    req.flash('success', notifyConfigs.GROUPS_ACP_SUCCESS, false);
-    res.redirect(linkIndex)
+mainModel.groupsACP(id, currentGroups_acp).then(result => {
+  res.send({'result': result, 'linkIndex': linkIndex})
   });  
 });
-
-
 module.exports = router;
 
 

@@ -6,4 +6,5 @@ module.exports = {
     folder__schemas :'schemas',
     folder__validates :'validates',
     folder__views :'views',
+    folder__models :'models',
 }

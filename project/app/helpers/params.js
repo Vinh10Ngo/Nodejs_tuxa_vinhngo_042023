@@ -4,6 +4,27 @@ let getParams = (param, property, defaultValue) => {
   }
   return defaultValue
 }
+let createParams = (req) => {
+  let params = {}
+  params.keyword = getParams(req.query, 'keyword', '')
+  params.currentStatus = getParams(req.params, 'status', 'all')
+  
+  params.sortField = getParams(req.session, 'sort_field', 'ordering')
+  params.sortType = getParams(req.session, 'sort_type', 'asc')
+
+  params.groupID = getParams(req.session, 'groups_id', '')
+ 
+  params.pagination = {
+    totalItems: 1,
+    totalItemsPerPage : 3,
+    pageRanges: 3,
+    currentPage : parseInt(getParams(req.query, 'page', 1)) 
+  } 
+  
+  return params
+}
+
 module.exports = {
-    getParams 
+    getParams,
+    createParams
 }

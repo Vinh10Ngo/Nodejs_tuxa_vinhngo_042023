@@ -1,7 +1,7 @@
 <% groupsACPHelper = (linkPrefix, groups_acp, id) => {
     let link = linkPrefix +  'change-groups_acp' + '/'+ id + '/' +groups_acp
     let iconClass = (groups_acp == 'yes') ? "fa fa-check-square" : "fa fa-square"
-     let xHtmlResult = `<a href="/${link}" class="${iconClass}" ></a>` 
+     let xHtmlResult = `<a href="javascript:changeGroupsACP('/${link}')" class="${iconClass} groups_acp-${id}"></a>` 
     return xHtmlResult
 }    
 %>

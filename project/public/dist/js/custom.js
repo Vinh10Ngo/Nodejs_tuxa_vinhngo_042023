@@ -56,7 +56,7 @@ $(document).ready(function () {
     });
     
     // CONFIRM DELETE
-    $('a.rounded-circle.btn-sm.btn-danger').on('click', () => {
+    $('a.rounded-circle.btn-sm.btn-danger.delete').on('click', () => {
         if (!confirm("Are you sure you want to delete this item?")) return false;
     });
 
@@ -147,5 +147,10 @@ $(document).ready(function () {
     }
     $('select[name="groups_id"]').change(function() {
         $('input[name="groups_name"]').val($(this).find('option:selected').text())
+    })
+    $('select[name="filter_groups"]').change(function() {
+        var path = window.location.pathname.split('/')
+        var linkRedirect = '/' + path[1] + '/' + path[2] + '/filter-groups/' + $(this).val()
+        window.location.pathname = linkRedirect
     })
 });

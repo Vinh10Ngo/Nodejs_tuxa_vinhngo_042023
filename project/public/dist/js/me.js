@@ -41,6 +41,21 @@ changeGroupsACP = (link) => {
   })
 }
 
+// $('.ordering').change(function () {
+//   let current = $(this)
+//   let ordering = $(this).val()
+//   let id = $(this).data('id')
+//   let link = $(this).data('link')
+//   })
+//   $.ajax({
+//     type: 'POST',
+//     url: link,
+//     data: {id: 'id', ordering: 'ordering'},
+//     success: function (data) {
+//       console.log(data);
+//       }
+//   })
+
 
 
 // function notice(current,data) {

@@ -75,9 +75,6 @@ module.exports = {
               return Promise.resolve('Success')
             }
           } else {
-            let result = {
-              id, notify: {'tilte': notifyConfigs.ORDERING_SUCCESS, 'class': 'success'}
-            }
               return mainModel.updateOne({_id: cids}, data)
           }
     },

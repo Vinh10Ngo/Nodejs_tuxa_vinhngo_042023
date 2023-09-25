@@ -110,7 +110,6 @@ router.get('(/:status)?', async (req, res, next) => {
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
-      console.log(req.body.cid)
       notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
   });
   // delete - multi 
@@ -119,13 +118,23 @@ router.get('(/:status)?', async (req, res, next) => {
       notifyHelpers.show(req, res, linkIndex, {task: 'delete_multi', total: result.deletedCount})
     });  
   });
+  // change - single - ordering
+  // router.post('/change-single-ordering', function(req, res, next) {
+  //   let cids = req.body.cid
+  //   let orderings = req.body.ordering
+  //   console.log(req.body);
+  //      mainModel.changeOdering(cids, orderings).then(result => {
+  //       notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
+  //    });      
+  //   })
   //change ordering -   multi 
   router.post('/change-ordering', function(req, res, next) {
     let cids = req.body.cid
     let orderings = req.body.ordering
+    console.log(req.body);
        mainModel.changeOdering(cids, orderings).then(result => {
-        res.send({'result': result, 'linkIndex': linkIndex})
-      });      
+        notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
+     });     
     })
   });
 })

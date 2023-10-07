@@ -34,7 +34,7 @@ module.exports = {
       }
        return mainModel.count(objWhere)
     }, 
-    changeStatus: async (id, currentStatus, options = null) => {
+    changeStatus: (id, currentStatus, options = null) => {
         let status = (currentStatus === 'active') ? 'inactive' : 'active'
         let data = {
           status: status,
@@ -45,11 +45,7 @@ module.exports = {
         }
       }
       if(options.task == "update-one") {
-        let result = {
-          id, status, notify: {'tilte': notifyConfigs.STATUS_SUCCESS, 'class': 'success'}
-        }
-        await mainModel.updateOne({_id: id}, data)
-        return result
+        return mainModel.updateOne({_id: id}, data)
       }
       if(options.task == "update-multi") {
         data.status = currentStatus
@@ -107,7 +103,7 @@ module.exports = {
         })
       }
   },
-  groupsACP: async (id, currentGroups_acp, options = null) => {
+  groupsACP: (id, currentGroups_acp, options = null) => {
     let groups_acp = (currentGroups_acp === 'yes') ? 'no' : 'yes'
     let data = {
       groups_acp: groups_acp,
@@ -117,10 +113,6 @@ module.exports = {
         time: Date.now()   
     }
   }
-    let result = {
-      id, groups_acp, notify: {'tilte': notifyConfigs.GROUPS_ACP_SUCCESS, 'class': 'success'}
-    }
-    await mainModel.updateOne({_id: id}, data)
-    return result
+    return mainModel.updateOne({_id: id}, data)
   },
 }

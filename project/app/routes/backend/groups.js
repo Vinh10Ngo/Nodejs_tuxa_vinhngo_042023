@@ -63,7 +63,6 @@ router.post('/save', (req, res, next) => {
         usersModel.saveItem(item, {task: 'change-groups-name'}).then(result => {
           notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
     })
-        console.log(item)
   })
 }
 })
@@ -99,7 +98,7 @@ router.get('(/:status)?', async (req, res, next) => {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.changeStatus(id, currentStatus, {task: "update-one"}).then(result => {
-      res.send({'result': result, 'linkIndex': linkIndex})
+      res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
     });  
   });
   //change status - multi 
@@ -114,7 +113,6 @@ router.get('(/:status)?', async (req, res, next) => {
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
-      console.log(req.body.cid)
       notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
   });
   // delete - multi 
@@ -139,7 +137,8 @@ router.post('/change-groups_acp/:id/:groups_acp', function(req, res, next) {
   let currentGroups_acp = paramsHelpers.getParams(req.params, 'groups_acp', 'yes')
   let id = paramsHelpers.getParams(req.params, 'id', '')
 mainModel.groupsACP(id, currentGroups_acp).then(result => {
-  res.send({'result': result, 'linkIndex': linkIndex})
+  res.send({groups_acp: (currentGroups_acp === 'yes') ? 'no' : 'yes' 
+    })
   });  
 });
 module.exports = router;

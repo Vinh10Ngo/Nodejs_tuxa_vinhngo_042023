@@ -19,7 +19,7 @@ module.exports = {
          sort[params.sortField] = params.sortType
        return mainModel
         .find(objWhere)
-        .select('name status ordering created modified groups.name')
+        .select('name status ordering created modified groups.name groups.id')
         .sort(sort)
         .skip((params.pagination.currentPage-1)*params.pagination.totalItemsPerPage)
         .limit(params.pagination.totalItemsPerPage)
@@ -40,7 +40,7 @@ module.exports = {
       }
        return mainModel.count(objWhere)
     }, 
-    changeStatus: async (id, currentStatus, options = null) => {
+    changeStatus: (id, currentStatus, options = null) => {
         let status = (currentStatus === 'active') ? 'inactive' : 'active'
         let data = {
           status: status,
@@ -51,11 +51,7 @@ module.exports = {
         }
       }
       if(options.task == "update-one") {
-        let result = {
-          id, status, notify: {'tilte': notifyConfigs.STATUS_SUCCESS, 'class': 'success'}
-        }
-        await mainModel.updateOne({_id: id}, data)
-        return result
+        return mainModel.updateOne({_id: id}, data)
       }
       if(options.task == "update-multi") {
         data.status = currentStatus
@@ -126,10 +122,28 @@ module.exports = {
           id: item.id,
           name: item.name
         },
+        modified : {
+          user_id: 0, 
+          user_name: 'admin', 
+          time: Date.now()   
+        }
        })
     }
- },
+  },
   listItemInSelectBox: (params, option = null) => {
     return groupsModel.find({}, {_id: 1, name: 1})
- },
+  },
+  changeGroup: (id, groupID, groupName) => {
+    return mainModel.updateOne({_id: id}, {
+      groups: {
+        id: groupID,
+        name: groupName
+      },
+      modified : {
+        user_id: 0, 
+        user_name: 'admin', 
+        time: Date.now()   
+      }
+    })    
+  }
 }

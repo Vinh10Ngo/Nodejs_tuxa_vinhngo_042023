@@ -1,6 +1,8 @@
 option sortHelper
 id inputHelper
 content textarea form undefined
+thông báo khi ấn vào inactive
+all group user trống 
 
 <!-- 
 <a href="/<%= linkPrefix%>form/<%= item.id%>" class="rounded-circle btn btn-sm btn-info" title="Edit">
@@ -9,4 +11,4 @@ content textarea form undefined
 
 <a href="/<%= linkPrefix%>delete/<%= item.id%>" class="rounded-circle btn btn-sm btn-danger" title="Delete">
     <i class="fas fa-trash-alt"></i>
-</a> -->
+</a> -->    

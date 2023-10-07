@@ -3,8 +3,7 @@
 <% include ./../../helper/textArea%>
 <% include ./../../helper/formBody%>
 
-<%= JSON.stringify(item)%>
-
+<%- JSON.stringify(item)%>
 <%
 const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
 
@@ -30,6 +29,8 @@ let elementsForm = [
                         <img src="public/files/category/default.jpg" alt="preview image" id="admin-preview-image" style="display: none;width: 100%; max-width: 500px">
                     </div>
                     <input type="hidden" id="form[token]" name="id" value="<%= item.id%>">
+                    <!-- mỗi lần selecbox được chọn thì lấy giá trị gắn vào input 
+                     khi submit dữ liệu thì lấy được tên group-->
                     <input type="hidden" id="form[token]" name="groups_name" value="<%= item.groups_name%>">
                     <div class="card-footer">
                         <div class="col-12 col-sm-8 offset-sm-2">

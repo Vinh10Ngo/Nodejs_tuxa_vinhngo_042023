@@ -37,7 +37,7 @@ module.exports = {
       }
        return mainModel.count(objWhere)
     }, 
-    changeStatus: async (id, currentStatus, options = null) => {
+    changeStatus: (id, currentStatus, options = null) => {
         let status = (currentStatus === 'active') ? 'inactive' : 'active'
         let data = {
           status: status,
@@ -48,11 +48,7 @@ module.exports = {
         }
       }
       if(options.task == "update-one") {
-        let result = {
-          id, status, notify: {'tilte': notifyConfigs.STATUS_SUCCESS, 'class': 'success'}
-        }
-        await mainModel.updateOne({_id: id}, data)
-        return result
+        return mainModel.updateOne({_id: id}, data)
       }
       if(options.task == "update-multi") {
         data.status = currentStatus
@@ -77,6 +73,17 @@ module.exports = {
           } else {
               return mainModel.updateOne({_id: cids}, data)
           }
+    },
+    changeOrderingAjax: (id, ordering, option = null) => {
+      let data = {
+        ordering: parseInt(ordering),
+        modified : {
+          user_id: 0, 
+          user_name: 'admin', 
+          time: Date.now()   
+      }
+    }
+    return mainModel.updateOne({_id: id}, data)
     },
     deleteItem: (id, options = null) => {
      if(options.task == 'delete-one') {

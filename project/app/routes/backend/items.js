@@ -4,6 +4,7 @@ var router = express.Router ();
 const controllerName = 'items'
 // const util = require('util')
 const mainModel = require(__path__models + controllerName)
+const notifyConfigs = require(__path__configs + 'notify');
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
 const mainValidate = require(__path__validates + controllerName)
@@ -95,7 +96,7 @@ router.get('(/:status)?', async (req, res, next) => {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.changeStatus(id, currentStatus, {task: "update-one"}).then((result) => {
-      res.send({'result': result, 'linkIndex': linkIndex})
+      res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
     });  
   });
   //change status - multi 
@@ -112,6 +113,8 @@ router.get('(/:status)?', async (req, res, next) => {
     mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
       notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
   });
+})
+  
   // delete - multi 
   router.post('/delete', function(req, res, next) {
     mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
@@ -119,25 +122,23 @@ router.get('(/:status)?', async (req, res, next) => {
     });  
   });
   // change - single - ordering
-  // router.post('/change-single-ordering', function(req, res, next) {
-  //   let cids = req.body.cid
-  //   let orderings = req.body.ordering
-  //   console.log(req.body);
-  //      mainModel.changeOdering(cids, orderings).then(result => {
-  //       notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
-  //    });      
-  //   })
+  router.post('/change-single-ordering', function(req, res, next) {
+    let id = req.body.id
+    let ordering = req.body.ordering
+       mainModel.changeOrderingAjax(id, ordering).then(result => {
+        res.send({'notify': {'tilte': notifyConfigs.ORDERING_SUCCESS, 'class': 'success'}})
+     });      
+    })
   //change ordering -   multi 
   router.post('/change-ordering', function(req, res, next) {
     let cids = req.body.cid
     let orderings = req.body.ordering
-    console.log(req.body);
        mainModel.changeOdering(cids, orderings).then(result => {
         notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
      });     
     })
   });
-})
+
 module.exports = router;
 
 

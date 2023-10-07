@@ -36,9 +36,9 @@ router.get('/dashboard', async(req, res, next) => {
 //form
 router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
-  // let {id} = req.params
   let item =  {name: '', ordering: 0, status: 'novalue', groups_id: '', groups_name: ''}
   let errors = null
+  // truyền groupsItems ra ngoài
   let groupsItems = []
   await groupsModel.listItemInSelectBox().then((item) => {
     groupsItems = item
@@ -46,6 +46,7 @@ router.get('/form(/:id)?', async function(req, res, next) {
   })
   if(id !== '') {
    mainModel.getItems(id).then((item)=> {
+    // bổ sung groups_id và groups_name
     item.groups_id = item.groups.id
     item.groups_name = item.groups.name
     res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
@@ -86,7 +87,9 @@ res.redirect(linkIndex)
 })
 // filter groups
 router.get('/filter-groups/:groups_id', function(req, res, next) {
-  req.session.groups_id = paramsHelpers.getParams(req.params, 'groups_id', '')  
+  // lấy groups_id được truyền qua, lưu vào session với giá trị là groups_id
+  req.session.groups_id = paramsHelpers.getParams(req.params, 'groups_id', '')
+  // trả về linkIndex rơi vào trường hợp (/:status)?
   res.redirect(linkIndex)  
   })
 // List items
@@ -94,14 +97,14 @@ router.get('(/:status)?', async (req, res, next) => {
   let params = paramsHelpers.createParams(req)
   let statusFilter = await utilsHelpers.createFilterStatus(params.currentStatus, controllerName)
   let groupsItems = []
-  await groupsModel.listItemInSelectBox().then((item) => {
-    groupsItems = item
-    groupsItems.unshift({_id: 'allvalue', name: 'All group'})
-  }) 
-
   await mainModel.countItems(params).then((data) => {
     params.pagination.totalItems = data
+
   })
+  await groupsModel.listItemInSelectBox().then((item) => {
+    groupsItems = item
+    // groupsItems.unshift({_id: 'allvalue', name: 'All group'})
+  }) 
   mainModel
   .listItems(params)
   .then((items) => {
@@ -119,9 +122,19 @@ router.get('(/:status)?', async (req, res, next) => {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.changeStatus(id, currentStatus, {task: "update-one"}).then(result => {
-      res.send({'result': result, 'linkIndex': linkIndex})
+      res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
     });  
   });
+  // change group
+  router.post('/change-group', function(req, res, next) {
+   let id = req.body.id
+   let groupID = req.body.groups_id
+   let groupName = req.body.groups_name
+   mainModel.changeGroup(id, groupID, groupName).then(result => {
+    res.send({})
+    });
+  })
+  
   //change status - multi 
   router.post('/change-status/:status', function(req, res, next) {
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
@@ -134,7 +147,6 @@ router.get('(/:status)?', async (req, res, next) => {
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
-      console.log(req.body.cid)
       notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
   });
   // delete - multi 

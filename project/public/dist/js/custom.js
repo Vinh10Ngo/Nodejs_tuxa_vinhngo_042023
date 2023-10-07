@@ -145,6 +145,7 @@ $(document).ready(function () {
             $(this).parent().css({'display':'none'});
         })    
     }
+    // khi select[name="groups_id"] thay đổi giá trị thì input[name="groups_name"] lấy giá trị được chọn gắn vào value cho text 
     $('select[name="groups_id"]').change(function() {
         $('input[name="groups_name"]').val($(this).find('option:selected').text())
     })

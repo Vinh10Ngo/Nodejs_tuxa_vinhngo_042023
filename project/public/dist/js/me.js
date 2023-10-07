@@ -1,66 +1,77 @@
-changeStatus = (link) => {
-  console.log(link);
+
+$('.ordering').change(function () {
+  let current = $(this)
+  let ordering = $(this).val()
+  let id = $(this).data('id')
+  let link = $(this).data('link')
   $.ajax({
     type: 'POST',
     url: link,
+    data: {'id': id, 'ordering': ordering},
     dataType: 'json',
     success: function (data) {
-      let status = data.result.status
-      let id = data.result.id
-      let notify = data.result.notify
-      let current = $('.status-' + id)
-      let linkStatus = data.linkIndex + 'change-status' + '/'+ id + '/' +status
-      let icon = 'fa-check'
-      let xtmlClassStatus = 'btn-success'
-      if (status === 'inactive') {
-        xtmlClassStatus = 'btn-danger'
-        icon = 'fa-minus'
-          }
-        let html = `<a href="javascript:changeStatus('${linkStatus}')" class="my-btn-state rounded-circle btn btn-sm ${xtmlClassStatus} status-${id}"><i class="fas ${icon}"></i></a>`
-        // notice(current, notify)
-        $(current).replaceWith(html)
-      }
+      toastr["success"]("cập nhập ordering thành công") 
+         }
+    })
   })
-}
-changeGroupsACP = (link) => {
-  console.log(link);
+  $('a.ajax-groups-acp').click(function (e) {
+     e.preventDefault()
+    let currentElement = $(this)
+    let currentClass = currentElement.attr('data-current')
+    let link = currentElement.attr('href')
+    $.ajax({
+      type: 'POST',
+      url: link,
+      dataType: 'json',
+      success: function (data) {
+        toastr["success"]("cập nhập groupsACP thành công") 
+        let groupsACP = data.groups_acp
+        let classGroupsACP = currentElement.data(groupsACP)
+        let linkGroups = link.replace(link.match('[^/]+$'), groupsACP)
+        currentElement.attr('data-current', classGroupsACP)
+        currentElement.removeClass(currentClass).addClass(classGroupsACP)
+        currentElement.attr('href', linkGroups)
+      }
+    })
+  })
+  $('a.ajax-status').click(function (e) {
+    e.preventDefault()
+   let currentElement = $(this)
+   let currentClass = currentElement.attr('data-current-class')
+   let currentIcon = currentElement.attr('data-current-icon')
+   let link = currentElement.attr('href')
+   $.ajax({
+     type: 'POST',
+     url: link,
+     dataType: 'json',
+     success: function (data) {
+       toastr["success"]("cập nhập Status thành công") 
+       let status = data.status
+       let classStatus = currentElement.data(status + '-class')
+       let iconStatus = currentElement.data(status + '-icon')
+
+       let linkStatus = link.replace(link.match('[^/]+$'), status)
+       currentElement.attr('data-current-class', classStatus)
+       currentElement.attr('data-current-icon', iconStatus)
+       currentElement.removeClass(currentClass).addClass(classStatus)
+       currentElement.children().removeClass(currentIcon).addClass(iconStatus)
+       currentElement.attr('href', linkStatus)
+     }
+   })
+ })
+$('select[name=item_group]').change(function (e) {
+  let current = $(this)
+  let id = current.val()
+  let name = current.text()
+  let idItem = current.data('iditem')
+  let link = current.data('link') 
   $.ajax({
     type: 'POST',
     url: link,
+    data: {'id': idItem, 'groups_id': id, 'groups_name': name},
     dataType: 'json',
     success: function (data) {
-      let groups_acp = data.result.groups_acp
-      let id = data.result.id
-      let notify = data.result.notify
-      let current = $('.groups_acp-' + id)
-      let linkGroupsACP = data.linkIndex +  'change-groups_acp' + '/'+ id + '/' +groups_acp
-      let iconClass = (groups_acp == 'yes') ? "fa fa-check-square" : "fa fa-square"
-      let html = `<a href="javascript:changeGroupsACP('${linkGroupsACP}')" class="${iconClass} groups_acp-${id}"></a>` 
-      $(current).replaceWith(html)
-      }
+      toastr["success"]("Thay đổi group thành công") 
+    }
   })
-}
-
-// $('.ordering').change(function () {
-//   let current = $(this)
-//   let ordering = $(this).val()
-//   let id = $(this).data('id')
-//   let link = $(this).data('link')
-//   })
-//   $.ajax({
-//     type: 'POST',
-//     url: link,
-//     data: {id: 'id', ordering: 'ordering'},
-//     success: function (data) {
-//       console.log(data);
-//       }
-//   })
-
-
-
-// function notice(current,data) {
-//   current.notify(data.title, {
-//     className: data.class,
-//     position:'top center'
-//   })
-//   }
+})

@@ -3,5 +3,6 @@ module.exports = {
     database: 'project-nodejs-2',
     col_items: 'items',
     col_groups: 'groups',
-    col_users: 'users'
+    col_users: 'users',
+    col_category: 'category'
 }

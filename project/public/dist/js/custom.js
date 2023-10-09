@@ -155,3 +155,4 @@ $(document).ready(function () {
         window.location.pathname = linkRedirect
     })
 });
+

@@ -4,8 +4,9 @@
     
     item.forEach((item) => {
         <!-- phần tử được đổ ra phần tử nào có id = optionSelected thì được chọn -->
+        let idGroup = (item.id == undefined) ? 'novalue' : item.id
         let selected = (optionSelected == item.id) ? 'selected = "selected"': ''
-        xHtmlResult += `<option value=${item.id} ${selected}>${item.name}</option>`
+        xHtmlResult += `<option value=${idGroup} ${selected}>${item.name}</option>`
     })  
     return `<select name="item_group" data-iditem="${id}" data-link="/${linkPrefix}change-group" class="custom-select custom-select-sm">${xHtmlResult}
     </select>`

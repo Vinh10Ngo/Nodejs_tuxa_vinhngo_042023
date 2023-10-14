@@ -12,7 +12,7 @@ let createParams = (req) => {
   params.sortField = getParams(req.session, 'sort_field', 'ordering')
   params.sortType = getParams(req.session, 'sort_type', 'asc')
 
-  params.groupID = getParams(req.session, 'groups_id', '64e360b0246b299e4be62f6f')
+  params.groupID = getParams(req.session, 'groups_id', '6527bab8f6e2544576c352c5')
  
   params.pagination = {
     totalItems: 1,

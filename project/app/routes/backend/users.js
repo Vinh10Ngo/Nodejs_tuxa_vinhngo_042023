@@ -1,10 +1,13 @@
 var express = require('express');
 var router = express.Router ();
 
+const multer  = require('multer')
+const fs  = require('fs')
+
 const controllerName = 'users'
-// const util = require('util')
 const mainModel = require(__path__models + controllerName)
 const groupsModel = require(__path__models + 'users')
+const uploadHelpers  = require(__path__helpers + 'upload')
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
 const mainValidate = require(__path__validates + controllerName)
@@ -18,6 +21,8 @@ const pageTitleAdd = pageTitleIndex + 'Add'
 const pageTitleEdit = pageTitleIndex + 'Edit'
 const pageTitleList = pageTitleIndex + 'List'
 const folderViews = __path__views + `pages/${controllerName}/`
+const uploadFileName = uploadHelpers.uploadFile('filename')
+const uploadAvatar = uploadHelpers.uploadFile('avatar')
 
 /* GET users listing. */
 router.get('/login', function(req, res, next) {
@@ -33,6 +38,24 @@ router.get('/dashboard', async(req, res, next) => {
      countItems: countItems 
   });
 });
+
+// Test upload form
+
+router.get('/upload', function(req, res, next) {
+  let errors = null
+  res.render(`${folderViews}upload`, { pageTitle: pageTitleIndex, controllerName, errors})
+})
+router.post('/upload', function(req, res, next) {
+  uploadFileName(req, res, function (err) {
+    let errors = []
+    if (err instanceof multer.MulterError) {
+    } else if (err) {
+      errors.push({param: 'avatar', msg: err})
+    } 
+    res.render(`${folderViews}upload`, { pageTitle: pageTitleIndex, controllerName, errors})
+  })
+})
+
 //form
 router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
@@ -46,7 +69,6 @@ router.get('/form(/:id)?', async function(req, res, next) {
   })
   if(id !== '') {
    mainModel.getItems(id).then((item)=> {
-    // bổ sung groups_id và groups_name
     item.groups_id = item.groups.id
     item.groups_name = item.groups.name
     res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
@@ -56,26 +78,31 @@ router.get('/form(/:id)?', async function(req, res, next) {
   }
 });
 
+
 //SAVE
-router.post('/save', async (req, res, next) => {
-  req.body = JSON.parse(JSON.stringify(req.body));
-  let item = Object.assign(req.body)
-  mainValidate.validator(req)
-  let errors = req.validationErrors()
-  let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
-  if(Array.isArray(errors) && errors.length > 0) {
-    let groupsItems = []
-    await groupsModel.listItemInSelectBox().then((item) => {
-      groupsItems = item
-      groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
-    })
-    let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
-    res.render(`${folderViews}form`, { pageTitle, item, controllerName, errors, groupsItems});
-  } else {
-      mainModel.saveItem(item, {task: taskCurrent}).then(result => {
-        notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
-  })
-}
+router.post('/save', (req, res, next) => {
+  uploadAvatar (req, res, async (err) => {
+    req.body = JSON.parse(JSON.stringify(req.body));
+    let item = Object.assign(req.body)
+    mainValidate.validator(req)
+    let errors = req.validationErrors()
+    let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
+    if(Array.isArray(errors) && errors.length > 0) {
+      let groupsItems = []
+      errors.push({param: 'avatar', msg: err})
+      await groupsModel.listItemInSelectBox().then((item) => {
+        groupsItems = item
+        groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
+      })
+      let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
+      res.render(`${folderViews}form`, { pageTitle, item, controllerName, errors, groupsItems});
+    } else {
+      item.avatar = (req.file == 'undefined') ? null : req.file.filename
+        mainModel.saveItem(item, {task: taskCurrent}).then(result => {
+          notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
+        })
+      }
+  }) 
 })
 
 //sort
@@ -103,7 +130,7 @@ router.get('(/:status)?', async (req, res, next) => {
   })
   await groupsModel.listItemInSelectBox().then((item) => {
     groupsItems = item
-    // groupsItems.unshift({_id: 'allvalue', name: 'All group'})
+    groupsItems.push({_id: 'novalue', name: 'no group'})
   }) 
   mainModel
   .listItems(params)
@@ -146,9 +173,21 @@ router.get('(/:status)?', async (req, res, next) => {
   //delete
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
+    console.log(id);
+      mainModel.getItems(id).then(result => {
+        console.log(result);
+        if (result.avatar !== null) {
+          fs.unlink('public/uploads/users/' + result.avatar, (err) => {
+            if (err) throw err;
+          }); 
+        }       
+    });
+   
     mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
       notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
-  });
+    });
+  })
+  
   // delete - multi 
   router.post('/delete', function(req, res, next) {
     mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
@@ -164,7 +203,6 @@ router.get('(/:status)?', async (req, res, next) => {
      });      
     })
   });
-})
 module.exports = router;
 
 

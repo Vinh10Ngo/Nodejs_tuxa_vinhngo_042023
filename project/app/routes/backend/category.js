@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router ();
 
-
+var slug = require('slug')
+var print = console.log.bind(console, '')
 const controllerName = 'category'
 // const util = require('util')
 const mainModel = require(__path__models + controllerName)
 const notifyConfigs = require(__path__configs + 'notify');
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
-const slugHelpers = require(__path__helpers + 'slug')
 const mainValidate = require(__path__validates + controllerName)
 const systemConfigs = require(__path__configs + 'system')
 const notifyHelpers = require(__path__helpers + 'notify')
@@ -44,12 +44,12 @@ router.get('/form(/:id)?', function(req, res, next) {
   let errors = null
   if(id !== '') {
    mainModel.getItems(id).then((item)=> {
-    item.slug = slugHelpers.slugText(item.name)
+    item.slug = slug(item.name)
+    console.log(item.slug);
       res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors });
     })
   } else {
-    item.slug = slugHelpers.slugText(item.name)
-    console.log(item);
+    item.slug = slug(item.name)
       res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors
     });
   } 
@@ -59,7 +59,7 @@ router.get('/form(/:id)?', function(req, res, next) {
 router.post('/save', (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
   let item = Object.assign(req.body)
-  item.slug = slugHelpers.slugText(item.name)
+  item.slug = slug(item.name)
   console.log(item);
   mainValidate.validator(req)
   let errors = req.validationErrors()

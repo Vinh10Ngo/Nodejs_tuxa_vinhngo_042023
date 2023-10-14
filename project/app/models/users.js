@@ -10,16 +10,16 @@ module.exports = {
         if (params.currentStatus !== 'all') {
           objWhere.status = params.currentStatus
         }
-        if (params.groupID !== 'allvalue') {
-          objWhere['groups.id'] = params.groupID
-        }
+
+        objWhere['groups.id'] = params.groupID 
+
         if (params.keyword !== '') {
           objWhere.name = new RegExp(params.keyword, 'i')
         }
          sort[params.sortField] = params.sortType
        return mainModel
         .find(objWhere)
-        .select('name status ordering created modified groups.name groups.id')
+        .select('name status ordering created modified groups.name groups.id avatar')
         .sort(sort)
         .skip((params.pagination.currentPage-1)*params.pagination.totalItemsPerPage)
         .limit(params.pagination.totalItemsPerPage)
@@ -103,6 +103,7 @@ module.exports = {
         {status: item.status, 
          ordering: parseInt(item.ordering),
          name: item.name,
+         avatar: item.avatar,
          content: item.content,
          groups: {
           id: item.groups_id,

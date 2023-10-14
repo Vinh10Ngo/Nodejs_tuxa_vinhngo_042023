@@ -10,19 +10,20 @@
 <% include ./../../helper/controls%>
 <% include ./../../helper/selectBox%>
 <% include ./../../helper/selectBoxAjax %>
-
+<% include ./../../helper/image %>
 
 <h3><%- locals.flash %></h3>
-<%- JSON.stringify(items)%>
 
 <%
 const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
+const uploadPath = 'uploads/users/'
 
 let elementsControl = [
 {collection: 'form', class: "rounded-circle btn btn-sm btn-info", icon: "fas fa-pencil-alt", title: "Edit"},
 {collection: 'delete', class: "rounded-circle btn btn-sm btn-danger delete", icon: "fas fa-trash-alt", title: "Delete"}
 ]
 %>
+<%- JSON.stringify(groupsItems)%>
 
 <section class="content">
     <div class="container-fluid">
@@ -85,6 +86,7 @@ let elementsControl = [
                                 </th>
                                 <th class="text-center">ID</th>
                                 <%- sortHelper(linkPrefix, 'Name', 'name', params.sortField, params.sortType, 'width:20%') %>
+                                <th class="text-center"> Avatar</th> 
                                 <%- sortHelper(linkPrefix, 'Status', 'status', params.sortField, params.sortType) %>
                                 <%- sortHelper(linkPrefix, 'Ordering', 'ordering', params.sortField, params.sortType) %>
                                 <%- sortHelper(linkPrefix, 'Groups', 'groups.name', params.sortField, params.sortType) %>
@@ -102,6 +104,10 @@ let elementsControl = [
 									</td>
 									<td class="text-center"><%= index +1 %></td>
 									<td class="text-wrap" style="min-width: 180px"><%- hightlightHelper(item.name, params.keyword) %></td>
+									</td>
+                                    <td class="text-wrap" style="min-width: 100px">
+										<%- imageHelper(uploadPath, item.avatar, item.name)%>
+                                    </td>
 									</td>
 									<td class="text-center position-relative">
 										<%- statusHelper(linkPrefix, item.status, item.id)%>

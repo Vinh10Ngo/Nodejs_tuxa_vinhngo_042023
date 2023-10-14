@@ -1,0 +1,12 @@
+
+<%
+imageHelper = (path, name, alt) => {
+    if(name == null) {
+        name = 'no-avatar.jpeg'
+    }
+    return `
+    <img src="/${path + name}" alt="${alt}" width="100" height="70">
+    `
+}
+%>
+

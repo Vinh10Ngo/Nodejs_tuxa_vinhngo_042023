@@ -114,7 +114,8 @@ router.get('(/:status)?', async (req, res, next) => {
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
       notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
-  });
+    });
+  })
   // delete - multi 
   router.post('/delete', function(req, res, next) {
     mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
@@ -130,7 +131,7 @@ router.get('(/:status)?', async (req, res, next) => {
      });      
     })
   });
-})
+
 
 //change groups_acp
 router.post('/change-groups_acp/:id/:groups_acp', function(req, res, next) {

@@ -3,7 +3,8 @@
 const notifyConfigs = require(__path__configs + 'notify');
 
 const mainModel = require(__path__schemas + 'category')
-const slugHelpers = require(__path__helpers + 'slug')
+var slug = require('slug')
+var print = console.log.bind(console, '')
 
 
 module.exports = {
@@ -102,7 +103,7 @@ module.exports = {
         user_name: 'admin', 
         time: Date.now()
       },
-      item.slug = slugHelpers.slugText(item.name)
+      item.slug =slug(item.name)
       return new mainModel(item).save()
     }
     if (options.task == 'edit') {

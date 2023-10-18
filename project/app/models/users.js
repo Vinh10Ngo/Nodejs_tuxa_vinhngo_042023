@@ -1,6 +1,7 @@
 const mainModel = require(__path__schemas + 'users')
 const groupsModel = require(__path__schemas + 'groups')
 const notifyConfigs = require(__path__configs + 'notify');
+const fileHelpers  = require(__path__helpers + 'file')
 
 module.exports = {
     
@@ -11,7 +12,7 @@ module.exports = {
           objWhere.status = params.currentStatus
         }
 
-        objWhere['groups.id'] = params.groupID 
+          objWhere['groups.id'] = params.groupID
 
         if (params.keyword !== '') {
           objWhere.name = new RegExp(params.keyword, 'i')
@@ -79,9 +80,23 @@ module.exports = {
     },
     deleteItem: (id, options = null) => {
      if(options.task == 'delete-one') {
+        mainModel.findById(id).then(result => {
+          fileHelpers.remove('public/uploads/users/', result.avatar)
+    }); 
       return mainModel.deleteOne({_id: id})
      }
      if(options.task == 'delete-many') {
+      if (Array.isArray(id)) {
+        for (let index = 0; index < id.length; index++) {
+          mainModel.findById(id[index]).then(result => {
+            fileHelpers.remove('public/uploads/users/', result.avatar)  
+          }); 
+        }
+      } else {
+        mainModel.findById(id).then(result => {
+          fileHelpers.remove('public/uploads/users/', result.avatar)     
+        }); 
+      }
       return mainModel.deleteMany({_id: {$in: id}})
      }
   },

@@ -11,5 +11,6 @@ module.exports = {
     ERROR_ORDERING: 'Phải là số nguyên lớn hơn %d và bé hơn %d',
     ERROR_STATUS: 'Status phải khác rỗng',
     ERROR_GROUPS_ACP: 'Groups_acp phải khác rỗng',
-    ERROR_GROUPS: 'Groups phải khác rỗng'
+    ERROR_GROUPS: 'Groups phải khác rỗng',
+    ERROR_UPLOADS: 'vui lòng chọn avatar'
 }

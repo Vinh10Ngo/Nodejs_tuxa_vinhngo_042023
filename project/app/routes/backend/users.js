@@ -7,12 +7,14 @@ const fs  = require('fs')
 const controllerName = 'users'
 const mainModel = require(__path__models + controllerName)
 const groupsModel = require(__path__models + 'users')
-const uploadHelpers  = require(__path__helpers + 'upload')
+const fileHelpers  = require(__path__helpers + 'file')
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
 const mainValidate = require(__path__validates + controllerName)
 const systemConfigs = require(__path__configs + 'system')
 const notifyHelpers = require(__path__helpers + 'notify')
+const notifyConfigs = require(__path__configs + 'notify')
+
 const { resourceLimits } = require('worker_threads');
 const linkIndex = '/' + systemConfigs.prefixAdmin + `/${controllerName}/`
 
@@ -21,8 +23,8 @@ const pageTitleAdd = pageTitleIndex + 'Add'
 const pageTitleEdit = pageTitleIndex + 'Edit'
 const pageTitleList = pageTitleIndex + 'List'
 const folderViews = __path__views + `pages/${controllerName}/`
-const uploadFileName = uploadHelpers.uploadFile('filename')
-const uploadAvatar = uploadHelpers.uploadFile('avatar')
+const uploadFileName = fileHelpers.uploadFile('filename')
+const uploadAvatar = fileHelpers.uploadFile('avatar')
 
 /* GET users listing. */
 router.get('/login', function(req, res, next) {
@@ -86,18 +88,27 @@ router.post('/save', (req, res, next) => {
     let item = Object.assign(req.body)
     mainValidate.validator(req)
     let errors = req.validationErrors()
-    let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
+    let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
+    // if (err !== undefined) {
+    //   errors = []
+    //   errors.push({param: 'avatar', msg: err})
+    // }  
+    console.log(errors);
     if(Array.isArray(errors) && errors.length > 0) {
-      let groupsItems = []
+      if (err == undefined) err = notifyConfigs.ERROR_UPLOADS
       errors.push({param: 'avatar', msg: err})
+      item.avatar = (req.file == undefined) ? null : req.file.filename
+      if (fs.existsSync('public/uploads/users/' + item.avatar)) errors.pop()
+      let groupsItems = []     
       await groupsModel.listItemInSelectBox().then((item) => {
         groupsItems = item
         groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
       })
+      fileHelpers.remove('public/uploads/users/', item.avatar)
       let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
       res.render(`${folderViews}form`, { pageTitle, item, controllerName, errors, groupsItems});
     } else {
-      item.avatar = (req.file == 'undefined') ? null : req.file.filename
+      item.avatar = (req.file == undefined) ? null : req.file.filename
         mainModel.saveItem(item, {task: taskCurrent}).then(result => {
           notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
         })
@@ -130,7 +141,7 @@ router.get('(/:status)?', async (req, res, next) => {
   })
   await groupsModel.listItemInSelectBox().then((item) => {
     groupsItems = item
-    groupsItems.push({_id: 'novalue', name: 'no group'})
+    // groupsItems.push({_id: 'novalue', name: 'no group'})
   }) 
   mainModel
   .listItems(params)
@@ -173,16 +184,7 @@ router.get('(/:status)?', async (req, res, next) => {
   //delete
   router.get('/delete/:id/', function(req, res, next) {
     let id = paramsHelpers.getParams(req.params, 'id', '')
-    console.log(id);
-      mainModel.getItems(id).then(result => {
-        console.log(result);
-        if (result.avatar !== null) {
-          fs.unlink('public/uploads/users/' + result.avatar, (err) => {
-            if (err) throw err;
-          }); 
-        }       
-    });
-   
+     
     mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
       notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
     });

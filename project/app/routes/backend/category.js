@@ -45,7 +45,6 @@ router.get('/form(/:id)?', function(req, res, next) {
   if(id !== '') {
    mainModel.getItems(id).then((item)=> {
     item.slug = slug(item.name)
-    console.log(item.slug);
       res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors });
     })
   } else {
@@ -60,7 +59,6 @@ router.post('/save', (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
   let item = Object.assign(req.body)
   item.slug = slug(item.name)
-  console.log(item);
   mainValidate.validator(req)
   let errors = req.validationErrors()
   let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'

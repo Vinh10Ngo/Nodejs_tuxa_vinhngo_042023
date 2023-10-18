@@ -4,7 +4,7 @@
     
     item.forEach((item) => {
         <!-- phần tử được đổ ra phần tử nào có id = optionSelected thì được chọn -->
-        let selected = (optionSelected == item.id || optionSelected == 'novalue' ) ? 'selected = "selected"': ''        
+        let selected = (optionSelected == item.id) ? 'selected = "selected"': ''        
          let id = (item.id == undefined) ? 'novalue' : item.id
         xHtmlResult += `<option value=${id} ${selected}>${item.name}</option>`
     })  

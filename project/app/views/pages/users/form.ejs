@@ -3,20 +3,20 @@
 <% include ./../../helper/textArea%>
 <% include ./../../helper/formBody%>
 
+<%- JSON.stringify(item.avatar)%>
 
 <%
 const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
 
 let elementsForm = [
 {for: 'form[name]', label: 'Name', input: inputHelper("text", "name", item.name, {'id': 'form[name]'})},
-{for: 'form[avatar]', label: 'Avatar', input: inputHelper("file", "avatar", '', {'id': 'form[avatar]'})},
+{for: 'form[avatar]', label: 'Avatar', input: inputHelper("file", "avatar", item.avatar, {'id': 'form[avatar]'})},
 {for: 'form[ordering]', label: 'Ordering', input: inputHelper("number", "ordering", item.ordering, {'id': 'form[ordering]'})},
 {for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
 {for: 'form[groups]', label: 'Groups', input: selectBoxHelper('groups_id', groupsItems, item.groups_id, '')},
 {for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
 ]
 %>
-<%- JSON.stringify(item.avatar)%>
 
 
 <section class="content">

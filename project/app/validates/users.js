@@ -6,7 +6,7 @@ const options = {
     name: {min: 5, max: 20},
     ordering: {min: 0, max: 100},
     status: {value: 'novalue'},
-    groups: {value: 'allvalue'},
+    groups: {value: 'novalue'},
     content: {min: 5, max: 200},
 }
 

@@ -1,6 +1,7 @@
 const multer  = require('multer')
 var randomstring = require("randomstring");
 const path = require('path')
+const fs  = require('fs')
 
 let uploadFile = (field, folderDes = 'users', fileNameLength = 7, fileSizeMin = 1, fileType = 'jpeg|jpg|png|gif', error = 'phần mở rộng không phù hợp') => {
   const storage = multer.diskStorage({
@@ -29,6 +30,15 @@ let uploadFile = (field, folderDes = 'users', fileNameLength = 7, fileSizeMin = 
    return upload
 }
 
+let removeFile = (folder, fileName) => {
+  let path = folder + fileName
+  if (fs.existsSync(path)) {
+    fs.unlink(path, (err) => {
+      if (err) throw err;
+    });  
+  }    
+}
 module.exports = {
-    uploadFile
+    uploadFile,
+    remove: removeFile,
 }

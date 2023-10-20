@@ -3,10 +3,11 @@
 <% include ./../../helper/textArea%>
 <% include ./../../helper/formBody%>
 
-<%- JSON.stringify(item.avatar)%>
+<%- JSON.stringify(item)%>
 
 <%
 const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
+const uploadPath = 'uploads/users/'
 
 let elementsForm = [
 {for: 'form[name]', label: 'Name', input: inputHelper("text", "name", item.name, {'id': 'form[name]'})},
@@ -27,10 +28,12 @@ let elementsForm = [
                 <form action="/<%= linkPrefix%>save" method="post" enctype="multipart/form-data" class="mb-0" id="admin-form">
 
                     <%- formBodyHelper(elementsForm)%>
-
+                    <% if(item.avatar !== undefined && item.avatar !== null) { %>
                     <div class="col-12 col-sm-8 offset-sm-2">
-                        <img src="public/files/category/default.jpg" alt="preview image" id="admin-preview-image" style="display: none;width: 100%; max-width: 500px">
+                        <img src="/<%= uploadPath + item.avatar%>" alt="preview image" id="admin-preview-image" style="width: 100%; max-width: 500px">
                     </div>
+                    <% } %>         
+                    <input type="hidden" id="form[token]" name="image_old" value="<%= item.avatar%>">
                     <input type="hidden" id="form[token]" name="id" value="<%= item.id%>">
                     <!-- mỗi lần selecbox được chọn thì lấy giá trị gắn vào input 
                      khi submit dữ liệu thì lấy được tên group-->

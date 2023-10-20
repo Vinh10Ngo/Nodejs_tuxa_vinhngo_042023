@@ -10,6 +10,7 @@ const groupsModel = require(__path__models + 'users')
 const fileHelpers  = require(__path__helpers + 'file')
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
+const existHelpers = require(__path__helpers + 'exist')
 const mainValidate = require(__path__validates + controllerName)
 const systemConfigs = require(__path__configs + 'system')
 const notifyHelpers = require(__path__helpers + 'notify')
@@ -61,7 +62,7 @@ router.post('/upload', function(req, res, next) {
 //form
 router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
-  let item =  {name: '', ordering: 0, status: 'novalue', groups_id: '', groups_name: ''}
+  let item =  {name: '', ordering: 0, status: 'novalue', groups_id: '', groups_name: '', content: ''}
   let errors = null
   // truyền groupsItems ra ngoài
   let groupsItems = []
@@ -70,11 +71,11 @@ router.get('/form(/:id)?', async function(req, res, next) {
     groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
   })
   if(id !== '') {
-   mainModel.getItems(id).then((item)=> {
+  mainModel.getItems(id).then((item)=> {
     item.groups_id = item.groups.id
     item.groups_name = item.groups.name
     res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
-    })
+  })
   } else {
     res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors, groupsItems });
   }
@@ -86,17 +87,11 @@ router.post('/save', (req, res, next) => {
   uploadAvatar (req, res, async (err) => {
     req.body = JSON.parse(JSON.stringify(req.body));
     let item = Object.assign(req.body)
-    mainValidate.validator(req)
-    let errors = req.validationErrors()
+    console.log(item);
+    let errors = mainValidate.validator(req, err)
     let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
-    // if (err !== undefined) {
-    //   errors = []
-    //   errors.push({param: 'avatar', msg: err})
-    // }  
-    console.log(errors);
+
     if(Array.isArray(errors) && errors.length > 0) {
-      if (err == undefined) err = notifyConfigs.ERROR_UPLOADS
-      errors.push({param: 'avatar', msg: err})
       item.avatar = (req.file == undefined) ? null : req.file.filename
       if (fs.existsSync('public/uploads/users/' + item.avatar)) errors.pop()
       let groupsItems = []     

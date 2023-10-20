@@ -12,5 +12,6 @@ module.exports = {
     ERROR_STATUS: 'Status phải khác rỗng',
     ERROR_GROUPS_ACP: 'Groups_acp phải khác rỗng',
     ERROR_GROUPS: 'Groups phải khác rỗng',
-    ERROR_UPLOADS: 'vui lòng chọn avatar'
+    ERROR_UPLOADS: 'vui lòng chọn avatar',
+    ERROR_LIMIT: 'File quá lớn'
 }

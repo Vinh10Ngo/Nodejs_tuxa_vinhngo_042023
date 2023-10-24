@@ -2,6 +2,7 @@
 <% include ./../../helper/selectBox%>
 <% include ./../../helper/textArea%>
 <% include ./../../helper/formBody%>
+<% include ./../../helper/image%>
 
 <%- JSON.stringify(item)%>
 
@@ -25,12 +26,13 @@ let elementsForm = [
         <% include ./../../elements/errors%>
         <div class="card card-info card-outline">
             <div class="card-body">
-                <form action="/<%= linkPrefix%>save" method="post" enctype="multipart/form-data" class="mb-0" id="admin-form">
+                <form action="/<%= linkPrefix%>save" method="post" enctype="multipart/form-data" class="mb-0" id="admin-form" name="form_upload">
 
                     <%- formBodyHelper(elementsForm)%>
-                    <% if(item.avatar !== undefined && item.avatar !== null) { %>
+                    <% if(item.id !== undefined && item.id !== '') { %>
                     <div class="col-12 col-sm-8 offset-sm-2">
-                        <img src="/<%= uploadPath + item.avatar%>" alt="preview image" id="admin-preview-image" style="width: 100%; max-width: 500px">
+                        <label></label>
+                        <%- imageHelper(uploadPath, item.avatar, item.name, '600', '500')%>
                     </div>
                     <% } %>         
                     <input type="hidden" id="form[token]" name="image_old" value="<%= item.avatar%>">

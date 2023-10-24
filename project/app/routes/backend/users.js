@@ -87,23 +87,29 @@ router.post('/save', (req, res, next) => {
   uploadAvatar (req, res, async (err) => {
     req.body = JSON.parse(JSON.stringify(req.body));
     let item = Object.assign(req.body)
-    console.log(item);
-    let errors = mainValidate.validator(req, err)
+    item.avatar = (req.file == undefined) ? null : req.file.filename
     let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
+    let errors = mainValidate.validator(req, item, err, taskCurrent)
 
     if(Array.isArray(errors) && errors.length > 0) {
-      item.avatar = (req.file == undefined) ? null : req.file.filename
-      if (fs.existsSync('public/uploads/users/' + item.avatar)) errors.pop()
       let groupsItems = []     
       await groupsModel.listItemInSelectBox().then((item) => {
         groupsItems = item
         groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
       })
       fileHelpers.remove('public/uploads/users/', item.avatar)
+      if(taskCurrent == 'edit') item.avatar = item.image_old
+      console.log(item.avatar);
       let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
       res.render(`${folderViews}form`, { pageTitle, item, controllerName, errors, groupsItems});
     } else {
-      item.avatar = (req.file == undefined) ? null : req.file.filename
+      // item.avatar = (req.file == undefined) ? null : req.file.filename
+        if (req.file == undefined) {
+          item.avatar = item.image_old
+        } else {
+          item.avatar = req.file.filename
+          if (taskCurrent == 'edit') fileHelpers.remove('public/uploads/users/', item.image_old)
+        }
         mainModel.saveItem(item, {task: taskCurrent}).then(result => {
           notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
         })

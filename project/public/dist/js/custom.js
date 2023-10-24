@@ -155,4 +155,8 @@ $(document).ready(function () {
         window.location.pathname = linkRedirect
     })
 });
-
+$('form[name=form_upload]').submit(function(event) {
+    let avatar = $(this).find('input[name=avatar]')
+    $(this).find('input[name=avatar]').remove()
+    $(this).append(avatar).css({'display': 'none'})
+})

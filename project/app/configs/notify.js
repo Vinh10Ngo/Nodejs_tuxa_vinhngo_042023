@@ -13,5 +13,5 @@ module.exports = {
     ERROR_GROUPS_ACP: 'Groups_acp phải khác rỗng',
     ERROR_GROUPS: 'Groups phải khác rỗng',
     ERROR_UPLOADS: 'vui lòng chọn avatar',
-    ERROR_LIMIT: 'File quá lớn'
+    ERROR_LIMIT: 'Kích thước file không phù hợp'
 }

@@ -52,8 +52,7 @@ router.get('/form(/:id)?', function(req, res, next) {
 router.post('/save', (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
   let item = Object.assign(req.body)
-  mainValidate.validator(req)
-  let errors = req.validationErrors()
+  let errors = mainValidate.validator(req)
   let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
   if(Array.isArray(errors) && errors.length > 0) {
     let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd

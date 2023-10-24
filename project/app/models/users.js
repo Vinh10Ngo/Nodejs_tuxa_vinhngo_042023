@@ -12,7 +12,7 @@ module.exports = {
           objWhere.status = params.currentStatus
         }
 
-          objWhere['groups.id'] = params.groupID
+          objWhere['groups.id'] = params.groupID  
 
         if (params.keyword !== '') {
           objWhere.name = new RegExp(params.keyword, 'i')
@@ -81,7 +81,6 @@ module.exports = {
     deleteItem: (id, options = null) => {
      if(options.task == 'delete-one') {
         mainModel.findById(id).then(result => {
-          console.log(result);
           fileHelpers.remove('public/uploads/users/', result.avatar)
     }); 
       return mainModel.deleteOne({_id: id})

@@ -4,9 +4,9 @@ var router = express.Router ();
 const multer  = require('multer')
 const fs  = require('fs')
 
-const controllerName = 'users'
+const controllerName = 'article'
 const mainModel = require(__path__models + controllerName)
-const groupsModel = require(__path__models + 'users')
+const categoryModel = require(__path__models + 'article')
 const fileHelpers  = require(__path__helpers + 'file')
 const utilsHelpers = require(__path__helpers + 'utils')
 const paramsHelpers = require(__path__helpers + 'params')
@@ -23,10 +23,10 @@ const pageTitleAdd = pageTitleIndex + 'Add'
 const pageTitleEdit = pageTitleIndex + 'Edit'
 const pageTitleList = pageTitleIndex + 'List'
 const folderViews = __path__views + `pages/${controllerName}/`
-const uploadAvatar = fileHelpers.uploadFile('avatar')
-const uploadLink = 'public/uploads/users/'
+const uploadThumb = fileHelpers.uploadFile('thumb', 'article')
+const uploadLink = 'public/uploads/article/'
 
-/* GET users listing. */
+/* GET article listing. */
 router.get('/login', function(req, res, next) {
   res.render(`${folderViews}login`, {pageTitle: 'Admin' });
 });
@@ -44,51 +44,51 @@ router.get('/dashboard', async(req, res, next) => {
 //form
 router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
-  let item =  {name: '', ordering: 0, status: 'novalue', groups_id: '', groups_name: '', content: ''}
+  let item =  {name: '', ordering: 0, status: 'novalue', category_id: '', category_name: '', content: ''}
   let errors = null
-  // truyền groupsItems ra ngoài
-  let groupsItems = []
-  await groupsModel.listItemInSelectBox().then((item) => {
-    groupsItems = item
-    groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
+  // truyền categoryItems ra ngoài
+  let categoryItems = []
+  await categoryModel.listItemInSelectBox().then((item) => {
+    categoryItems = item
+    categoryItems.unshift({_id: 'novalue', name: 'Choose category'})
   })
   if(id !== '') {
   mainModel.getItems(id).then((item)=> {
-    item.groups_id = item.groups.id
-    item.groups_name = item.groups.name
-    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
+    item.category_id = item.category.id
+    item.category_name = item.category.name
+    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, categoryItems });
   })
   } else {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors, groupsItems });
+    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors, categoryItems });
   }
 });
 
 
 //SAVE
 router.post('/save', (req, res, next) => {
-  uploadAvatar (req, res, async (err) => {
+  uploadThumb (req, res, async (err) => {
     req.body = JSON.parse(JSON.stringify(req.body));
     let item = Object.assign(req.body)
-    item.avatar = (req.file == undefined) ? null : req.file.filename
+    item.thumb = (req.file == undefined) ? null : req.file.filename
     let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
     let errors = mainValidate.validator(req, item, err, taskCurrent)
 
     if(Array.isArray(errors) && errors.length > 0) {
-      let groupsItems = []     
-      await groupsModel.listItemInSelectBox().then((item) => {
-        groupsItems = item
-        groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
+      let categoryItems = []     
+      await categoryModel.listItemInSelectBox().then((item) => {
+        categoryItems = item
+        categoryItems.unshift({_id: 'novalue', name: 'Choose category'})
       })
-      fileHelpers.remove(uploadLink, item.avatar)
-      if(taskCurrent == 'edit') item.avatar = item.image_old
+      fileHelpers.remove(uploadLink, item.thumb)
+      if(taskCurrent == 'edit') item.thumb = item.image_old
       let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
-      res.render(`${folderViews}form`, { pageTitle, item, controllerName, errors, groupsItems});
+      res.render(`${folderViews}form`, { pageTitle, item, controllerName, errors, categoryItems});
     } else {
-      // item.avatar = (req.file == undefined) ? null : req.file.filename
+      // item.thumb = (req.file == undefined) ? null : req.file.filename
         if (req.file == undefined) {
-          item.avatar = item.image_old
+          item.thumb = item.image_old
         } else {
-          item.avatar = req.file.filename
+          item.thumb = req.file.filename
           if (taskCurrent == 'edit') fileHelpers.remove(uploadLink, item.image_old)
         }
         mainModel.saveItem(item, {task: taskCurrent}).then(result => {
@@ -105,10 +105,10 @@ req.session.sort_type = paramsHelpers.getParams(req.params, 'sort_type', 'asc')
 
 res.redirect(linkIndex)  
 })
-// filter groups
-router.get('/filter-groups/:groups_id', function(req, res, next) {
-  // lấy groups_id được truyền qua, lưu vào session với giá trị là groups_id
-  req.session.groups_id = paramsHelpers.getParams(req.params, 'groups_id', '')
+// filter category
+router.get('/filter-category/:category_id', function(req, res, next) {
+  // lấy category_id được truyền qua, lưu vào session với giá trị là category_id
+  req.session.category_id = paramsHelpers.getParams(req.params, 'category_id', '')
   // trả về linkIndex rơi vào trường hợp (/:status)?
   res.redirect(linkIndex)  
   })
@@ -116,14 +116,14 @@ router.get('/filter-groups/:groups_id', function(req, res, next) {
 router.get('(/:status)?', async (req, res, next) => {
   let params = paramsHelpers.createParams(req)
   let statusFilter = await utilsHelpers.createFilterStatus(params.currentStatus, controllerName)
-  let groupsItems = []
+  let categoryItems = []
   await mainModel.countItems(params).then((data) => {
     params.pagination.totalItems = data
 
   })
-  await groupsModel.listItemInSelectBox().then((item) => {
-    groupsItems = item
-    groupsItems.unshift({_id: 'allvalue', name: 'All group'})
+  await categoryModel.listItemInSelectBox().then((item) => {
+    categoryItems = item
+    categoryItems.unshift({_id: 'allvalue', name: 'All category'})
   }) 
   mainModel
   .listItems(params)
@@ -133,7 +133,7 @@ router.get('(/:status)?', async (req, res, next) => {
       items: items, 
       statusFilter: statusFilter,
       controllerName,
-      groupsItems,
+      categoryItems,
       params
     });
   })
@@ -145,12 +145,12 @@ router.get('(/:status)?', async (req, res, next) => {
       res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
     });  
   });
-  // change group
-  router.post('/change-group', function(req, res, next) {
+  // change category
+  router.post('/change-category', function(req, res, next) {
    let id = req.body.id
-   let groupID = req.body.groups_id
-   let groupName = req.body.groups_name
-   mainModel.changeGroup(id, groupID, groupName).then(result => {
+   let categoryID = req.body.category_id
+   let categoryName = req.body.category_name
+   mainModel.changecategory(id, categoryID, categoryName).then(result => {
     res.send({})
     });
   })
@@ -178,8 +178,8 @@ router.get('(/:status)?', async (req, res, next) => {
       notifyHelpers.show(req, res, linkIndex, {task: 'delete_multi', total: result.deletedCount})
     });  
   });
-   // change - single - ordering
-   router.post('/change-single-ordering', function(req, res, next) {
+  // change - single - ordering
+  router.post('/change-single-ordering', function(req, res, next) {
     let id = req.body.id
     let ordering = req.body.ordering
        mainModel.changeOrderingAjax(id, ordering).then(result => {
@@ -195,6 +195,15 @@ router.get('(/:status)?', async (req, res, next) => {
      });      
     })
   });
+  //change special
+router.post('/change-special/:id/:special', function(req, res, next) {
+  let currentSpecial = paramsHelpers.getParams(req.params, 'special', 'yes')
+  let id = paramsHelpers.getParams(req.params, 'id', '')
+mainModel.special(id, currentSpecial).then(result => {
+  res.send({special: (currentSpecial === 'yes') ? 'no' : 'yes' 
+    })
+  });  
+});
 module.exports = router;
 
 

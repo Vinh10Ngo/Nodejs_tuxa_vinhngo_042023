@@ -14,7 +14,7 @@ $('.ordering').change(function () {
          }
     })
   })
-  $('a.ajax-groups-acp').click(function (e) {
+  $('a.ajax-groups_acp').click(function (e) {
      e.preventDefault()
     let currentElement = $(this)
     let currentClass = currentElement.attr('data-current')
@@ -34,6 +34,26 @@ $('.ordering').change(function () {
       }
     })
   })
+  $('a.ajax-special').click(function (e) {
+    e.preventDefault()
+   let currentElement = $(this)
+   let currentClass = currentElement.attr('data-current')
+   let link = currentElement.attr('href')
+   $.ajax({
+     type: 'POST',
+     url: link,
+     dataType: 'json',
+     success: function (data) {
+       toastr["success"]("cập nhập special thành công") 
+       let special = data.special
+       let classSpecial = currentElement.data(special)
+       let linkSpecial = link.replace(link.match('[^/]+$'), special)
+       currentElement.attr('data-current', classSpecial)
+       currentElement.removeClass(currentClass).addClass(classSpecial)
+       currentElement.attr('href', linkSpecial)
+     }
+   })
+ })
   $('a.ajax-status').click(function (e) {
     e.preventDefault()
    let currentElement = $(this)
@@ -59,7 +79,7 @@ $('.ordering').change(function () {
      }
    })
  })
-$('select[name=item_group]').change(function (e) {
+$('select[name=item_groups]').change(function (e) {
   let current = $(this)
   let id = current.val()
   let name = current.text()
@@ -72,6 +92,22 @@ $('select[name=item_group]').change(function (e) {
     dataType: 'json',
     success: function (data) {
       toastr["success"]("Thay đổi group thành công") 
+    }
+  })
+})  
+$('select[name=item_category]').change(function (e) {
+  let current = $(this)
+  let id = current.val()
+  let name = current.text()
+  let idItem = current.data('iditem')
+  let link = current.data('link') 
+  $.ajax({
+    type: 'POST',
+    url: link,
+    data: {'id': idItem, 'category_id': id, 'category_name': name},
+    dataType: 'json',
+    success: function (data) {
+      toastr["success"]("Thay đổi category thành công") 
     }
   })
 })

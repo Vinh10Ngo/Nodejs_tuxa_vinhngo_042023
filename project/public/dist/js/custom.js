@@ -149,14 +149,30 @@ $(document).ready(function () {
     $('select[name="groups_id"]').change(function() {
         $('input[name="groups_name"]').val($(this).find('option:selected').text())
     })
+
+    $('select[name="category_id"]').change(function() {
+        $('input[name="category_name"]').val($(this).find('option:selected').text())
+    })
+
     $('select[name="filter_groups"]').change(function() {
         var path = window.location.pathname.split('/')
         var linkRedirect = '/' + path[1] + '/' + path[2] + '/filter-groups/' + $(this).val()
+        window.location.pathname = linkRedirect
+    })
+
+    $('select[name="filter_category"]').change(function() {
+        var path = window.location.pathname.split('/')
+        var linkRedirect = '/' + path[1] + '/' + path[2] + '/filter-category/' + $(this).val()
         window.location.pathname = linkRedirect
     })
 });
 $('form[name=form_upload]').submit(function(event) {
     let avatar = $(this).find('input[name=avatar]')
     $(this).find('input[name=avatar]').remove()
+    $(this).append(avatar).css({'display': 'none'})
+})
+$('form[name=form_upload]').submit(function(event) {
+    let avatar = $(this).find('input[name=thumb]')
+    $(this).find('input[name=thumb]').remove()
     $(this).append(avatar).css({'display': 'none'})
 })

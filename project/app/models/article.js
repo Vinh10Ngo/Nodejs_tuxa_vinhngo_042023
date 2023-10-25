@@ -1,8 +1,8 @@
-const mainModel = require(__path__schemas + 'users')
-const groupsModel = require(__path__schemas + 'groups')
+const mainModel = require(__path__schemas + 'article')
+const categoryModel = require(__path__schemas + 'category')
 const notifyConfigs = require(__path__configs + 'notify');
 const fileHelpers  = require(__path__helpers + 'file')
-const uploadLink = 'public/uploads/users/'
+const uploadLink = 'public/uploads/article/'
 
 module.exports = {
     
@@ -13,7 +13,7 @@ module.exports = {
           objWhere.status = params.currentStatus
         }
 
-        if(params.groupID !== 'allvalue') objWhere['groups.id'] = params.groupID  
+        if (params.categoryID !== 'allvalue')  objWhere['category.id'] = params.categoryID  
 
         if (params.keyword !== '') {
           objWhere.name = new RegExp(params.keyword, 'i')
@@ -21,7 +21,7 @@ module.exports = {
          sort[params.sortField] = params.sortType
        return mainModel
         .find(objWhere)
-        .select('name status ordering created modified groups.name groups.id avatar')
+        .select('name status ordering created modified category.name category.id thumb special')
         .sort(sort)
         .skip((params.pagination.currentPage-1)*params.pagination.totalItemsPerPage)
         .limit(params.pagination.totalItemsPerPage)
@@ -34,8 +34,8 @@ module.exports = {
       if (params.currentStatus !== 'all') {
         objWhere.status = params.currentStatus
       }
-      if (params.groupID !== 'allvalue') {
-        objWhere['groups.id'] = params.groupID
+      if (params.categoryID !== 'allvalue') {
+        objWhere['category.id'] = params.categoryID
       }
       if (params.keyword !== '') {
         objWhere.name = new RegExp(params.keyword, 'i')
@@ -93,7 +93,7 @@ module.exports = {
     deleteItem: async (id, options = null) => {
      if(options.task == 'delete-one') {
         await mainModel.findById(id).then(result => {
-          fileHelpers.remove(uploadLink, result.avatar)
+          fileHelpers.remove(uploadLink, result.thumb)
     }); 
       return mainModel.deleteOne({_id: id})
      }
@@ -101,12 +101,12 @@ module.exports = {
       if (Array.isArray(id)) {
         for (let index = 0; index < id.length; index++) {
           await mainModel.findById(id[index]).then(result => {
-            fileHelpers.remove(uploadLink, result.avatar)  
+            fileHelpers.remove(uploadLink, result.thumb)  
           }); 
         }
       } else {
         await mainModel.findById(id).then(result => {
-          fileHelpers.remove(uploadLink, result.avatar)     
+          fileHelpers.remove(uploadLink, result.thumb)     
         }); 
       }
       return mainModel.deleteMany({_id: {$in: id}})
@@ -114,9 +114,9 @@ module.exports = {
   },
   saveItem: (item, options = null) => {
     if (options.task == 'add') {
-      item.groups = {
-        id: item.groups_id,
-        name: item.groups_name
+      item.category = {
+        id: item.category_id,
+        name: item.category_name
       }
       item.created = {
         user_id: 0, 
@@ -130,11 +130,12 @@ module.exports = {
         {status: item.status, 
          ordering: parseInt(item.ordering),
          name: item.name,
-         avatar: item.avatar,
+         thumb: item.thumb,
+         special: item.special,
          content: item.content,
-         groups: {
-          id: item.groups_id,
-          name: item.groups_name
+         category: {
+          id: item.category_id,
+          name: item.category_name
         },
            modified : {
              user_id: 0, 
@@ -143,10 +144,10 @@ module.exports = {
          }
        })
     }
-    if (options.task == 'change-groups-name') {
-      return mainModel.updateMany({'groups.id': item.id},
+    if (options.task == 'change-category-name') {
+      return mainModel.updateMany({'category.id': item.id},
         {
-         groups: {
+         category: {
           id: item.id,
           name: item.name
         },
@@ -159,13 +160,13 @@ module.exports = {
     }
   },
   listItemInSelectBox: (params, option = null) => {
-    return groupsModel.find({}, {_id: 1, name: 1})
+    return categoryModel.find({}, {_id: 1, name: 1})
   },
-  changeGroup: (id, groupID, groupName) => {
+  changecategory: (id, categoryID, categoryName) => {
     return mainModel.updateOne({_id: id}, {
-      groups: {
-        id: groupID,
-        name: groupName
+      category: {
+        id: categoryID,
+        name: categoryName
       },
       modified : {
         user_id: 0, 
@@ -173,5 +174,17 @@ module.exports = {
         time: Date.now()   
       }
     })    
+  },
+  special: (id, currentSpecial, options = null) => {
+    let special = (currentSpecial === 'yes') ? 'no' : 'yes'
+    let data = {
+      special: special,
+      modified : {
+        user_id: 0, 
+        user_name: 'admin', 
+        time: Date.now()   
+    }
   }
+    return mainModel.updateOne({_id: id}, data)
+  },
 }

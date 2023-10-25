@@ -9,21 +9,23 @@
 <% include ./../../helper/checkBox%>
 <% include ./../../helper/controls%>
 <% include ./../../helper/selectBox%>
-<% include ./../../helper/selectBoxAjaxGroups %>
+<% include ./../../helper/selectBoxAjaxCategory %>
 <% include ./../../helper/image %>
+<% include ./../../helper/special%>  
+
 
 <h3><%- locals.flash %></h3>
 
 <%
 const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
-const uploadPath = 'uploads/users/'
+const uploadPath = 'uploads/article/'
 
 let elementsControl = [
 {collection: 'form', class: "rounded-circle btn btn-sm btn-info", icon: "fas fa-pencil-alt", title: "Edit"},
 {collection: 'delete', class: "rounded-circle btn btn-sm btn-danger delete", icon: "fas fa-trash-alt", title: "Delete"}
 ]
 %>
-<%- JSON.stringify(groupsItems)%>
+<%- JSON.stringify(items)%>
 
 <section class="content">
     <div class="container-fluid">
@@ -44,8 +46,8 @@ let elementsControl = [
                         <%- filterStatusHelper(linkPrefix, statusFilter, params.keyword) %>    
                     </div>
                     <div class="mb-1">
-                        <!-- Group Selectbox -->
-                        <%- selectBoxHelper('filter_groups', groupsItems, params.groupID, '') %>                   
+                        <!-- Category Selectbox -->
+                        <%- selectBoxHelper('filter_category', categoryItems, params.categoryID, '') %>                   
                     </div>
                     
                     <div class="mb-1">
@@ -86,10 +88,11 @@ let elementsControl = [
                                 </th>
                                 <th class="text-center">ID</th>
                                 <%- sortHelper(linkPrefix, 'Name', 'name', params.sortField, params.sortType, 'width:20%') %>
-                                <th class="text-center"> Avatar</th> 
+                                <th class="text-center"> Thumb</th> 
                                 <%- sortHelper(linkPrefix, 'Status', 'status', params.sortField, params.sortType) %>
+                                <%- sortHelper(linkPrefix, 'Special', 'special', params.sortField, params.sortType) %>
                                 <%- sortHelper(linkPrefix, 'Ordering', 'ordering', params.sortField, params.sortType) %>
-                                <%- sortHelper(linkPrefix, 'Groups', 'groups.name', params.sortField, params.sortType) %>
+                                <%- sortHelper(linkPrefix, 'Category', 'category.name', params.sortField, params.sortType) %>
                                 <th class="text-center">Created</th> 
                                 <th class="text-center">Modified</th>                             
                                 <th class="text-center">Action</th>
@@ -106,17 +109,19 @@ let elementsControl = [
 									<td class="text-wrap" style="min-width: 180px"><%- hightlightHelper(item.name, params.keyword) %></td>
 									</td>
                                     <td class="text-wrap" style="min-width: 100px">
-										<%- imageHelper(uploadPath, item.avatar, item.name)%>
+										<%- imageHelper(uploadPath, item.thumb, item.name)%>
                                     </td>
 									</td>
 									<td class="text-center position-relative">
 										<%- statusHelper(linkPrefix, item.status, item.id)%>
 									</td>
-									
-									<td class="text-center position-relative"><input type="number" value="<%= item.ordering%>" class="form-control form-control-sm m-auto text-center ordering" data-link="/<%= linkPrefix%>change-single-ordering" style="width: 65px" id="chkOrdering[1]" data-id="<%= item.id%>" min="1">
+                                    <td >
+                                        <%- specialHelper(linkPrefix, item.special, item.id) %>                                   
                                     </td>
+                                    <td class="text-center position-relative"><input type="number" value="<%= item.ordering%>" class="form-control form-control-sm m-auto text-center ordering" data-link="/<%= linkPrefix%>change-single-ordering" style="width: 65px" id="chkOrdering[1]" data-id="<%= item.id%>" min="1">
+                                    </td>                                    
                                     <td class="text-center position-relative">
-										<%- selectBoxAjaxGroupsHelper(groupsItems, item.groups.id, linkPrefix, item.id)%>
+										<%- selectBoxAjaxCategoryHelper(categoryItems, item.category.id, linkPrefix, item.id)%>
 									</td>                                    
                                     <td>
                                         <%- sourceByHelper(item.created.user_name, item.created.time)%>

@@ -1,35 +1,47 @@
 <% include ./../../helper/input%>
 <% include ./../../helper/selectBox%>
 <% include ./../../helper/textArea%>
-<% include ./../../helper/choice%>
 <% include ./../../helper/formBody%>
+<% include ./../../helper/image%>
+<% include ./../../helper/choice%>
+
+<%- JSON.stringify(item)%>
 
 <%
 const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
+const uploadPath = 'uploads/article/'
 
 let elementsForm = [
 {for: 'form[name]', label: 'Name', input: inputHelper("text", "name", item.name, {'id': 'form[name]'})},
+{for: 'form[thumb]', label: 'Thumb', input: inputHelper("file", "thumb", item.thumb, {'id': 'form[thumb]'})},
 {for: 'form[ordering]', label: 'Ordering', input: inputHelper("number", "ordering", item.ordering, {'id': 'form[ordering]'})},
 {for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
-{for: 'form[groups_acp]', label: 'Groups_acp',input: (item.groups_acp, 'groups_acp')},
+{for: 'form[special]', label: 'Special',input: choiceHelper(item.special, 'special')},
+{for: 'form[category]', label: 'category', input: selectBoxHelper('category_id', categoryItems, item.category_id, '')},
 {for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
 ]
 %>
+
 
 <section class="content">
     <div class="container-fluid">
         <% include ./../../elements/errors%>
         <div class="card card-info card-outline">
             <div class="card-body">
-                <form action="/<%= linkPrefix%>save" method="post" enctype="application/x-www-form-urlencoded" class="mb-0" id="admin-form" enctype="multipart/form-data">
+                <form action="/<%= linkPrefix%>save" method="post" enctype="multipart/form-data" class="mb-0" id="admin-form" name="form_upload">
 
                     <%- formBodyHelper(elementsForm)%>
-                    
-
+                    <% if(item.id !== undefined && item.id !== '') { %>
                     <div class="col-12 col-sm-8 offset-sm-2">
-                        <img src="public/files/category/default.jpg" alt="preview image" id="admin-preview-image" style="display: none;width: 100%; max-width: 500px">
+                        <label></label>
+                        <%- imageHelper(uploadPath, item.thumb, item.name, '600', '500')%>
                     </div>
+                    <% } %>         
+                    <input type="hidden" id="form[token]" name="image_old" value="<%= item.thumb%>">
                     <input type="hidden" id="form[token]" name="id" value="<%= item.id%>">
+                    <!-- mỗi lần selecbox được chọn thì lấy giá trị gắn vào input 
+                     khi submit dữ liệu thì lấy được tên category-->
+                    <input type="hidden" id="form[token]" name="category_name" value="<%= item.category_name%>">
                     <div class="card-footer">
                         <div class="col-12 col-sm-8 offset-sm-2">
                             <button type="submit" class="btn btn-primary">Submit </button>

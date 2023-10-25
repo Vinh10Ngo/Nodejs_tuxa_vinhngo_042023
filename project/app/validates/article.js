@@ -2,15 +2,16 @@
 const notifyConfigs = require(__path__configs + 'notify');
 const util = require('util')
 const fs  = require('fs')
-const uploadLink = 'public/uploads/users/'
+const uploadLink = 'public/uploads/article/'
 
 
 const options = {
-    name: {min: 5, max: 20},
+    name: {min: 5, max: 100},
     ordering: {min: 0, max: 100},
     status: {value: 'novalue'},
-    groups: {value: 'novalue'},
+    category: {value: 'novalue'},
     content: {min: 5, max: 200},
+    special: {value: 'novalue'},
 }
 
 module.exports = {
@@ -19,19 +20,20 @@ module.exports = {
         req.checkBody('ordering', util.format(notifyConfigs.ERROR_ORDERING, options.ordering.min, options.ordering.max)).isInt({gt: options.ordering.min, lt: options.ordering.max})
         req.checkBody('status', notifyConfigs.ERROR_STATUS).isNotEqual(options.status.value)
         req.checkBody('content', util.format(notifyConfigs.ERROR_NAME, options.content.min, options.content.max)).isLength({min: options.content.min, max: options.content.max})
-        req.checkBody('groups_id', notifyConfigs.ERROR_GROUPS).isNotEqual(options.groups.value)
+        req.checkBody('category_id', notifyConfigs.ERROR_CATEGORY).isNotEqual(options.category.value)
+        req.checkBody('special', notifyConfigs.ERROR_SPECIAL).notEmpty()
         let errors = req.validationErrors()
-        if (err == undefined) { // không có lỗi avatar || chưa up avatar
+        if (err == undefined) { // không có lỗi thumb || chưa up thumb
             if (taskCurrent == 'add') {
-                err = notifyConfigs.ERROR_UPLOADS_AVATAR 
+                err = notifyConfigs.ERROR_UPLOADS_THUMB 
                 if (errors == false) { // errors == false => không có lỗi errors                 
-                    if (!fs.existsSync(uploadLink + item.avatar)) { // không up avatar
+                    if (!fs.existsSync(uploadLink + item.thumb)) { // không up thumb
                         errors = []
-                        errors.push({ param: 'avatar', msg: err });
+                        errors.push({ param: 'thumb', msg: err });
                     }  
                 }  else { // errors = [...] => có lỗi errors
-                    errors.push({ param: 'avatar', msg: err });
-                    if (fs.existsSync(uploadLink + item.avatar)) errors.pop()
+                    errors.push({ param: 'thumb', msg: err });
+                    if (fs.existsSync(uploadLink + item.thumb)) errors.pop()
                 }
             }
                 
@@ -40,7 +42,7 @@ module.exports = {
             if (errors == false) {
                 errors = []
             } 
-            errors.push({ param: 'avatar', msg: err });
+            errors.push({ param: 'thumb', msg: err });
         }
         return errors
     }

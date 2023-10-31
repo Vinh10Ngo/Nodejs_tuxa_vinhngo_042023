@@ -17,22 +17,22 @@ const { resourceLimits } = require('worker_threads');
 
 const linkIndex = '/' + systemConfigs.prefixAdmin + `/${controllerName}/`
 
-const pageTitleIndex = 'Book Manager::'
+const pageTitleIndex = 'Category Manager::'
 const pageTitleAdd = pageTitleIndex + 'Add'
 const pageTitleEdit = pageTitleIndex + 'Edit'
 const pageTitleList = pageTitleIndex + 'List'
-const folderViews = __path__views + `pages/${controllerName}/`
+const folderViewsAdmin = __path__views__admin + `pages/${controllerName}/`
 
 /* GET users listing. */
 router.get('/login', function(req, res, next) {
-  res.render(`${folderViews}login`, {pageTitle: 'Admin' });
+  res.render(`${folderViewsAdmin}login`, {pageTitle: 'Admin' });
 });
 router.get('/dashboard', async(req, res, next) => {
   let countItems = 0
   await mainModel.count({}).then((data) => {
     countItems = data
   })
-  res.render(`${folderViews}dashboard`, {
+  res.render(`${folderViewsAdmin}dashboard`, {
      pageTitle: 'Dashboard',
      countItems: countItems 
   });
@@ -45,11 +45,11 @@ router.get('/form(/:id)?', function(req, res, next) {
   if(id !== '') {
    mainModel.getItems(id).then((item)=> {
     item.slug = slug(item.name)
-      res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors });
+      res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleEdit, controllerName, item, errors });
     })
   } else {
     item.slug = slug(item.name)
-      res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors
+      res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleAdd, controllerName, item, errors
     });
   } 
 });
@@ -64,7 +64,7 @@ router.post('/save', (req, res, next) => {
   let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
   if(Array.isArray(errors) && errors.length > 0) {
     let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
-    res.render(`${folderViews}form`, { pageTitle, item, controllerName, errors});
+    res.render(`${folderViewsAdmin}form`, { pageTitle, item, controllerName, errors});
   } else {
       mainModel.saveItem(item, {task: taskCurrent}).then(result => {
         notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
@@ -91,7 +91,7 @@ router.get('(/:status)?', async (req, res, next) => {
   mainModel
   .listItems(params)
   .then((items) => {
-    res.render(`${folderViews}list`, { 
+    res.render(`${folderViewsAdmin}list`, { 
       pageTitle: pageTitleList,
       items: items, 
       statusFilter: statusFilter,

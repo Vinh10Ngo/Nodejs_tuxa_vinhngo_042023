@@ -27,6 +27,8 @@ global.__path__routes =  __path__app + pathConfig.folder__routes + '/'
 global.__path__schemas =  __path__app + pathConfig.folder__schemas + '/'
 global.__path__validates =  __path__app + pathConfig.folder__validates + '/'
 global.__path__views =  __path__app + pathConfig.folder__views + '/'
+global.__path__views__admin =  __path__views + pathConfig.folder__views__admin + '/'
+global.__path__views__blog =  __path__views + pathConfig.folder__views__blog + '/'
 global.__path__models =  __path__app + pathConfig.folder__models + '/'
 global.__path__public = __base + pathConfig.folder__public + '/'
 global.__path__upload = __path__public + pathConfig.folder__upload + '/'
@@ -61,7 +63,7 @@ app.use(session({
   secret: 'somesecret', 
   cookie: { maxAge: 60000 }}));
 app.use(flash(app, {
-  viewName: __path__views + 'elements/flash'
+  viewName: __path__views__admin + 'elements/flash'
 }));
 
 
@@ -70,8 +72,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(expressLayouts);
-app.set('layout', __path__views + 'backend');
-app.use(logger('dev'));
+app.set('layout', __path__views__admin + 'backend');
+// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -81,6 +83,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.locals.systemConfigs = systemConfigs
 app.locals.moment = moment
 
+//Setup router
 app.use(`/${systemConfigs.prefixAdmin}`, require(__path__routes + '/backend/index'));
 app.use('/', require(__path__routes + '/frontend/index'));
 
@@ -104,7 +107,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render(__path__views + 'pages/error', { pageTitle: 'Page Not Found' });
+  res.render(__path__views__admin + 'pages/error', { pageTitle: 'Page Not Found' });
 });
 
 module.exports = app;

@@ -1,0 +1,56 @@
+<% include ./../../helper/input%>
+<% include ./../../helper/selectBox%>
+<% include ./../../helper/textArea%>
+<% include ./../../helper/formBody%>
+<% include ./../../helper/image%>
+<% include ./../../helper/choice%>
+
+<%- JSON.stringify(item.special)%>
+
+<%
+const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
+const uploadPath = 'uploads/article/'
+
+let elementsForm = [
+{for: 'form[name]', label: 'Name', input: inputHelper("text", "name", item.name, {'id': 'form[name]'})},
+{for: 'form[ordering]', label: 'Ordering', input: inputHelper("number", "ordering", item.ordering, {'id': 'form[ordering]'})},
+{for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
+{for: 'form[special]', label: 'Special',input: choiceHelper(item.special, 'special')},
+{for: 'form[category]', label: 'category', input: selectBoxHelper('category_id', categoryItems, item.category_id, '')},
+{for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
+{for: 'form[thumb]', label: 'Thumb', input: inputHelper("file", "thumb", item.thumb, {'id': 'imgInp'})},
+]
+%>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <% include ./../../elements/errors%>
+        <div class="card card-info card-outline">
+            <div class="card-body">
+                <form runat="server" action="/<%= linkPrefix%>save" method="post" enctype="multipart/form-data" class="mb-0" id="admin-form" name="form_upload">
+
+                    <%- formBodyHelper(elementsForm)%>
+                    <div class="col-12 col-sm-8 offset-sm-2">
+                        <label></label>
+                        <%- imageHelper(uploadPath, item.thumb, item.name, '600', '500')%>
+                    </div>
+                                       
+                    <input type="hidden" id="form[token]" name="image_old" value="<%= item.thumb%>">
+                    <input type="hidden" id="form[token]" name="id" value="<%= item.id%>">
+                    <!-- mỗi lần selecbox được chọn thì lấy giá trị gắn vào input 
+                     khi submit dữ liệu thì lấy được tên category-->
+                    <input type="hidden" id="form[token]" name="category_name" value="<%= item.category_name%>">
+                    <div class="card-footer">
+                        <div class="col-12 col-sm-8 offset-sm-2">
+                            <button type="submit" class="btn btn-primary">Submit </button>
+                            <a href="/<%= linkPrefix%>" class="btn btn-sm btn-danger mr-1"> Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</section>

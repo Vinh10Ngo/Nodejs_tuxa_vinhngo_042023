@@ -9,7 +9,7 @@ const options = {
     name: {min: 5, max: 100},
     ordering: {min: 0, max: 100},
     status: {value: 'novalue'},
-    category: {value: 'novalue'},
+    category: {value: 'allvalue'},
     content: {min: 5, max: 200},
     special: {value: 'novalue'},
 }

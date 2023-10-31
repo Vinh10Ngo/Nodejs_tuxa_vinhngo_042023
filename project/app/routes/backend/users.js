@@ -18,24 +18,24 @@ const notifyConfigs = require(__path__configs + 'notify')
 const { resourceLimits } = require('worker_threads');
 const linkIndex = '/' + systemConfigs.prefixAdmin + `/${controllerName}/`
 
-const pageTitleIndex = 'Book Manager::'
+const pageTitleIndex = 'User Manager::'
 const pageTitleAdd = pageTitleIndex + 'Add'
 const pageTitleEdit = pageTitleIndex + 'Edit'
 const pageTitleList = pageTitleIndex + 'List'
-const folderViews = __path__views + `pages/${controllerName}/`
+const folderViewsAdmin = __path__views__admin + `pages/${controllerName}/`
 const uploadAvatar = fileHelpers.uploadFile('avatar')
 const uploadLink = 'public/uploads/users/'
 
 /* GET users listing. */
 router.get('/login', function(req, res, next) {
-  res.render(`${folderViews}login`, {pageTitle: 'Admin' });
+  res.render(`${folderViewsAdmin}login`, {pageTitle: 'Admin' });
 });
 router.get('/dashboard', async(req, res, next) => {
   let countItems = 0
   await mainModel.count({}).then((data) => {
     countItems = data
   })
-  res.render(`${folderViews}dashboard`, {
+  res.render(`${folderViewsAdmin}dashboard`, {
      pageTitle: 'Dashboard',
      countItems: countItems 
   });
@@ -56,10 +56,10 @@ router.get('/form(/:id)?', async function(req, res, next) {
   mainModel.getItems(id).then((item)=> {
     item.groups_id = item.groups.id
     item.groups_name = item.groups.name
-    res.render(`${folderViews}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
+    res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
   })
   } else {
-    res.render(`${folderViews}form`, { pageTitle: pageTitleAdd, controllerName, item, errors, groupsItems });
+    res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleAdd, controllerName, item, errors, groupsItems });
   }
 });
 
@@ -82,7 +82,7 @@ router.post('/save', (req, res, next) => {
       fileHelpers.remove(uploadLink, item.avatar)
       if(taskCurrent == 'edit') item.avatar = item.image_old
       let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
-      res.render(`${folderViews}form`, { pageTitle, item, controllerName, errors, groupsItems});
+      res.render(`${folderViewsAdmin}form`, { pageTitle, item, controllerName, errors, groupsItems});
     } else {
       // item.avatar = (req.file == undefined) ? null : req.file.filename
         if (req.file == undefined) {
@@ -128,7 +128,7 @@ router.get('(/:status)?', async (req, res, next) => {
   mainModel
   .listItems(params)
   .then((items) => {
-    res.render(`${folderViews}list`, { 
+    res.render(`${folderViewsAdmin}list`, { 
       pageTitle: pageTitleList,
       items: items, 
       statusFilter: statusFilter,

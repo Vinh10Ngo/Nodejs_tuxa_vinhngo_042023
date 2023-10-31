@@ -1,11 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-const folderViews = __path__views + 'pages/publish/'
+const folderViewsBlog = __path__views__blog + 'pages/home/'
+// const layoutBlog = __path__views__blog + 'frontend'
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render(`${folderViews}index`, { pageTitle: 'HomePage' });
+  res.render(`${folderViewsBlog}index`);
 });
 
 

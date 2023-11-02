@@ -1,5 +1,6 @@
 module.exports = {
     prefixAdmin: 'admin',
+    prefixNews: 'news',
     format_long_time: 'HH:mm DD-MM-YYYY',
     status_value: [
         {id: 'novalue', name: '- Select status -'},

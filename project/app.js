@@ -28,7 +28,7 @@ global.__path__schemas =  __path__app + pathConfig.folder__schemas + '/'
 global.__path__validates =  __path__app + pathConfig.folder__validates + '/'
 global.__path__views =  __path__app + pathConfig.folder__views + '/'
 global.__path__views__admin =  __path__views + pathConfig.folder__views__admin + '/'
-global.__path__views__blog =  __path__views + pathConfig.folder__views__blog + '/'
+global.__path__views__news =  __path__views + pathConfig.folder__views__news + '/'
 global.__path__models =  __path__app + pathConfig.folder__models + '/'
 global.__path__public = __base + pathConfig.folder__public + '/'
 global.__path__upload = __path__public + pathConfig.folder__upload + '/'
@@ -85,7 +85,7 @@ app.locals.moment = moment
 
 //Setup router
 app.use(`/${systemConfigs.prefixAdmin}`, require(__path__routes + '/backend/index'));
-app.use('/', require(__path__routes + '/frontend/index'));
+app.use(`/${systemConfigs.prefixNews}`, require(__path__routes + '/frontend/index'));
 
 
 

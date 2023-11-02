@@ -79,9 +79,8 @@ router.post('/save', (req, res, next) => {
         categoryItems = item
         categoryItems.unshift({_id: 'novalue', name: 'Choose category'})
       })
-      fileHelpers.remove(uploadLink, item.thumb)
-      console.log(fs.existsSync(uploadLink + item.thumb));
-      // if (!fs.existsSync(uploadLink + item.thumb)) item.thumb = 'no-avatar.jpeg';
+      await fileHelpers.remove(uploadLink, item.thumb)
+      item.thumb = 'no-avatar.jpeg'
       if(taskCurrent == 'edit') item.thumb = item.image_old
       let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
       res.render(`${folderViewsAdmin}form`, { pageTitle, item, controllerName, errors, categoryItems});

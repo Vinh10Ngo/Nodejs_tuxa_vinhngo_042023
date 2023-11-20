@@ -121,4 +121,17 @@ module.exports = {
        })
     }
  },
+ listItemsFrontend: (params = null, options = null) => {
+  let find = {}
+    let select = ''
+    let sort = {}
+    let limit = 0
+    if (options.task == 'item-in-menu') {
+      find = {status: 'active'}
+      sort = {ordering: 'asc'}
+      select = 'name'
+    }
+    return mainModel
+    .find(find).select(select).sort(sort).limit(limit)
+ }
 }

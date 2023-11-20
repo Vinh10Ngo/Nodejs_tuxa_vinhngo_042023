@@ -11,6 +11,7 @@ const validator = require('express-validator');
 const flash = require('express-flash-notification');
 const session = require('express-session');
 
+
 var expressLayouts = require('express-ejs-layouts');
 var mongoose = require('mongoose')
 
@@ -44,6 +45,8 @@ mongoose.connection.once('open', function() {
 })
 
 var app = express();
+
+
 
 app.use(validator({
   customValidators: {
@@ -100,14 +103,15 @@ app.use(function(req, res, next) {
 
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use( function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render(__path__views__admin + 'pages/error', { pageTitle: 'Page Not Found' });
+    res.status(err.status || 500);
+    res.render(__path__views__admin + 'pages/error', { pageTitle: 'Page Not Found' });
+  
 });
 
 module.exports = app;

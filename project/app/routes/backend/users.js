@@ -27,9 +27,7 @@ const uploadAvatar = fileHelpers.uploadFile('avatar')
 const uploadLink = 'public/uploads/users/'
 
 /* GET users listing. */
-router.get('/login', function(req, res, next) {
-  res.render(`${folderViewsAdmin}login`, {pageTitle: 'Admin' });
-});
+
 router.get('/dashboard', async(req, res, next) => {
   let countItems = 0
   await mainModel.count({}).then((data) => {

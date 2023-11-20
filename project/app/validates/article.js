@@ -10,9 +10,9 @@ const options = {
     ordering: {min: 0, max: 100},
     status: {value: 'novalue'},
     category: {value: 'allvalue'},
-    content: {min: 5, max: 200},
+    content: {min: 5, max: 10000},
     special: {value: 'novalue'},
-}
+} 
 
 module.exports = {
     validator: (req, item, err, taskCurrent) => {

@@ -20,9 +20,7 @@ const pageTitleList = pageTitleIndex + 'List'
 const folderViewsAdmin = __path__views__admin + `pages/${controllerName}/`
 
 /* GET users listing. */
-router.get('/login', function(req, res, next) {
-  res.render(`${folderViewsAdmin}login`, {pageTitle: 'Admin' });
-});
+
 router.get('/dashboard', async(req, res, next) => {
   let countItems = 0
   await mainModel.count({}).then((data) => {

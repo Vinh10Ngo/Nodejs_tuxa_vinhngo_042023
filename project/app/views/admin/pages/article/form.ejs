@@ -5,8 +5,7 @@
 <% include ./../../helper/image%>
 <% include ./../../helper/choice%>
 
-<%- JSON.stringify(item.special)%>
-
+<%- JSON.stringify(item)%>
 <%
 const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
 const uploadPath = 'uploads/article/'
@@ -35,7 +34,7 @@ let elementsForm = [
                         <label></label>
                         <%- imageHelper(uploadPath, item.thumb, item.name, '800', '500')%>
                     </div>
-                                       
+                                  
                     <input type="hidden" id="form[token]" name="image_old" value="<%= item.thumb%>">
                     <input type="hidden" id="form[token]" name="id" value="<%= item.id%>">
                     <!-- mỗi lần selecbox được chọn thì lấy giá trị gắn vào input 
@@ -44,7 +43,7 @@ let elementsForm = [
                     <div class="card-footer">
                         <div class="col-12 col-sm-8 offset-sm-2">
                             <button type="submit" class="btn btn-primary">Submit </button>
-                            <a href="/<%= linkPrefix%>" class="btn btn-sm btn-danger mr-1"> Cancel</a>
+                            <a href="/<%= linkPrefix%>" class="btn btn-danger"> Cancel</a>
                         </div>
                     </div>
                 </form>

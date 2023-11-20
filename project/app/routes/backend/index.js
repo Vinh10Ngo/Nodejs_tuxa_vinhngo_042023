@@ -8,6 +8,8 @@ router.use('/groups', require('./groups'));
 router.use('/users', require('./users'));
 router.use('/category', require('./category'));
 router.use('/article', require('./article'));
+router.use('/auth', require('./auth'));
+
 
 
 

@@ -18,6 +18,8 @@ module.exports = {
     ERROR_UPLOADS_THUMB: 'vui lòng chọn thumb',
     ERROR_LIMIT: 'Kích thước file không phù hợp',
     ERROR_CATEGORY: 'Category phải khác rỗng',
+    ERROR_EMAIL: 'chiều dài email từ %d đến %d kí tự',
+    ERROR_PASSWORD: 'chiều dài mật khẩu từ %d đến %d kí tự'
 
 
 }

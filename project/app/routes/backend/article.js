@@ -1,9 +1,6 @@
 var express = require('express');
 var router = express.Router ();
 
-const multer  = require('multer')
-const fs  = require('fs')
-
 const controllerName = 'article'
 const mainModel = require(__path__models + controllerName)
 const categoryModel = require(__path__models + 'article')
@@ -27,9 +24,7 @@ const uploadThumb = fileHelpers.uploadFile('thumb', 'article')
 const uploadLink = 'public/uploads/article/'
 
 /* GET article listing. */
-router.get('/login', function(req, res, next) {
-  res.render(`${folderViewsAdmin}login`, {pageTitle: 'Admin' });
-});
+
 router.get('/dashboard', async(req, res, next) => {
   let countItems = 0
   await mainModel.count({}).then((data) => {
@@ -46,7 +41,6 @@ router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
   let item =  {name: '', ordering: 0, status: 'novalue', category_id: '', category_name: '', content: ''}
   let errors = null
-  // truyền categoryItems ra ngoài
   let categoryItems = []
   await categoryModel.listItemInSelectBox().then((item) => {
     categoryItems = item

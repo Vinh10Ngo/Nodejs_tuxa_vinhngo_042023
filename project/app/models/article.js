@@ -187,4 +187,28 @@ module.exports = {
   }
     return mainModel.updateOne({_id: id}, data)
   },
+  listItemsFrontend: (params = null, options = null) => {
+    let find = {}
+    let select = 'name created category.name category.id thumb special'
+    let sort = {}
+    let limit = 4
+    if (options.task == 'item-special') {
+      find = {status: 'active', special: 'yes'}
+      sort = {ordering: 'asc'}
+    }
+    if (options.task == 'item-latest') {
+      find = {status: 'active'}
+      sort = {'modified.time': 'desc'}
+    }
+    if (options.task == 'item-in-category') {
+      find = {status: 'active', 'category.id': params.id}
+      sort = {ordering: 'asc'}
+    }
+    return mainModel
+    .find(find).select(select).sort(sort).limit(limit)
+  }, 
+  getItemsFrontend: (params = null, options = null) => {
+    return mainModel.findById(params.id)
+    .select('name created category.name category.id thumb content')
+  }
 }

@@ -8,8 +8,9 @@ var moment = require('moment'); // require
 
 const validator = require('express-validator');
 
-const flash = require('express-flash-notification');
 const session = require('express-session');
+const flash = require('express-flash-notification');
+const passport = require('passport')
 
 
 var expressLayouts = require('express-ejs-layouts');
@@ -46,8 +47,6 @@ mongoose.connection.once('open', function() {
 
 var app = express();
 
-
-
 app.use(validator({
   customValidators: {
     isNotEqual: (value1, value2) => {
@@ -69,6 +68,8 @@ app.use(flash(app, {
   viewName: __path__views__admin + 'elements/flash'
 }));
 
+app.use(passport.initialize())
+app.use(passport.session())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

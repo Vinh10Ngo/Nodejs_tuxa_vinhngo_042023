@@ -15,6 +15,7 @@ const linkRedirect = '/' + systemConfigs.prefixAdmin + `/${controllerName}/`
 
 router.get('/login', function(req, res, next) {
     let errors = null
+    console.log('login');
     // let type = 'success'
     // const errorMessage = req.flash('error')[0];
     // console.log(errorMessage);
@@ -28,57 +29,59 @@ router.get('/login', function(req, res, next) {
      });
 });
 
-passport.use(new LocalStrategy(
-    async (username, password, done) => {
-        console.log('abc');
-      try {
-        const user = await usersModel.findOne({ username, password });
-        if (!user) {
-          return done(null, false);
-        }
-        return done(null, user);
-      } catch (error) {
-        return done(error);
-      }
-    }
-  ));
+// passport.use(new LocalStrategy(
+//     async (username, password, done) => {
+//         console.log('abc');
+//       try {
+//         const user = await usersModel.findOne({ username, password });
+//         if (!user) {
+//           return done(null, false);
+//         }
+//         return done(null, user);
+//       } catch (error) {
+//         return done(error);
+//       }
+//     }
+//   ));
   
-router.post('/post', async (req, res, next) => {
+router.post('/post', (req, res, next) => {
     req.body = JSON.parse(JSON.stringify(req.body));
     let item = Object.assign(req.body);
     let errors = mainValidate.validator(req);
 
     if (Array.isArray(errors) && errors.length > 0) {
-        console.log('lỗi');
-        return res.render(`${folderViewsAdmin}login`, {
-            item,
-            errors,
-            controllerName,
-            pageTitle: 'Admin',
-            layout: layoutLogin
-        });
+      console.log('có lỗi');
+      res.render('alo')
+        //  res.render(`${folderViewsAdmin}login`, {
+        //     item,
+        //     errors,
+        //     controllerName,
+        //     pageTitle: 'Admin',
+        //     layout: layoutLogin
+        // });
     } else {
-        passport.authenticate('local', {
-            successRedirect: `${systemConfigs.prefixAdmin}/items/dashboard`,
-            failureRedirect: `${linkRedirect}post`,
-            failureFlash: true
-        })(req, res, next)
+      console.log('không có lỗi');
+      // passport.authenticate('local', {
+      //   successRedirect: `/${systemConfigs.prefixAdmin}/items/dashboard`,
+      //   failureRedirect: `${linkRedirect}post`,
+      //   failureFlash: true
+      // })(req, res, next)
     }
   });
 
 
 
 
-  passport.serializeUser(function(user, done) {
-    done(null, user.id);
-  });
+  // passport.serializeUser(function(user, done) {
+  //   done(null, user.id);
+  // });
   
-  passport.deserializeUser(async (id, done) => {
-    try {
-      const user = await usersModel.findOne({ id });
-      done(null, user);
-    } catch (error) {
-      done(error);
-    }
-  });
+  // passport.deserializeUser(async (id, done) => {
+  //   try {
+  //     const user = await usersModel.findOne({ id });
+  //     done(null, user);
+  //   } catch (error) {
+  //     done(error);
+  //   }
+  // });
 module.exports = router

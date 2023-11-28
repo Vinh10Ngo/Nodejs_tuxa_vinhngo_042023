@@ -204,6 +204,14 @@ module.exports = {
       find = {status: 'active', 'category.id': params.id}
       sort = {ordering: 'asc'}
     }
+    if (options.task == 'item-all') {
+      find = {status: 'active'}
+      sort = {ordering: 'asc'}
+    }
+    if (options.task == 'item-hover') {
+      find = {status: 'active', 'category.id': params.id}
+      sort = {ordering: 'asc'}
+    }
     return mainModel
     .find(find).select(select).sort(sort).limit(limit)
   }, 

@@ -12,18 +12,25 @@ router.get('/:id', async function(req, res, next) {
   let idCategory = paramsHelpers.getParams(req.params, 'id', '')
   let itemsCategory = []
   let itemsInCategory = []
+  let itemsAll = []
   await categoryModel.listItemsFrontend(null, {task: 'item-in-menu'}).then((items) => {
     itemsCategory = items
   })
   await articleModel.listItemsFrontend({id: idCategory}, {task: 'item-in-category'}).then((items) => {
     itemsInCategory = items
   })
+  await articleModel.listItemsFrontend(null, {task: 'item-all'}).then((items) => {
+    itemsAll = items
+  })
+ 
   res.render(`${folderViewsNews}category`, { 
     layout: layoutNews,
     itemsCategory,
-    itemsInCategory
-  });
+    itemsInCategory,
+    itemsAll,
+  }); 
 });
 
 
 module.exports = router;
+

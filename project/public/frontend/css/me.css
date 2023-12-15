@@ -1,0 +1,27 @@
+.article-list {
+    display: flex;
+    flex-wrap: nowrap; /* Ngăn chặn việc ngắt dòng */
+    overflow-x: auto; /* Cho phép cuộn nếu danh sách quá rộng */
+    gap: 10px; /* Khoảng cách giữa các mục */
+  }
+  
+/* Trong file CSS của bạn */
+.flex-wr-s-c {
+  display: flex;
+  justify-content: left; /* Căn giữa các phần tử */
+}
+
+.flex-wr-s-c ul {
+  list-style: none; /* Loại bỏ dấu đầu dòng của danh sách */
+  display: flex; /* Sắp xếp các nút phân trang trên cùng một hàng */
+  padding: 0;
+}
+
+.flex-wr-s-c ul li {
+  margin: 0 5px; /* Khoảng cách giữa các nút */
+}
+
+.highlight {
+  background-color: yellow;
+  /* Các thuộc tính CSS khác để highlight */
+}

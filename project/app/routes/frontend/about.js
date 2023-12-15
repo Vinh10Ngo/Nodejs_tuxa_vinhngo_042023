@@ -4,6 +4,8 @@ var router = express.Router();
 const categoryModel = require(__path__models + 'category')
 const folderViewsNews = __path__views__news + 'pages/others/'
 const layoutNews = __path__views__news + 'frontend'
+const controllerName = 'about'
+
 
 /* GET ĩndex page. */
 router.get('/', async function(req, res, next) {
@@ -14,7 +16,7 @@ router.get('/', async function(req, res, next) {
   res.render(`${folderViewsNews}about`, { 
     layout: layoutNews,
     itemsCategory,
-    
+    controllerName
   });
 });
 

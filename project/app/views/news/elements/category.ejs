@@ -6,34 +6,12 @@
     </div>
 
     <ul class="p-t-35">
+        <% itemsCategory.forEach((item, index) => { %>
         <li class="how-bor3 p-rl-4">
-            <a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
-                Fashion
+            <a href="/<%=systemConfigs.prefixNews%>/category/<%= item.id%>" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
+                <%=item.name%>
             </a>
         </li>
-
-        <li class="how-bor3 p-rl-4">
-            <a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
-                Beauty
-            </a>
-        </li>
-
-        <li class="how-bor3 p-rl-4">
-            <a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
-                Street Style
-            </a>
-        </li>
-
-        <li class="how-bor3 p-rl-4">
-            <a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
-                Life Style
-            </a>
-        </li>
-
-        <li class="how-bor3 p-rl-4">
-            <a href="#" class="dis-block f1-s-10 text-uppercase cl2 hov-cl10 trans-03 p-tb-13">
-                DIY & Crafts
-            </a>
-        </li>
+        <% }) %>
     </ul>
 </div>

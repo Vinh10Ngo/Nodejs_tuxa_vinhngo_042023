@@ -7,6 +7,7 @@ const schema = new mongoose.Schema({
     ordering: Number, 
     content: String,
     thumb: String,
+    view: Number,
     special: String,
     category: {
         id: String,
@@ -23,4 +24,5 @@ const schema = new mongoose.Schema({
         time: Date   
     }
 });
+
 module.exports= mongoose.model(databaseConfigs.col_article, schema)

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router ();
 
 const controllerName = 'article'
+const he = require('he')
 const mainModel = require(__path__models + controllerName)
 const categoryModel = require(__path__models + 'article')
 const fileHelpers  = require(__path__helpers + 'file')
@@ -63,6 +64,8 @@ router.post('/save', (req, res, next) => {
   uploadThumb (req, res, async (err) => {
     req.body = JSON.parse(JSON.stringify(req.body));
     let item = Object.assign(req.body)
+    item.content = item.content.replace(/<\/?p>/g, '')
+    item.content = he.decode(item.content)
     item.thumb = (req.file == undefined) ? null : req.file.filename
     let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
     let errors = mainValidate.validator(req, item, err, taskCurrent)

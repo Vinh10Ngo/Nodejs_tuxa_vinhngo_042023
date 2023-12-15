@@ -10,8 +10,13 @@ const uploadPath = '/uploads/article/'
 	<!-- Header -->
 
 	<!-- Breadcrumb -->
-	<% include ./../../elements/breadcrumb%>
-
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<% include ./../../elements/breadcrumb%>
+			<% include ./../../elements/search%>
+		</div>
+	</div>
+	
 	<!-- Content -->
 	<section class="bg0 p-b-140 p-t-10">
 		<div class="container">
@@ -20,7 +25,7 @@ const uploadPath = '/uploads/article/'
 					<div class="p-r-10 p-r-0-sr991">
 						<!-- Blog Detail -->
 						<div class="p-b-70">
-							<a href="/news/category/<%= itemsBlogDetail.category.id%>" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
+							<a href="/<%=systemConfigs.prefixNews%>/category/<%= itemsBlogDetail.category.id%>" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
 								<%= itemsBlogDetail.category.name%>
 							</a>
 						
@@ -117,7 +122,6 @@ const uploadPath = '/uploads/article/'
 						<% include ./../../elements/category%>
 
 						<!-- Archive -->
-						<% include ./../../elements/archive%>
 
 						<!-- Popular Posts -->
 						<% include ./../../elements/popular-post%>

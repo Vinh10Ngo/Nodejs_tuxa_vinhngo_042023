@@ -188,6 +188,7 @@ $(document).ready(function () {
             image_preview.src = URL.createObjectURL(file)
         }
       }
+ 
 });
 
 

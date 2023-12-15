@@ -6,21 +6,22 @@
     </div>
 
     <ul class="p-t-35">
+        <% itemsMostPopular.forEach((item, index) => { %>
         <li class="flex-wr-sb-s p-b-30">
-            <a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
-                <img src="/frontend/images/popular-post-04.jpg" alt="IMG">
+            <a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= item.id%>" class="size-w-10 wrap-pic-w hov1 trans-03">
+                <img src="<%= uploadPath + item.thumb%>" alt="<%=item.name%>">
             </a>
 
             <div class="size-w-11">
                 <h6 class="p-b-4">
-                    <a href="blog-detail-02.html" class="f1-s-5 cl3 hov-cl10 trans-03">
-                        Donec metus orci, malesuada et lectus vitae
+                    <a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= item.id%>" class="f1-s-5 cl3 hov-cl10 trans-03">
+                        <%=item.name%>
                     </a>
                 </h6>
 
                 <span class="cl8 txt-center p-b-24">
                     <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
-                        Music
+                        <%=item.category.name%>
                     </a>
 
                     <span class="f1-s-3 m-rl-3">
@@ -28,66 +29,11 @@
                     </span>
 
                     <span class="f1-s-3">
-                        Feb 18
+                        <%=item.created.time%>
                     </span>
                 </span>
             </div>
         </li>
-
-        <li class="flex-wr-sb-s p-b-30">
-            <a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
-                <img src="/frontend/images/popular-post-05.jpg" alt="IMG">
-            </a>
-
-            <div class="size-w-11">
-                <h6 class="p-b-4">
-                    <a href="blog-detail-02.html" class="f1-s-5 cl3 hov-cl10 trans-03">
-                        Donec metus orci, malesuada et lectus vitae
-                    </a>
-                </h6>
-
-                <span class="cl8 txt-center p-b-24">
-                    <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
-                        Game
-                    </a>
-
-                    <span class="f1-s-3 m-rl-3">
-                        -
-                    </span>
-
-                    <span class="f1-s-3">
-                        Feb 16
-                    </span>
-                </span>
-            </div>
-        </li>
-
-        <li class="flex-wr-sb-s p-b-30">
-            <a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
-                <img src="/frontend/images/popular-post-06.jpg" alt="IMG">
-            </a>
-
-            <div class="size-w-11">
-                <h6 class="p-b-4">
-                    <a href="blog-detail-02.html" class="f1-s-5 cl3 hov-cl10 trans-03">
-                        Donec metus orci, malesuada et lectus vitae
-                    </a>
-                </h6>
-
-                <span class="cl8 txt-center p-b-24">
-                    <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
-                        Celebrity
-                    </a>
-
-                    <span class="f1-s-3 m-rl-3">
-                        -
-                    </span>
-
-                    <span class="f1-s-3">
-                        Feb 12
-                    </span>
-                </span>
-            </div>
-        </li>
+        <% }) %>
     </ul>
 </div>

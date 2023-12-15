@@ -131,6 +131,12 @@ module.exports = {
       sort = {ordering: 'asc'}
       select = 'name'
     }
+    if (options.task == 'category-in-index') {
+      find = {status: 'active'}
+      sort = {ordering: 'asc'}
+      select = 'name'
+      limit = 3
+    }
     return mainModel
     .find(find).select(select).sort(sort).limit(limit)
  }

@@ -1,3 +1,8 @@
+<% include ./../helper/category-footer%>
+
+<%
+const uploadPath = '/uploads/article/'
+%>
 <footer>
     <div class="bg2 p-t-40 p-b-25">
         <div class="container">
@@ -50,59 +55,25 @@
                     </div>
 
                     <ul>
+                        <% itemsMostPopular.forEach((item, index) => { %>
                         <li class="flex-wr-sb-s p-b-20">
-                            <a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-                                <img src="/frontend/images/popular-post-01.jpg" alt="IMG">
+                            <a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= item.id%>" class="size-w-4 wrap-pic-w hov1 trans-03">
+                                <img src="<%= uploadPath + item.thumb%>" alt="<%=item.name%>">
                             </a>
 
                             <div class="size-w-5">
                                 <h6 class="p-b-5">
-                                    <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-                                        Donec metus orci, malesuada et lectus vitae
+                                    <a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= item.id%>" class="f1-s-5 cl11 hov-cl10 trans-03">
+                                        <%=item.name%>
                                     </a>
                                 </h6>
 
                                 <span class="f1-s-3 cl6">
-                                    Feb 17
+                                    <%=item.created.time%>
                                 </span>
                             </div>
                         </li>
-
-                        <li class="flex-wr-sb-s p-b-20">
-                            <a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-                                <img src="/frontend/images/popular-post-02.jpg" alt="IMG">
-                            </a>
-
-                            <div class="size-w-5">
-                                <h6 class="p-b-5">
-                                    <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-                                        Lorem ipsum dolor sit amet, consectetur
-                                    </a>
-                                </h6>
-
-                                <span class="f1-s-3 cl6">
-                                    Feb 16
-                                </span>
-                            </div>
-                        </li>
-
-                        <li class="flex-wr-sb-s p-b-20">
-                            <a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-                                <img src="/frontend/images/popular-post-03.jpg" alt="IMG">
-                            </a>
-
-                            <div class="size-w-5">
-                                <h6 class="p-b-5">
-                                    <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-                                        Suspendisse dictum enim quis imperdiet auctor
-                                    </a>
-                                </h6>
-
-                                <span class="f1-s-3 cl6">
-                                    Feb 15
-                                </span>
-                            </div>
-                        </li>
+                        <% }) %>
                     </ul>
                 </div>
 
@@ -114,35 +85,7 @@
                     </div>
 
                     <ul class="m-t--12">
-                        <li class="how-bor1 p-rl-5 p-tb-10">
-                            <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-                                Fashion (22)
-                            </a>
-                        </li>
-
-                        <li class="how-bor1 p-rl-5 p-tb-10">
-                            <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-                                Technology (29)
-                            </a>
-                        </li>
-
-                        <li class="how-bor1 p-rl-5 p-tb-10">
-                            <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-                                Street Style (15)
-                            </a>
-                        </li>
-
-                        <li class="how-bor1 p-rl-5 p-tb-10">
-                            <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-                                Life Style (28)
-                            </a>
-                        </li>
-
-                        <li class="how-bor1 p-rl-5 p-tb-10">
-                            <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-                                DIY & Crafts (16)
-                            </a>
-                        </li>
+                        <%- categoryFooterHelper(systemConfigs.prefixNews, countArticlesInCategory)%>
                     </ul>
                 </div>
             </div>

@@ -17,4 +17,5 @@ const schema = new mongoose.Schema({
         time: Date   
     }
 });
+
 module.exports= mongoose.model(databaseConfigs.col_items, schema)

@@ -1,6 +1,5 @@
 const mainModel = require(__path__schemas + 'article')
 const categoryModel = require(__path__schemas + 'category')
-const notifyConfigs = require(__path__configs + 'notify');
 const fileHelpers  = require(__path__helpers + 'file')
 const uploadLink = 'public/uploads/article/'
 
@@ -196,21 +195,30 @@ module.exports = {
       find = {status: 'active', special: 'yes'}
       sort = {ordering: 'asc'}
     }
+    if (options.task == 'item-special-category') {
+      find = {status: 'active', special: 'yes'}
+      sort = {ordering: 'asc'}
+      limit = 5
+    }
     if (options.task == 'item-latest') {
       find = {status: 'active'}
-      sort = {'modified.time': 'desc'}
+      sort = {'created.time': 'desc'}
     }
     if (options.task == 'item-in-category') {
       find = {status: 'active', 'category.id': params.id}
       sort = {ordering: 'asc'}
+      limit = 4
     }
-    if (options.task == 'item-all') {
-      find = {status: 'active'}
-      sort = {ordering: 'asc'}
-    }
-    if (options.task == 'item-hover') {
+    if (options.task == 'item-in-category-page') {    
       find = {status: 'active', 'category.id': params.id}
       sort = {ordering: 'asc'}
+      limit = 0
+    }
+    if (options.task == 'item-keyword') {    
+      find = {status: 'active', name: { $regex: params.keyword, $options: 'i' }}
+      sort = {ordering: 'asc'}
+      limit = 0
+      select = 'name created category.name category.id thumb special content'
     }
     return mainModel
     .find(find).select(select).sort(sort).limit(limit)
@@ -218,5 +226,23 @@ module.exports = {
   getItemsFrontend: (params = null, options = null) => {
     return mainModel.findById(params.id)
     .select('name created category.name category.id thumb content')
-  }
+  }, 
+  countArticleFrontend: (params = null, options = null) =>{
+    let condition = {}
+    if (options.task == 'item-keyword') {    
+      condition = {}
+    }
+    if (options.task == 'item-in-category') {    
+      condition = {'category.id': params.id}
+    }
+    return mainModel.countDocuments(condition)
+  }, 
+  countView: (params = null) => {
+    return mainModel.updateOne({ '_id': params.id }, { $inc: { 'view': 1 } })
+  },
+  getMostPopularArticles: () => {
+    return mainModel.find().sort({ view: -1 }).limit(3)
+  }, 
+ 
+ 
 }

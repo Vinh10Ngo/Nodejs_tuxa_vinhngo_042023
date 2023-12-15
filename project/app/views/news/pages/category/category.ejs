@@ -1,3 +1,5 @@
+<% include ./../../helper/category-pagination%>
+
 <%
 const uploadPath = '/uploads/article/'
 %>
@@ -8,8 +10,12 @@ const uploadPath = '/uploads/article/'
 <body class="animsition">
 
 	<!-- Breadcrumb -->
-	<% include ./../../elements/breadcrumb%>
-
+	<div class="container">
+		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+			<% include ./../../elements/breadcrumb%>
+			<% include ./../../elements/search%>
+		</div>
+	</div>
 	<!-- Page heading -->
 	<% include ./../../elements/page-heading%>
 
@@ -19,23 +25,23 @@ const uploadPath = '/uploads/article/'
 		<div class="container">
 			<div class="row m-rl--1">
 				<div class="col-md-6 p-rl-1 p-b-2">
-					<div class="bg-img1 size-a-3 how1 pos-relative" style="background-image: url(/frontend/images/entertaiment-01.jpg);">
-						<a href="blog-detail-01.html" class="dis-block how1-child1 trans-03"></a>
+					<div class="bg-img1 size-a-3 how1 pos-relative" style="background-image: url('<%=uploadPath + itemsSpecialCategory[0].thumb%>');">
+						<a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= itemsSpecialCategory[0].id%>" class="dis-block how1-child1 trans-03"></a>
 
 						<div class="flex-col-e-s s-full p-rl-25 p-tb-20">
-							<a href="#" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
-								Celebrity
+							<a href="/<%=systemConfigs.prefixNews%>/category/<%= itemsSpecialCategory[0].category.id%>" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+								<%= itemsSpecialCategory[0].category.name%>
 							</a>
 
 							<h3 class="how1-child2 m-t-14 m-b-10">
-								<a href="blog-detail-01.html" class="how-txt1 size-a-6 f1-l-1 cl0 hov-cl10 trans-03">
-									Music quisque at ipsum vel orci eleifend ultrices
+								<a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= itemsSpecialCategory[0].id%>" class="how-txt1 size-a-6 f1-l-1 cl0 hov-cl10 trans-03">
+									<%= itemsSpecialCategory[0].name%>
 								</a>
 							</h3>
 
 							<span class="how1-child2">
 								<span class="f1-s-4 cl11">
-									Jack Sims
+									<%= itemsSpecialCategory[0].created.user_name%>
 								</span>
 
 								<span class="f1-s-3 cl11 m-rl-3">
@@ -43,7 +49,7 @@ const uploadPath = '/uploads/article/'
 								</span>
 
 								<span class="f1-s-3 cl11">
-									Feb 16
+									<%= itemsSpecialCategory[0].created.time%>
 								</span>
 							</span>
 						</div>
@@ -52,77 +58,25 @@ const uploadPath = '/uploads/article/'
 
 				<div class="col-md-6 p-rl-1">
 					<div class="row m-rl--1">
+						<% for (let i = 1; i < itemsSpecialCategory.length; i++) { %>
 						<div class="col-sm-6 p-rl-1 p-b-2">
-							<div class="bg-img1 size-a-14 how1 pos-relative" style="background-image: url(/frontend/images/entertaiment-02.jpg);">
-								<a href="blog-detail-01.html" class="dis-block how1-child1 trans-03"></a>
+							<div class="bg-img1 size-a-14 how1 pos-relative" style="background-image: url('<%=uploadPath + itemsSpecialCategory[i].thumb%>');">
+								<a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= itemsSpecialCategory[i].id%>" class="dis-block how1-child1 trans-03"></a>
 
 								<div class="flex-col-e-s s-full p-rl-25 p-tb-20">
-									<a href="#" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
-										Game
+									<a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= itemsSpecialCategory[i].category.id%>" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+										<%= itemsSpecialCategory[i].category.name%>
 									</a>
 
 									<h3 class="how1-child2 m-t-14">
-										<a href="blog-detail-01.html" class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03">
-											Pellentesque dui nibh, pellen-tesque ut dapibus ut
+										<a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= itemsSpecialCategory[i].id%>" class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03">
+											<%= itemsSpecialCategory[i].name%>
 										</a>
 									</h3>
 								</div>
 							</div>
 						</div>
-
-						<div class="col-sm-6 p-rl-1 p-b-2">
-							<div class="bg-img1 size-a-14 how1 pos-relative" style="background-image: url(/frontend/images/entertaiment-03.jpg);">
-								<a href="blog-detail-01.html" class="dis-block how1-child1 trans-03"></a>
-
-								<div class="flex-col-e-s s-full p-rl-25 p-tb-20">
-									<a href="#" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
-										Music
-									</a>
-
-									<h3 class="how1-child2 m-t-14">
-										<a href="blog-detail-01.html" class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03">
-											Motobike Vestibulum vene-natis purus nec nibh volutpat
-										</a>
-									</h3>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-sm-6 p-rl-1 p-b-2">
-							<div class="bg-img1 size-a-14 how1 pos-relative" style="background-image: url(/frontend/images/entertaiment-04.jpg);">
-								<a href="blog-detail-01.html" class="dis-block how1-child1 trans-03"></a>
-
-								<div class="flex-col-e-s s-full p-rl-25 p-tb-20">
-									<a href="#" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
-										Game
-									</a>
-
-									<h3 class="how1-child2 m-t-14">
-										<a href="blog-detail-01.html" class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03">
-											Pellentesque dui nibh, pellen-tesque ut dapibus ut
-										</a>
-									</h3>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-sm-6 p-rl-1 p-b-2">
-							<div class="bg-img1 size-a-14 how1 pos-relative" style="background-image: url(/frontend/images/entertaiment-05.jpg);">
-								<a href="blog-detail-01.html" class="dis-block how1-child1 trans-03"></a>
-
-								<div class="flex-col-e-s s-full p-rl-25 p-tb-20">
-									<a href="#" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
-										Music
-									</a>
-
-									<h3 class="how1-child2 m-t-14">
-										<a href="blog-detail-01.html" class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03">
-											Motobike Vestibulum vene-natis purus nec nibh volutpat
-										</a>
-									</h3>
-								</div>
-							</div>
-						</div>
+						<% } %>
 					</div>
 				</div>
 			</div>
@@ -134,44 +88,41 @@ const uploadPath = '/uploads/article/'
 			<div class="row justify-content-center">
 				<div class="col-md-10 col-lg-8 p-b-80">
 					<div class="row">
-						<% itemsInCategory.forEach((item, index) => { %>	
-						<div class="col-sm-6 p-r-25 p-r-15-sr991">
-							<!-- Item latest -->	
-							<div class="m-b-45">
-								<a href="/news/blog-detail/<%= item.id%>" class="wrap-pic-w hov1 trans-03">
-									<img src="<%= uploadPath + item.thumb%>" alt="<%= item.name%>">
-								</a>
-						
-								<div class="p-t-16">
-									<h5 class="p-b-5">
-										<a href="/news/blog-detail/<%= item.id%>" class="f1-m-3 cl2 hov-cl10 trans-03">
-											<%= item.name%> 
-										</a>
-									</h5>
-						
-									<span class="cl8">
-										<a href="/news/blog-detail/<%= item.id%>" class="f1-s-4 cl8 hov-cl10 trans-03">
-											<%= item.created.user_name%>
-										</a>
-						
-										<span class="f1-s-3 m-rl-3">
-											-
+							<% itemsInCategory.forEach((item, index) => { %>	
+							<div class="col-sm-6 p-r-25 p-r-15-sr991">
+								<!-- Item latest -->	
+								<div class="m-b-45">
+									<a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= item.id%>" class="wrap-pic-w hov1 trans-03">
+										<img src="<%= uploadPath + item.thumb%>" alt="<%= item.name%>">
+									</a>
+							
+									<div class="p-t-16">
+										<h5 class="p-b-5">
+											<a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= item.id%>" class="f1-m-3 cl2 hov-cl10 trans-03">
+												<%= item.name%> 
+											</a>
+										</h5>
+							
+										<span class="cl8">
+											<a href="/<%=systemConfigs.prefixNews%>/blog-detail/<%= item.id%>" class="f1-s-4 cl8 hov-cl10 trans-03">
+												<%= item.created.user_name%>
+											</a>
+							
+											<span class="f1-s-3 m-rl-3">
+												-
+											</span>
+							
+											<span class="f1-s-3">
+												<%= item.created.time%>
+											</span>
 										</span>
-						
-										<span class="f1-s-3">
-											<%= item.created.time%>
-										</span>
-									</span>
+									</div>
 								</div>
 							</div>
-						</div>
-						<% }) %>					
+							<% }) %>					
 					</div>
 					<!-- Pagination -->
-					<div class="flex-wr-s-c m-rl--7 p-t-15">
-						<a href="#" class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active">1</a>
-						<a href="#" class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7">2</a>
-					</div>
+					<%- categoryPaginationHelper(systemConfigs.prefixNews, totalPages, idCategory, paginationCatgoryPage) %>
 				</div>
 
 				<div class="col-md-10 col-lg-4 p-b-80">

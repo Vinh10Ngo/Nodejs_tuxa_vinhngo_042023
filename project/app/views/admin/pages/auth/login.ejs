@@ -7,6 +7,8 @@ const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
     <div class="card-body login-card-body">
         <p class="login-box-msg">Đăng nhập trang quản trị</p>
         <% include ./../../elements/errors%>
+        <% include ./../../elements/flash%>
+
       
         <form action="/<%=linkPrefix%>post" method="post" enctype="application/x-www-form-urlencoded" id="form-login">
             <!-- USERNAME -->

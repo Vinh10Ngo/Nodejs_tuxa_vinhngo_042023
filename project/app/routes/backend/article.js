@@ -26,16 +26,6 @@ const uploadLink = 'public/uploads/article/'
 
 /* GET article listing. */
 
-router.get('/dashboard', async(req, res, next) => {
-  let countItems = 0
-  await mainModel.count({}).then((data) => {
-    countItems = data
-  })
-  res.render(`${folderViewsAdmin}dashboard`, {
-     pageTitle: 'Dashboard',
-     countItems: countItems 
-  });
-});
 
 //form
 router.get('/form(/:id)?', async function(req, res, next) {

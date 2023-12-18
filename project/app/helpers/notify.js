@@ -36,7 +36,7 @@ module.exports = {
                 notifyContent = ''
                 break;
         }
-        req.flash('success', notifyContent, false);
+        req.flash('success', notifyContent);
         res.redirect(linkIndex)
     }
 }

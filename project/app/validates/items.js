@@ -15,6 +15,7 @@ module.exports = {
         req.checkBody('ordering', util.format(notifyConfigs.ERROR_ORDERING, options.ordering.min, options.ordering.max)).isInt({gt: options.ordering.min, lt: options.ordering.max})
         req.checkBody('status', notifyConfigs.ERROR_STATUS).isNotEqual(options.status.value)
         req.checkBody('content', util.format(notifyConfigs.ERROR_NAME, options.content.min, options.content.max)).isLength({min: options.content.min, max: options.content.max})
+        
         let errors = req.validationErrors()
         
         return errors

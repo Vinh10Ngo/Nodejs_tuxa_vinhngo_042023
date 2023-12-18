@@ -5,11 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var moment = require('moment'); // require
+var flash = require('connect-flash');
 
 const validator = require('express-validator');
 
 const session = require('express-session');
-const flash = require('express-flash-notification');
 const passport = require('passport')
 
 
@@ -63,13 +63,15 @@ app.use(session({
   resave: true, 
   saveUninitialized: true, 
   secret: 'somesecret', 
-  cookie: { maxAge: 60000 }}));
-app.use(flash(app, {
-  viewName: __path__views__admin + 'elements/flash'
-}));
+  cookie: { maxAge: 5*60000 }}));
 
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(flash());
+app.use(function(req, res, next) {
+  res.locals.messages = req.flash()
+  next()
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -1,3 +1,7 @@
+
+<%
+const linkPrefix = systemConfigs.prefixAdmin + '/auth/'
+%>
 <aside class="main-sidebar sidebar-dark-info elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
@@ -18,7 +22,7 @@
         <nav name="item_selected" class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                        <a href="/<%= systemConfigs.prefixAdmin%>/items/dashboard" class="nav-link" data-active="dashboard">
+                        <a href="/<%= systemConfigs.prefixAdmin%>/dashboard" class="nav-link" data-active="dashboard">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
@@ -106,6 +110,12 @@
                             </a>
                         </li>
                     </ul>
+                    <li class="nav-item">
+                        <a href="/<%=linkPrefix%>logout" class="nav-link" data-active="form">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>Log Out</p>
+                        </a>
+                    </li>
                 </li>
             </ul>
         </nav>

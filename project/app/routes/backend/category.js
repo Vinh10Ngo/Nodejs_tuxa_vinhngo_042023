@@ -24,16 +24,7 @@ const folderViewsAdmin = __path__views__admin + `pages/${controllerName}/`
 
 /* GET users listing. */
 
-router.get('/dashboard', async(req, res, next) => {
-  let countItems = 0
-  await mainModel.count({}).then((data) => {
-    countItems = data
-  })
-  res.render(`${folderViewsAdmin}dashboard`, {
-     pageTitle: 'Dashboard',
-     countItems: countItems 
-  });
-});
+
 //form
 router.get('/form(/:id)?', function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')

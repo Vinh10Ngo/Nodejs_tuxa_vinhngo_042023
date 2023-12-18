@@ -3,6 +3,8 @@ const groupsModel = require(__path__schemas + 'groups')
 const notifyConfigs = require(__path__configs + 'notify');
 const fileHelpers  = require(__path__helpers + 'file')
 const uploadLink = 'public/uploads/users/'
+const crypto = require('crypto');
+
 
 module.exports = {
     
@@ -173,5 +175,11 @@ module.exports = {
         time: Date.now()   
       }
     })    
-  }
+  }, 
+  getItemsByUserName: (username, options = null) => {
+    if(options == null) {
+    return mainModel.find({status: 'active', username: username}).select('username password avatar status groups.name')
+    }
+  },
+ 
 }

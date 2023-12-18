@@ -1,7 +1,12 @@
 
 
-
-  <div class="btn btn-<%=type%>" role="alert">
+<% Object.keys(messages).forEach(function(type) { %>
+  <div class="btn btn-<%=((type === 'error')?'danger': type)%>" role="alert">
+    <% messages[type].forEach(function(message) { %>
     <span class="close-btn">&times;</span>
     <%=message%>
+    <% }) %>
   </div>
+<% }) %>
+  
+

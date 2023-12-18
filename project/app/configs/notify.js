@@ -19,7 +19,8 @@ module.exports = {
     ERROR_LIMIT: 'Kích thước file không phù hợp',
     ERROR_CATEGORY: 'Category phải khác rỗng',
     ERROR_EMAIL: 'chiều dài email từ %d đến %d kí tự',
-    ERROR_PASSWORD: 'chiều dài mật khẩu từ %d đến %d kí tự'
-
-
+    ERROR_PASSWORD: 'chiều dài mật khẩu từ %d đến %d kí tự',
+    ERROR_LOGIN_USERNAME_NOTEXIST: 'Username không tồn tại',
+    ERROR_LOGIN_PASSWORD_INCORRECT: 'Mật khẩu không chính xác',
+    ERROR_LOGIN: 'Thông tin đăng nhập không chính xác'
 }

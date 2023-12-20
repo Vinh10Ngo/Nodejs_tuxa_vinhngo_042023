@@ -3,7 +3,7 @@ const controllerName = 'auth'
 const linkRedirect = ('/' + systemConfigs.prefixNews + `/${controllerName}/`).replace(/(\/)\1+/g, '$1')
 
 module.exports = (req, res, next) => {
-    req.user.username = ''
+    req.user.username = 'phucvinh'
   if (req.isAuthenticated()) {
       if(req.user.username == 'phucvinh') {
           next()

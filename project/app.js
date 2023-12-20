@@ -10,7 +10,6 @@ const validator = require('express-validator');
 
 const session = require('express-session');
 const passport = require('passport')
-const FileStore = require('session-file-store')(session);
 
 var expressLayouts = require('express-ejs-layouts');
 var mongoose = require('mongoose')
@@ -62,9 +61,6 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 app.use(session({
-  store: new FileStore({
-    path: sessionStorePath  , // Đường dẫn tới thư mục lưu trữ phiên
-  }),
   resave: true, 
   saveUninitialized: true, 
   secret: 'somesecret', 

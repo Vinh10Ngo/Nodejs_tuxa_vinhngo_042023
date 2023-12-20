@@ -45,7 +45,7 @@ router.post('/save', (req, res, next) => {
   mainValidate.validator(req)
   let errors = req.validationErrors()
   let username = req.user.username
-  let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
+  let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
   if(Array.isArray(errors) && errors.length > 0) {
     let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
     res.render(`${folderViewsAdmin}form`, { pageTitle, item, controllerName, errors});

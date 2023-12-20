@@ -1,24 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-const systemConfigs = require(__path__configs + 'system')
-const controllerName = 'auth'
-const linkRedirect = '/' + systemConfigs.prefixAdmin + `/${controllerName}/`
+const middleAuthetication = require(__path__middleware + 'auth')
 
 /* GET home page. */
-router.use('/auth', require('./auth'));
-router.use('/', (req, res, next) => {
-    if (req.isAuthenticated()) {
-        if(req.user.username == 'phucvinh') {
-            next()
-        } else {
-            res.redirect(`${linkRedirect}no-permission`)
-        }
-
-    } else {
-        res.redirect(`${linkRedirect}login`)
-    }
-}, require('./home'));
+router.use('/', middleAuthetication, require('./home'));
 router.use('/items', require('./items'));
 router.use('/dashboard', require('./dashboard'));
 router.use('/groups', require('./groups'));

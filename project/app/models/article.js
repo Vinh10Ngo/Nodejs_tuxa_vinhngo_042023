@@ -230,7 +230,7 @@ module.exports = {
   countArticleFrontend: (params = null, options = null) =>{
     let condition = {}
     if (options.task == 'item-keyword') {    
-      condition = {}
+      condition = {name: { $regex: params.keyword, $options: 'i' }}
     }
     if (options.task == 'item-in-category') {    
       condition = {'category.id': params.id}

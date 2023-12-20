@@ -7,6 +7,7 @@ module.exports = {
     folder__validates :'validates',
     folder__views :'views',
     folder__views__admin: 'admin',
+    folder__middleware: 'middleware',
     folder__views__news: 'news',
     folder__models :'models',
     folder__public :'public',

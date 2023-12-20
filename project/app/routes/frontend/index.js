@@ -1,8 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+const middleGetUserInfo = require(__path__middleware + 'get-user-info')
+const middleGetCategoryForMenu = require(__path__middleware + 'get-category-for-menu')
+const middleGetMostPopularItems = require(__path__middleware + 'get-most-popular-items')
+
+
 /* GET home page. */
-router.use('/', require('./home'));
+router.use('/auth', require('./auth'));
+router.use('/', middleGetUserInfo, middleGetCategoryForMenu, middleGetMostPopularItems, require('./home'));
 router.use('/blog-detail', require('./blog-detail'));
 router.use('/category', require('./category'));
 router.use('/about', require('./about'));

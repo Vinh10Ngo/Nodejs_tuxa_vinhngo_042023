@@ -4,6 +4,7 @@ $('.ordering').change(function () {
   let ordering = $(this).val()
   let id = $(this).data('id')
   let link = $(this).data('link')
+  
   $.ajax({
     type: 'POST',
     url: link,

@@ -6,12 +6,11 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var moment = require('moment'); // require
 var flash = require('connect-flash');
-
 const validator = require('express-validator');
 
 const session = require('express-session');
 const passport = require('passport')
-
+const FileStore = require('session-file-store')(session);
 
 var expressLayouts = require('express-ejs-layouts');
 var mongoose = require('mongoose')
@@ -32,11 +31,14 @@ global.__path__views =  __path__app + pathConfig.folder__views + '/'
 global.__path__views__admin =  __path__views + pathConfig.folder__views__admin + '/'
 global.__path__views__news =  __path__views + pathConfig.folder__views__news + '/'
 global.__path__models =  __path__app + pathConfig.folder__models + '/'
+global.__path__middleware =  __path__app + pathConfig.folder__middleware + '/'
 global.__path__public = __base + pathConfig.folder__public + '/'
 global.__path__upload = __path__public + pathConfig.folder__upload + '/'
 
 const systemConfigs = require(__path__configs + 'system')
 const databaseConfigs = require(__path__configs + 'database')
+const sessionStorePath = path.join(__dirname, 'session_data');
+
 
 mongoose.connect(`mongodb+srv://${databaseConfigs.database}:${databaseConfigs.password}@cluster0.1r1zsfn.mongodb.net/items`);
 mongoose.connection.once('open', function() {
@@ -60,11 +62,15 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 app.use(session({
+  store: new FileStore({
+    path: sessionStorePath  , // Đường dẫn tới thư mục lưu trữ phiên
+  }),
   resave: true, 
   saveUninitialized: true, 
   secret: 'somesecret', 
-  cookie: { maxAge: 5*60000 }}));
+  cookie: { maxAge: 10*60000 }}));
 
+require(__path__configs + 'passport')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash());
@@ -111,10 +117,17 @@ app.use( function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // render the error page.
+  if (systemConfigs.env == 'dev') {
     res.status(err.status || 500);
     res.render(__path__views__admin + 'pages/error', { pageTitle: 'Page Not Found' });
-  
+  }
+  if(systemConfigs.env == 'production') {
+    res.status(err.status || 500);
+    res.render(__path__views__news + 'pages/error', {
+    layout: __path__views__news + 'frontend'
+    })
+  } 
 });
 
 module.exports = app;

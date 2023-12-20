@@ -101,7 +101,7 @@ let elementsControl = [
 									<td class="text-center position-relative">
 										<%- statusHelper(linkPrefix, item.status, item.id)%>
                                     </td>
-                                    <td class="text-center position-relative"><input type="number" value="<%= item.ordering%>" class="ordering form-control form-control-sm m-auto text-center" style="width: 65px" id="chkOrdering[1]" data-id="1" min="1"></td>
+                                    <td class="text-center position-relative"><input type="number" value="<%= item.ordering%>" class="ordering form-control form-control-sm m-auto text-center" style="width: 65px" id="chkOrdering[1]" data-link="/<%= linkPrefix%>change-single-ordering" data-id="<%=item.id%>" min="1"></td>
                                     <td >
                                         <%- groupsACPHelper(linkPrefix, item.groups_acp, item.id) %>                                   
                                     </td>

@@ -70,6 +70,7 @@ router.post('/save', (req, res, next) => {
     item.avatar = (req.file == undefined) ? null : req.file.filename
     let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
     let errors = mainValidate.validator(req, item, err, taskCurrent)
+    let username = req.user.username
 
     if(Array.isArray(errors) && errors.length > 0) {
       let groupsItems = []     
@@ -89,7 +90,7 @@ router.post('/save', (req, res, next) => {
           item.avatar = req.file.filename
           if (taskCurrent == 'edit') fileHelpers.remove(uploadLink, item.image_old)
         }
-        mainModel.saveItem(item, {task: taskCurrent}).then(result => {
+        mainModel.saveItem(item, username, {task: taskCurrent}).then(result => {
           notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
         })
       }
@@ -137,26 +138,29 @@ router.get('(/:status)?', async (req, res, next) => {
   })
   //change status
   router.post('/change-status/:id/:status', function(req, res, next) {
+    let username = req.user.username
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     let id = paramsHelpers.getParams(req.params, 'id', '')
-    mainModel.changeStatus(id, currentStatus, {task: "update-one"}).then(result => {
+    mainModel.changeStatus(id, currentStatus, username, {task: "update-one"}).then(result => {
       res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
     });  
   });
   // change group
   router.post('/change-group', function(req, res, next) {
    let id = req.body.id
+   let username = req.user.username
    let groupID = req.body.groups_id
    let groupName = req.body.groups_name
-   mainModel.changeGroup(id, groupID, groupName).then(result => {
+   mainModel.changeGroup(id, groupID, groupName, username).then(result => {
     res.send({})
     });
   })
   
   //change status - multi 
   router.post('/change-status/:status', function(req, res, next) {
+    let username = req.user.username
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    mainModel.changeStatus(req.body.cid, currentStatus, {task: "update-multi"}).then(result => {
+    mainModel.changeStatus(req.body.cid, currentStatus, username, {task: "update-multi"}).then(result => {
       notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
     });  
   });
@@ -178,17 +182,19 @@ router.get('(/:status)?', async (req, res, next) => {
   });
    // change - single - ordering
    router.post('/change-single-ordering', function(req, res, next) {
+    let username = req.user.username
     let id = req.body.id
     let ordering = req.body.ordering
-       mainModel.changeOrderingAjax(id, ordering).then(result => {
+       mainModel.changeOrderingAjax(id, ordering, username).then(result => {
         res.send({'notify': {'tilte': notifyConfigs.ORDERING_SUCCESS, 'class': 'success'}})
      });      
     })
   //change ordering -   multi 
   router.post('/change-ordering', function(req, res, next) {
+    let username = req.user.username
     let cids = req.body.cid
     let orderings = req.body.ordering
-       mainModel.changeOdering(cids, orderings).then(result => {
+       mainModel.changeOdering(cids, orderings, username).then(result => {
         notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
      });      
     })

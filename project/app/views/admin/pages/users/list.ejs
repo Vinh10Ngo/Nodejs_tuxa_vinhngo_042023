@@ -115,6 +115,7 @@ let elementsControl = [
 									<td class="text-center position-relative"><input type="number" value="<%= item.ordering%>" class="form-control form-control-sm m-auto text-center ordering" data-link="/<%= linkPrefix%>change-single-ordering" style="width: 65px" id="chkOrdering[1]" data-id="<%= item.id%>" min="1">
                                     </td>
                                     <td class="text-center position-relative" style="min-width: 120px">
+
 										<%- selectBoxAjaxGroupsHelper(groupsItems, item.groups.id, linkPrefix, item.id)%>
 									</td>                                    
                                     <td>

@@ -1,4 +1,4 @@
-
+<% include ./../helper/show-menu-user%>
 <%
 const uploadPath = '/uploads/article/'
 %>
@@ -21,21 +21,19 @@ const uploadPath = '/uploads/article/'
                         </span>
                     </span>
 
-                    <a href="#" class="left-topbar-item">
+                    <a href="/<%=systemConfigs.prefixNews%>/about" class="left-topbar-item">
                         About
                     </a>
 
-                    <a href="#" class="left-topbar-item">
+                    <a href="/<%=systemConfigs.prefixNews%>/contact" class="left-topbar-item">
                         Contact
                     </a>
 
                     <a href="#" class="left-topbar-item">
                         Sing up
                     </a>
-
-                    <a href="#" class="left-topbar-item">
-                        Log in
-                    </a>
+                    <%- showMenuUser(userInfo) %>
+                    
                 </div>
 
                 <div class="right-topbar">
@@ -107,9 +105,8 @@ const uploadPath = '/uploads/article/'
                         Sing up
                     </a>
             
-                    <a href="#" class="left-topbar-item">
-                        Log in
-                    </a>
+                    <%- showMenuUser(userInfo) %>
+
                 </li>
             
                 <li class="right-topbar">
@@ -150,15 +147,8 @@ const uploadPath = '/uploads/article/'
                 <li>
                     <a href="#">Features</a>
                     <ul class="sub-menu-m">
-                        <li><a href="category-01.html">Category Page v1</a></li>
-                        <li><a href="category-02.html">Category Page v2</a></li>
-                        <li><a href="blog-grid.html">Blog Grid Sidebar</a></li>
-                        <li><a href="blog-list-01.html">Blog List Sidebar v1</a></li>
-                        <li><a href="blog-list-02.html">Blog List Sidebar v2</a></li>
-                        <li><a href="blog-detail-01.html">Blog Detail Sidebar</a></li>
-                        <li><a href="blog-detail-02.html">Blog Detail No Sidebar</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="/<%=systemConfigs.prefixNews%>about">About Us</a></li>
+                        <li><a href="/<%=systemConfigs.prefixNews%>contact">Contact Us</a></li>
                     </ul>
             
                     <span class="arrow-main-menu-m">
@@ -210,10 +200,10 @@ const uploadPath = '/uploads/article/'
                         </li>
                         <% }) %>
                         <li>
-                            <a href="#">Đặc tính</a>
+                            <a href="/<%=systemConfigs.prefixNews%>/about">"Đặc tính</a>
                             <ul class="sub-menu">
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
+                                <li><a href="/<%=systemConfigs.prefixNews%>/about">About Us</a></li>
+                                <li><a href="/<%=systemConfigs.prefixNews%>/contact">Contact Us</a></li>
                             </ul>
                         </li>
                     </ul>

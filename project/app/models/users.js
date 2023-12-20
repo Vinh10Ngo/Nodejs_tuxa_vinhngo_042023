@@ -15,7 +15,7 @@ module.exports = {
           objWhere.status = params.currentStatus
         }
 
-        if(params.groupID !== 'allvalue') objWhere['groups.id'] = params.groupID  
+        if(params.groupID !== 'allvalue') objWhere['groups.id'] = params.groupID 
 
         if (params.keyword !== '') {
           objWhere.name = new RegExp(params.keyword, 'i')
@@ -37,20 +37,20 @@ module.exports = {
         objWhere.status = params.currentStatus
       }
       if (params.groupID !== 'allvalue') {
-        objWhere['groups.id'] = params.groupID
+        objWhere['groups.id'] = params.groupID    
       }
       if (params.keyword !== '') {
         objWhere.name = new RegExp(params.keyword, 'i')
       }
        return mainModel.count(objWhere)
     }, 
-    changeStatus: (id, currentStatus, options = null) => {
+    changeStatus: (id, currentStatus, username, options = null) => {
         let status = (currentStatus === 'active') ? 'inactive' : 'active'
         let data = {
           status: status,
           modified : {
             user_id: 0, 
-            user_name: 'admin', 
+            user_name: username, 
             time: Date.now()   
         }
       }
@@ -62,12 +62,12 @@ module.exports = {
         return mainModel.updateMany({_id: {$in: id}}, data)
       }       
     },
-    changeOdering: async (cids, orderings, options = null) => {
+    changeOdering: async (cids, orderings, username, options = null) => {
         let data = {
             ordering: parseInt(orderings),
             modified : {
               user_id: 0, 
-              user_name: 'admin', 
+              user_name: username, 
               time: Date.now()   
           }
         }
@@ -81,12 +81,12 @@ module.exports = {
               return mainModel.updateOne({_id: cids}, data)
           }
     },
-    changeOrderingAjax: (id, ordering, option = null) => {
+    changeOrderingAjax: (id, ordering, username, option = null) => {
       let data = {
         ordering: parseInt(ordering),
         modified : {
           user_id: 0, 
-          user_name: 'admin', 
+          user_name: username, 
           time: Date.now()   
       }
     }
@@ -114,7 +114,7 @@ module.exports = {
       return mainModel.deleteMany({_id: {$in: id}})
      }
   },
-  saveItem: (item, options = null) => {
+  saveItem: (item, username, options = null) => {
     if (options.task == 'add') {
       item.groups = {
         id: item.groups_id,
@@ -122,7 +122,7 @@ module.exports = {
       }
       item.created = {
         user_id: 0, 
-        user_name: 'admin', 
+        user_name: username, 
         time: Date.now()
       }
       return new mainModel(item).save()
@@ -163,7 +163,7 @@ module.exports = {
   listItemInSelectBox: (params, option = null) => {
     return groupsModel.find({}, {_id: 1, name: 1})
   },
-  changeGroup: (id, groupID, groupName) => {
+  changeGroup: (id, groupID, groupName, username) => {
     return mainModel.updateOne({_id: id}, {
       groups: {
         id: groupID,
@@ -171,7 +171,7 @@ module.exports = {
       },
       modified : {
         user_id: 0, 
-        user_name: 'admin', 
+        user_name: username, 
         time: Date.now()   
       }
     })    

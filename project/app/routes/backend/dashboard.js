@@ -48,11 +48,7 @@ router.get('/', async(req, res, next) => {
 
   });
 });
-router.get('/no-permission', async(req, res, next) => {
-  res.render(`${folderViewsAdmin}no-permission`, {
-    pageTitle: 'No Permission',
- });
-});
+
 
 
 module.exports = router;

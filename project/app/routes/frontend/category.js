@@ -17,7 +17,6 @@ router.get('/:id', async function(req, res, next) {
   const page = paramsHelpers.getParams(req.query, 'page', 1) 
   let itemsCategory = []
   let itemsInCategory = []
-  let itemsMostPopular = []
   let itemsSpecialCategory = []
   let perPage = 1
   let totalItems = 1
@@ -41,12 +40,6 @@ router.get('/:id', async function(req, res, next) {
     itemsInCategory = items
   })
   
-
-  await articleModel.getMostPopularArticles().then((items) => {
-    itemsMostPopular = items
-  })
-  let countArticlesInCategory = await utilsHelpers.countArticlesInCategory(itemsCategory)
-  
   let paginationCatgoryPage = await utilsHelpers.paginate(page, totalPages, pageRange)
   
   res.render(`${folderViewsNews}category`, { 
@@ -56,12 +49,10 @@ router.get('/:id', async function(req, res, next) {
     controllerName,
     totalPages,
     idCategory,
-    itemsMostPopular,
     itemsSpecialCategory,
     pageTitle: 'Category',
     keyword,
     totalItems,
-    countArticlesInCategory,
     paginationCatgoryPage
   }); 
 });

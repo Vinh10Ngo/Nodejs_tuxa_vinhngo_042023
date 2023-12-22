@@ -11,11 +11,15 @@ const options = {
     status: {value: 'novalue'},
     groups: {value: 'allvalue'},
     content: {min: 5, max: 200},
+    username: {min: 5, max: 20},
+    password: {min: 5, max: 20}
 }
 
 module.exports = {
     validator: (req, item, err, taskCurrent) => {
         req.checkBody('name', util.format(notifyConfigs.ERROR_NAME, options.name.min, options.name.max)).isLength({min: options.name.min, max: options.name.max})
+        req.checkBody('username', util.format(notifyConfigs.ERROR_EMAIL, options.username.min, options.username.max)).isLength({min: options.username.min, max: options.username.max})
+        req.checkBody('password', util.format(notifyConfigs.ERROR_PASSWORD, options.password.min, options.password.max)).isLength({min: options.password.min, max: options.password.max})
         req.checkBody('ordering', util.format(notifyConfigs.ERROR_ORDERING, options.ordering.min, options.ordering.max)).isInt({gt: options.ordering.min, lt: options.ordering.max})
         req.checkBody('status', notifyConfigs.ERROR_STATUS).isNotEqual(options.status.value)
         req.checkBody('content', util.format(notifyConfigs.ERROR_NAME, options.content.min, options.content.max)).isLength({min: options.content.min, max: options.content.max})

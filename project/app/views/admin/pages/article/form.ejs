@@ -12,6 +12,7 @@ const uploadPath = 'uploads/article/'
 
 let elementsForm = [
 {for: 'form[name]', label: 'Name', input: inputHelper("text", "name", item.name, {'id': 'form[name]'})},
+{for: 'form[slug]', label: 'Slug', input: inputHelper("text", "slug", item.slug, {'id': 'form[slug]'})},
 {for: 'form[ordering]', label: 'Ordering', input: inputHelper("number", "ordering", item.ordering, {'id': 'form[ordering]'})},
 {for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
 {for: 'form[special]', label: 'Special',input: choiceHelper(item.special, 'special')},

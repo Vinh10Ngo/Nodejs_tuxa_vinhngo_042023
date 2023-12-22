@@ -5,6 +5,8 @@ module.exports = {
     col_groups: 'groups',
     col_users: 'users',
     col_category: 'category',
-    col_article: 'article'
+    col_article: 'article',
+    col_tag: 'tag'
+
 
 }

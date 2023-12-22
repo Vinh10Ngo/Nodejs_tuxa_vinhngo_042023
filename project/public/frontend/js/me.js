@@ -1,14 +1,26 @@
 const uploadPath = '/uploads/article/'
+function formatTime(fulltime) {
+  const date = new Date(fulltime);
+
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Tháng bắt đầu từ 0, cần cộng thêm 1
+  const year = date.getFullYear();
+
+  const formattedDate = `${day}/${month}/${year}`;
+  return formattedDate
+}
 
 $('.category-hover').hover(function() {
   let link = $(this).data('link')
   let linkPrefix = $(this).data('link-prefix')
+
   $.ajax({
       type: 'GET',
       url: link, // Đường dẫn tới API endpoint của server
       success: function(response) {
         let articlesHTML = '';
         response.forEach(function(article) {
+          let FormattedTime = formatTime(article.created.time)
           articlesHTML +=  
           `<div class="col-3">
           <div>
@@ -33,7 +45,7 @@ $('.category-hover').hover(function() {
                       </span>
   
                       <span class="f1-s-3">
-                      ${article.created.time}
+                      ${FormattedTime}
                       </span>
                   </span>
               </div>
@@ -92,7 +104,7 @@ $('.category-list').each(function() {
                   </span>
 
                   <span class="f1-s-3">
-                  ${response[0].created.time}
+                  ${formatTime(response[0].created.time)}
                   </span>
               </span>
           </div>
@@ -123,7 +135,7 @@ $('.category-list').each(function() {
                   </span>
 
                   <span class="f1-s-3">
-                  ${response[i].created.time}
+                  ${formatTime(response[i].created.time)}
                   </span>
               </span>
           </div>

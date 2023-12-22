@@ -11,6 +11,8 @@ const uploadPath = 'uploads/users/'
 
 let elementsForm = [
 {for: 'form[name]', label: 'Name', input: inputHelper("text", "name", item.name, {'id': 'form[name]'})},
+{for: 'form[username]', label: 'Username', input: inputHelper("text", "username", item.username, {'id': 'form[username]'})},
+{for: 'form[password]', label: 'Password', input: inputHelper("password", "password", item.password, {'id': 'form[password]'})},
 {for: 'form[ordering]', label: 'Ordering', input: inputHelper("number", "ordering", item.ordering, {'id': 'form[ordering]'})},
 {for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
 {for: 'form[groups]', label: 'Groups', input: selectBoxHelper('groups_id', groupsItems, item.groups_id, '')},
@@ -18,7 +20,6 @@ let elementsForm = [
 {for: 'form[avatar]', label: 'Avatar', input: inputHelper("file", "avatar", item.avatar, {'id': 'imgInp'})},
 ]
 %>
-
 
 <section class="content">
     <div class="container-fluid">

@@ -1,3 +1,5 @@
+<% include ./../helper/format-time%>
+
 <%
 const uploadPath = '/uploads/article/'
 %>
@@ -32,7 +34,7 @@ const uploadPath = '/uploads/article/'
                     </span>
 
                     <span class="f1-s-3">
-                        <%=item.created.time%>
+                        <%- formatTimeHelper (item.created.time) %>
                     </span>
                 </span>
             </div>

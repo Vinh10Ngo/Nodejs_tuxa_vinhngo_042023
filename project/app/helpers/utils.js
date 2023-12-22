@@ -48,10 +48,11 @@ let paginate = (pageNumber, totalPages, pageRange) => {
   return { start, end, pages };
 }
 
-let highlightKeyword
+
 
 module.exports = {
     createFilterStatus: createFilterStatus, 
     countArticlesInCategory: countArticlesInCategory,
-    paginate: paginate
+    paginate: paginate,
+    
 }

@@ -2,6 +2,7 @@ const mainModel = require(__path__schemas + 'article')
 const categoryModel = require(__path__schemas + 'category')
 const fileHelpers  = require(__path__helpers + 'file')
 const uploadLink = 'public/uploads/article/'
+var slug = require('slug')
 
 module.exports = {
     
@@ -20,7 +21,7 @@ module.exports = {
          sort[params.sortField] = params.sortType
        return mainModel
         .find(objWhere)
-        .select('name status ordering created modified category.name category.id thumb special')
+        .select('name status ordering created modified category.name category.id thumb special slug')
         .sort(sort)
         .skip((params.pagination.currentPage-1)*params.pagination.totalItemsPerPage)
         .limit(params.pagination.totalItemsPerPage)
@@ -41,13 +42,13 @@ module.exports = {
       }
        return mainModel.count(objWhere)
     }, 
-    changeStatus: (id, currentStatus, options = null) => {
+    changeStatus: (id, currentStatus, username, options = null) => {
         let status = (currentStatus === 'active') ? 'inactive' : 'active'
         let data = {
           status: status,
           modified : {
             user_id: 0, 
-            user_name: 'admin', 
+            user_name: username, 
             time: Date.now()   
         }
       }
@@ -59,12 +60,12 @@ module.exports = {
         return mainModel.updateMany({_id: {$in: id}}, data)
       }       
     },
-    changeOdering: async (cids, orderings, options = null) => {
+    changeOdering: async (cids, orderings, username, options = null) => {
         let data = {
             ordering: parseInt(orderings),
             modified : {
               user_id: 0, 
-              user_name: 'admin', 
+              user_name: username, 
               time: Date.now()   
           }
         }
@@ -78,12 +79,12 @@ module.exports = {
               return mainModel.updateOne({_id: cids}, data)
           }
     },
-    changeOrderingAjax: (id, ordering, option = null) => {
+    changeOrderingAjax: (id, ordering, username, option = null) => {
       let data = {
         ordering: parseInt(ordering),
         modified : {
           user_id: 0, 
-          user_name: 'admin', 
+          user_name: username, 
           time: Date.now()   
       }
     }
@@ -111,7 +112,7 @@ module.exports = {
       return mainModel.deleteMany({_id: {$in: id}})
      }
   },
-  saveItem: (item, options = null) => {
+  saveItem: (item, username, options = null) => {
     if (options.task == 'add') {
       item.category = {
         id: item.category_id,
@@ -119,9 +120,10 @@ module.exports = {
       }
       item.created = {
         user_id: 0, 
-        user_name: 'admin', 
+        user_name: username, 
         time: Date.now()
       }
+      item.slug =slug(item.name)
       return new mainModel(item).save()
     }
     if (options.task == 'edit') {
@@ -131,6 +133,7 @@ module.exports = {
          name: item.name,
          thumb: item.thumb,
          special: item.special,
+         slug: item.slug,
          content: item.content,
          category: {
           id: item.category_id,
@@ -161,7 +164,7 @@ module.exports = {
   listItemInSelectBox: (params, option = null) => {
     return categoryModel.find({}, {_id: 1, name: 1})
   },
-  changecategory: (id, categoryID, categoryName) => {
+  changecategory: (id, categoryID, categoryName, username) => {
     return mainModel.updateOne({_id: id}, {
       category: {
         id: categoryID,
@@ -169,18 +172,18 @@ module.exports = {
       },
       modified : {
         user_id: 0, 
-        user_name: 'admin', 
+        user_name: username, 
         time: Date.now()   
       }
     })    
   },
-  special: (id, currentSpecial, options = null) => {
+  special: (id, currentSpecial, username, options = null) => {
     let special = (currentSpecial === 'yes') ? 'no' : 'yes'
     let data = {
       special: special,
       modified : {
         user_id: 0, 
-        user_name: 'admin', 
+        user_name: username, 
         time: Date.now()   
     }
   }

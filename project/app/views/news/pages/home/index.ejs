@@ -1,4 +1,4 @@
-
+<% include ./../../helper/format-time%>
 
 <%
 const uploadPath = '/uploads/article/'
@@ -59,7 +59,7 @@ const uploadPath = '/uploads/article/'
                             </span>
 
                             <span class="f1-s-3 cl11">
-                                <%= itemsSpecial[0].created.time%>
+                                <%- formatTimeHelper (itemsSpecial[0].created.time) %>
                             </span>
                         </span>
                     </div>
@@ -702,7 +702,7 @@ const uploadPath = '/uploads/article/'
                                     </span>
             
                                     <span class="f1-s-3">
-                                        <%= itemsLatest[i].created.time%>
+                                        <%- formatTimeHelper (itemsLatest[i].created.time) %>
                                     </span>
                                 </span>
                             </div>

@@ -87,6 +87,7 @@ let elementsControl = [
                                 </th>
                                 <th class="text-center">ID</th>
                                 <%- sortHelper(linkPrefix, 'Name', 'name', params.sortField, params.sortType, 'width:20%') %>
+                                <%- sortHelper(linkPrefix, 'Slug', 'slug', params.sortField, params.sortType, 'width:20%') %>
                                 <th class="text-center"> Thumb</th> 
                                 <%- sortHelper(linkPrefix, 'Status', 'status', params.sortField, params.sortType) %>
                                 <%- sortHelper(linkPrefix, 'Special', 'special', params.sortField, params.sortType) %>
@@ -106,6 +107,8 @@ let elementsControl = [
 									</td>
 									<td class="text-center"><%= index +1 %></td>
 									<td class="text-wrap" style="min-width: 180px"><%- hightlightHelper(item.name, params.keyword) %></td>
+									</td>
+                                    <td class="text-wrap" style="min-width: 180px"><%= item.slug%></td>
 									</td>
                                     <td class="text-wrap" style="min-width: 100px">
 										<%- imageHelper(uploadPath, item.thumb, item.name)%>

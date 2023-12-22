@@ -42,7 +42,7 @@ router.get('/dashboard', async(req, res, next) => {
 //form
 router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
-  let item =  {name: '', ordering: 0, status: 'novalue', groups_id: '', groups_name: '', content: ''}
+  let item =  {name: '', username: '', password: '', ordering: 0, status: 'novalue', groups_id: '', groups_name: '', content: ''}
   let errors = null
   // truyền groupsItems ra ngoài
   let groupsItems = []
@@ -70,7 +70,7 @@ router.post('/save', (req, res, next) => {
     item.avatar = (req.file == undefined) ? null : req.file.filename
     let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
     let errors = mainValidate.validator(req, item, err, taskCurrent)
-    let username = req.user.username
+    let username = "phucvinh"
 
     if(Array.isArray(errors) && errors.length > 0) {
       let groupsItems = []     
@@ -138,7 +138,7 @@ router.get('(/:status)?', async (req, res, next) => {
   })
   //change status
   router.post('/change-status/:id/:status', function(req, res, next) {
-    let username = req.user.username
+    let username = "phucvinh"
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.changeStatus(id, currentStatus, username, {task: "update-one"}).then(result => {
@@ -148,7 +148,7 @@ router.get('(/:status)?', async (req, res, next) => {
   // change group
   router.post('/change-group', function(req, res, next) {
    let id = req.body.id
-   let username = req.user.username
+   let username = "phucvinh"
    let groupID = req.body.groups_id
    let groupName = req.body.groups_name
    mainModel.changeGroup(id, groupID, groupName, username).then(result => {
@@ -158,7 +158,7 @@ router.get('(/:status)?', async (req, res, next) => {
   
   //change status - multi 
   router.post('/change-status/:status', function(req, res, next) {
-    let username = req.user.username
+    let username = "phucvinh"
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     mainModel.changeStatus(req.body.cid, currentStatus, username, {task: "update-multi"}).then(result => {
       notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
@@ -182,7 +182,7 @@ router.get('(/:status)?', async (req, res, next) => {
   });
    // change - single - ordering
    router.post('/change-single-ordering', function(req, res, next) {
-    let username = req.user.username
+    let username = "phucvinh"
     let id = req.body.id
     let ordering = req.body.ordering
        mainModel.changeOrderingAjax(id, ordering, username).then(result => {
@@ -191,7 +191,7 @@ router.get('(/:status)?', async (req, res, next) => {
     })
   //change ordering -   multi 
   router.post('/change-ordering', function(req, res, next) {
-    let username = req.user.username
+    let username = "phucvinh"
     let cids = req.body.cid
     let orderings = req.body.ordering
        mainModel.changeOdering(cids, orderings, username).then(result => {

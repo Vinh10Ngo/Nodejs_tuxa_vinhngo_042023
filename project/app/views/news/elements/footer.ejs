@@ -1,4 +1,6 @@
 <% include ./../helper/category-footer%>
+<% include ./../helper/format-time%>
+
 
 <%
 const uploadPath = '/uploads/article/'
@@ -69,7 +71,7 @@ const uploadPath = '/uploads/article/'
                                 </h6>
 
                                 <span class="f1-s-3 cl6">
-                                    <%=item.created.time%>
+                                    <%- formatTimeHelper (item.created.time) %>
                                 </span>
                             </div>
                         </li>

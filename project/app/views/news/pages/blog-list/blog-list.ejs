@@ -1,5 +1,7 @@
 <% include ./../../helper/summary%>
 <% include ./../../helper/keyword-pagination%>
+<% include ./../../helper/format-time%>
+
 
 
 
@@ -58,7 +60,7 @@ const uploadPath = '/uploads/article/'
 										</span>
 
 										<span class="f1-s-3">
-											<%=item.created.time%>
+											<%- formatTimeHelper (item.created.time) %>
 										</span>
 									</div>
 

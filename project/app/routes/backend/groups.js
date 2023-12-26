@@ -26,8 +26,9 @@ const folderViewsAdmin = __path__views__admin + `pages/${controllerName}/`
 //form
 router.get('/form(/:id)?', function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
+  let username = "phucvinh"
   // let {id} = req.params
-  let item =  {name: '', ordering: 0, status: 'novalue'}
+  let item =  {name: '', ordering: 0, status: 'novalue', created: {user_name: username, time: Date.now()}, modified: {user_name: username, time: Date.now()}}
   let errors = null
   if(id !== '') {
    mainModel.getItems(id).then((item)=> {

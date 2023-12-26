@@ -1,3 +1,5 @@
+
+
 let getParams = (param, property, defaultValue) => {
   if(param.hasOwnProperty(property) && param[property] !== undefined) {
     return param[property]
@@ -7,6 +9,7 @@ let getParams = (param, property, defaultValue) => {
 let createParams = (req) => {
   let params = {}
   params.keyword = getParams(req.query, 'keyword', '')
+
   params.currentStatus = getParams(req.params, 'status', 'all')
   
   params.sortField = getParams(req.session, 'sort_field', 'ordering')

@@ -1,0 +1,34 @@
+<% include ./../../helper/input%>
+<% include ./../../helper/selectBox%>
+<% include ./../../helper/textArea%>
+<% include ./../../helper/formBody%>
+<%
+const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
+
+let elementsForm = [
+{for: 'form[address]', label: 'Address', input: inputHelper("text", "info[address]", item.info.address, {'id': 'form[address]'})},
+{for: 'form[copyright]', label: 'Copyright', input: inputHelper("text", "info[copyright]", item.info.copyright, {'id': 'form[copyright]'})},
+]
+%>
+<%- JSON.stringify(item) %>
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-info card-outline">
+            <div class="card-body">
+                <form action="/<%= linkPrefix%>general/save" method="post" enctype="application/x-www-form-urlencoded" class="mb-0" id="admin-form" enctype="multipart/form-data">
+
+                    <%- formBodyHelper(elementsForm)%>
+
+                    <div class="card-footer">
+                        <div class="col-12 col-sm-8 offset-sm-2">
+                            <button type="submit" class="btn btn-primary">Submit </button>
+                            <a href="/<%= systemConfigs.prefixAdmin%>/dashboard" class="btn btn-danger"> Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</section>

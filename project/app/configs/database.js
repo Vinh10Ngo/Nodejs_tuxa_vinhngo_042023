@@ -6,7 +6,6 @@ module.exports = {
     col_users: 'users',
     col_category: 'category',
     col_article: 'article',
-    col_tag: 'tag'
-
-
+    col_configuration: 'configuration',
+    col_contact: 'contact'
 }

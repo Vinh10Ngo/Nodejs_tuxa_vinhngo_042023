@@ -3,6 +3,7 @@
 <% include ./../../helper/textArea%>
 <% include ./../../helper/formBody%>
 <% include ./../../helper/image%>
+<% include ./../../helper/source_by%>
 
 
 <%
@@ -17,7 +18,11 @@ let elementsForm = [
 {for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
 {for: 'form[groups]', label: 'Groups', input: selectBoxHelper('groups_id', groupsItems, item.groups_id, '')},
 {for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
+{for: 'form[created]', label: 'Created', input: sourceByHelper(item.created.user_name, item.created.time)},
+{for: 'form[modified]', label: 'Modified', input: sourceByHelper(item.modified.user_name, item.modified.time)},
 {for: 'form[avatar]', label: 'Avatar', input: inputHelper("file", "avatar", item.avatar, {'id': 'imgInp'})},
+
+
 ]
 %>
 

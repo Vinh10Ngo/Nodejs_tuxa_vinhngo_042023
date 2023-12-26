@@ -42,8 +42,10 @@ router.get('/dashboard', async(req, res, next) => {
 //form
 router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
-  let item =  {name: '', username: '', password: '', ordering: 0, status: 'novalue', groups_id: '', groups_name: '', content: ''}
+  let username = "phucvinh"
+  let item =  {name: '', username: '', password: '', ordering: 0, status: 'novalue', groups_id: '', groups_name: '', content: '', created: {user_name: username, time: Date.now()}, modified: {user_name: username, time: Date.now()}}
   let errors = null
+
   // truyền groupsItems ra ngoài
   let groupsItems = []
   await groupsModel.listItemInSelectBox().then((item) => {

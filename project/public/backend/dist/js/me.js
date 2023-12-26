@@ -83,7 +83,7 @@ $('.ordering').change(function () {
 $('select[name=item_groups]').change(function (e) {
   let current = $(this)
   let id = current.val()
-  let name = current.text()
+  let name = current.find('option:selected').text();
   let idItem = current.data('iditem')
   let link = current.data('link') 
   $.ajax({
@@ -99,7 +99,7 @@ $('select[name=item_groups]').change(function (e) {
 $('select[name=item_category]').change(function (e) {
   let current = $(this)
   let id = current.val()
-  let name = current.text()
+  let name = current.find('option:selected').text();
   let idItem = current.data('iditem')
   let link = current.data('link') 
   $.ajax({

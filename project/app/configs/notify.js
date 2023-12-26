@@ -23,5 +23,6 @@ module.exports = {
     ERROR_LOGIN_USERNAME_NOTEXIST: 'Username không tồn tại',
     ERROR_LOGIN_PASSWORD_INCORRECT: 'Mật khẩu không chính xác',
     ERROR_LOGIN: 'Thông tin đăng nhập không chính xác',
-    ERROR_NAMESHAKE: 'Tên đã tồn tại' 
+    ERROR_NAMESHAKE: 'Tên đã tồn tại',
+    SUCCESS_CONTACT: 'Gửi thông tin liên hệ thành công'
 }

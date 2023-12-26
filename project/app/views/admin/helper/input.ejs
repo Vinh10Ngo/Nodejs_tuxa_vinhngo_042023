@@ -3,6 +3,7 @@
     if (params.hasOwnProperty('id') && params['id'] !== undefined) {
         id = `id="${params.id}"`
     }
+    if(value == undefined) value = ''
      let xHtmlResult = `<input type="${type}" ${id} name="${name}" value="${value}" class="form-control form-control-sm">
      ` 
     return xHtmlResult

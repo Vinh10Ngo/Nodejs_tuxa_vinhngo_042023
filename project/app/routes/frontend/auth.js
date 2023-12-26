@@ -19,16 +19,11 @@ router.get('/login', function(req, res, next) {
     res.redirect(`/${systemConfigs.prefixNews}/index`)
   }
     let errors = null
-    // let type = 'success'
-    // const errorMessage = req.flash('error')[0];
-    // console.log(errorMessage);
     res.render(`${folderViewsNews}login`, {
         errors,
         controllerName,
         pageTitle: 'Admin',
         layout: layoutLogin,
-        // errorMessage,
-        // type
      });
 });
 router.get('/logout', function(req, res, next) {

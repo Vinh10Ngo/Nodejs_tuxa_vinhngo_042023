@@ -1,4 +1,6 @@
 <% include ./../helper/show-menu-user%>
+<% include ./../helper/social-link%>
+
 <%
 const uploadPath = '/uploads/article/'
 %>
@@ -37,25 +39,7 @@ const uploadPath = '/uploads/article/'
                 </div>
 
                 <div class="right-topbar">
-                    <a href="#">
-                        <span class="fab fa-facebook-f"></span>
-                    </a>
-
-                    <a href="#">
-                        <span class="fab fa-twitter"></span>
-                    </a>
-
-                    <a href="#">
-                        <span class="fab fa-pinterest-p"></span>
-                    </a>
-
-                    <a href="#">
-                        <span class="fab fa-vimeo-v"></span>
-                    </a>
-
-                    <a href="#">
-                        <span class="fab fa-youtube"></span>
-                    </a>
+                    <%- socialLinkHelper(configInfo) %>
                 </div>
             </div>
         </div>
@@ -200,7 +184,7 @@ const uploadPath = '/uploads/article/'
                         </li>
                         <% }) %>
                         <li>
-                            <a href="/<%=systemConfigs.prefixNews%>/about">"Đặc tính</a>
+                            <a href="/<%=systemConfigs.prefixNews%>/about">Đặc tính</a>
                             <ul class="sub-menu">
                                 <li><a href="/<%=systemConfigs.prefixNews%>/about">About Us</a></li>
                                 <li><a href="/<%=systemConfigs.prefixNews%>/contact">Contact Us</a></li>

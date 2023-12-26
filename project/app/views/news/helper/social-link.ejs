@@ -1,0 +1,19 @@
+<%
+socialLinkHelper = (items) => {
+    let arrSocial = [
+        {class: 'fab fa-facebook-f', link: items[0].info.social.facebook},
+        {class: 'fab fa-twitter', link: items[0].info.social.twitter},
+        {class: 'fab fa-pinterest-p', link: items[0].info.social.pinterest},
+        {class: 'fab fa-youtube', link: items[0].info.social.youtube}
+         ] 
+  
+    let htmlResult = ''
+    arrSocial.forEach((item, index) => {
+          
+        htmlResult += `<a href="/${item.link}">
+            <span class="${item.class}"></span>
+        </a>`
+    })
+    return htmlResult
+}
+%>

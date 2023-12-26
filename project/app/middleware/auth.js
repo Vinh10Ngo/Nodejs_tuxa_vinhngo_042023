@@ -10,8 +10,8 @@ module.exports = (req, res, next) => {
           res.redirect(`${linkRedirect}no-permission`)
       }
 
-  } else {
-        next()
-    //   res.redirect(`${linkRedirect}login`)
-  }
+    } else {
+            // next()
+        res.redirect(`${linkRedirect}login`)
+    }
 }

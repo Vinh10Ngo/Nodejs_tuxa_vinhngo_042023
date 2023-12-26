@@ -3,6 +3,7 @@
 <% include ./../../helper/textArea%>
 <% include ./../../helper/choice%>
 <% include ./../../helper/formBody%>
+<% include ./../../helper/source_by%>
 
 <%
 const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
@@ -13,6 +14,8 @@ let elementsForm = [
 {for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
 {for: 'form[groups_acp]', label: 'Groups_acp',input: choiceHelper(item.groups_acp, 'groups_acp')},
 {for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
+{for: 'form[created]', label: 'Created', input: sourceByHelper(item.created.user_name, item.created.time)},
+{for: 'form[modified]', label: 'Modified', input: sourceByHelper(item.modified.user_name, item.modified.time)},
 ]
 %>
 

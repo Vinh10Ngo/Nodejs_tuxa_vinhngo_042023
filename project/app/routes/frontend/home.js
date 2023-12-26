@@ -20,7 +20,6 @@ router.get('/index', async function(req, res, next) {
   let itemsCategoryIndex = []
   let totalItems = 1
 
-
   await articleModel.listItemsFrontend(null, {task: 'item-special'}).then((items) => {
     itemsSpecial = items
   });
@@ -38,6 +37,7 @@ router.get('/index', async function(req, res, next) {
   await articleModel.countArticleFrontend({id: idCategory }, {task: 'item-in-category'}).then((data) => {
     totalItems = data
   })
+ 
 
    
     res.render(`${folderViewsNews}index`, { 

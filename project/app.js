@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var moment = require('moment'); // require
@@ -36,7 +37,6 @@ global.__path__upload = __path__public + pathConfig.folder__upload + '/'
 
 const systemConfigs = require(__path__configs + 'system')
 const databaseConfigs = require(__path__configs + 'database')
-const sessionStorePath = path.join(__dirname, 'session_data');
 
 
 mongoose.connect(`mongodb+srv://${databaseConfigs.database}:${databaseConfigs.password}@cluster0.1r1zsfn.mongodb.net/items`);

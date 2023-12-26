@@ -26,12 +26,15 @@ module.exports = {
             case 'groups_acp':
                 notifyContent = notifyConfigs.GROUPS_ACP_SUCCESS
                 break; 
-                case 'special':
+            case 'special':
                 notifyContent = notifyConfigs.SPECIAL_SUCCESS
                 break;
             case 'change_ordering':
                 notifyContent = notifyConfigs.ORDERING_SUCCESS
-                break;                                 
+                break;     
+            case 'contact':
+                notifyContent = notifyConfigs.SUCCESS_CONTACT
+                break;                              
             default:
                 notifyContent = ''
                 break;

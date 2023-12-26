@@ -57,14 +57,14 @@ const linkPrefix = systemConfigs.prefixNews + '/auth/'
                         <li class="nav-item">
                             <a href="/<%= systemConfigs.prefixAdmin%>/users" class="nav-link" data-active="index">
                                 <i class="nav-icon fas fa-list-ul"></i>
-                                <p>Users</p>
+                                <p>List</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="/<%= systemConfigs.prefixAdmin%>/users.form" class="nav-link" data-active="form">
+                            <a href="/<%= systemConfigs.prefixAdmin%>/users/form" class="nav-link" data-active="form">
                                 <i class="nav-icon fas fa-edit"></i>
-                                <p>Groups</p>
+                                <p>Form</p>
                             </a>
                         </li>
                     </ul>
@@ -130,13 +130,41 @@ const linkPrefix = systemConfigs.prefixNews + '/auth/'
                                 <p>Form</p>
                             </a>
                         </li>
-                    </ul>
-                    <li class="nav-item">
-                        <a href="/<%=linkPrefix%>logout" class="nav-link" data-active="form">
-                            <i class="nav-icon fas fa-edit"></i>
-                            <p>Log Out</p>
-                        </a>
-                    </li>
+                    </ul>            
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-active="category">
+                        <i class="nav-icon fas fa-book-open"></i>
+                        <p>Configuration<i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/<%= systemConfigs.prefixAdmin%>/configuration/general" class="nav-link" data-active="form">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>General</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/<%= systemConfigs.prefixAdmin%>/configuration/social" class="nav-link" data-active="form">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Social network</p>
+                            </a>
+                        </li>
+                    </ul>            
+                </li>
+                <li class="nav-item">
+                    <a href="/<%= systemConfigs.prefixAdmin%>/contact" class="nav-link" data-active="index">
+                        <i class="nav-icon fas fa-list-ul"></i>
+                        <p>Contact</p>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="/<%=linkPrefix%>logout" class="nav-link" data-active="form">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>Log Out</p>
+                    </a>
                 </li>
             </ul>
         </nav>

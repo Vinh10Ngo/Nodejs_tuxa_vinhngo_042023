@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
       }
 
     } else {
-            next()
-        // res.redirect(`${linkRedirect}login`)
+            // next()
+        res.redirect(`${linkRedirect}login`)
     }
 }

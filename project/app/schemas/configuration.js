@@ -13,6 +13,11 @@ const schema = new mongoose.Schema({
             instagram: String,
             email: String
         }
+    },
+    send_email: {
+        email: String,
+        password: String,
+        BCC: String
     }
 });
 

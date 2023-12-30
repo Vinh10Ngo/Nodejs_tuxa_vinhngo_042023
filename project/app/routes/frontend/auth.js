@@ -16,7 +16,7 @@ const middleGetUserInfo = require(__path__middleware + 'get-user-info')
 
 router.get('/login', function(req, res, next) {
   if (req.isAuthenticated()) {
-    res.redirect(`/${systemConfigs.prefixNews}/index`)
+    res.redirect(`/${systemConfigs.prefixNews}`)
   }
     let errors = null
     res.render(`${folderViewsNews}login`, {
@@ -44,7 +44,7 @@ router.get('/no-permission', middleGetUserInfo, middleGetCategoryForMenu, middle
   
 router.post('/post', (req, res, next) => {
   if (req.isAuthenticated()) {
-    res.redirect(`/${systemConfigs.prefixNews}/index`)
+    res.redirect(`/${systemConfigs.prefixNews}`)
   }
     req.body = JSON.parse(JSON.stringify(req.body));
     let item = Object.assign(req.body);
@@ -62,7 +62,7 @@ router.post('/post', (req, res, next) => {
     } else {
       console.log('không có lỗi');
       passport.authenticate('local', {
-        successRedirect: `/${systemConfigs.prefixNews}/index`,
+        successRedirect: `/${systemConfigs.prefixNews}`,
         failureRedirect: `${linkRedirect}login`,
         failureFlash: true
       })(req, res, next)

@@ -10,17 +10,22 @@ let arrBox = [
 ]
 let xHtmlBox = ''
 arrBox.forEach((item)=>{
-    xHtmlBox += `<div class="small-box bg-info">
+    xHtmlBox += `<div class="col-lg-3 col-6">
+
+        <div class="small-box bg-info">
         <div class="inner">
-            <h3>${item.total}</h3>
-            <p>${item.name}</p>
+        <h3>${item.total}</h3>
+        <p>${item.name}</p>
         </div>
-        <div class="icon text-white">
-            <i class= ${item.icon} ></i>
+        <div class="icon">
+        <i class="ion ion-bag"></i>
         </div>
-        <a href="/${item.link}" class="small-box-footer">Show Info<i class="fas fa-arrow-circle-right"></i></a>
-    </div>`
+        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+        </div>`
 })
 %>
-<%- xHtmlBox%>
+<div class="row">
+    <%- xHtmlBox%>
+</div>
 

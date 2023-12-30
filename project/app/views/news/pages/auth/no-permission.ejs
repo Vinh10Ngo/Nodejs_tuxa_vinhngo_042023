@@ -1,5 +1,8 @@
 <%
-const linkPrefix = systemConfigs.prefixNews + '/auth/'
+const url = `/${systemConfigs.prefixNews}/` ;
+
+const cleanedURL = url.replace(/\/+/g, '/');
+
 %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -14,7 +17,7 @@ const linkPrefix = systemConfigs.prefixNews + '/auth/'
 
       <div class="row">
         <div class="col-12">
-          <a href="/<%=linkPrefix%>login" class="btn btn-primary btn-block">Quay lại Trang Chủ</a>
+          <a href="<%=cleanedURL%>auth/login" class="btn btn-primary btn-block">Quay lại Trang Chủ</a>
         </div>
       </div>
     </div>

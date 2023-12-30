@@ -1,8 +1,10 @@
 
 <%
-const linkPrefix = systemConfigs.prefixNews + `/${controllerName}/`
-%>
+const url = `/${systemConfigs.prefixNews}` + `/${controllerName}/`;
 
+const cleanedURL = url.replace(/\/+/g, '/');
+
+%>
 <div class="card">
     <div class="card-body login-card-body">
         <p class="login-box-msg">Đăng nhập trang quản trị</p>
@@ -10,7 +12,7 @@ const linkPrefix = systemConfigs.prefixNews + `/${controllerName}/`
         <% include ./../../elements/flash%>
 
       
-        <form action="/<%=linkPrefix%>post" method="post" enctype="application/x-www-form-urlencoded" id="form-login">
+        <form action="<%=cleanedURL%>post" method="post" enctype="application/x-www-form-urlencoded" id="form-login">
             <!-- USERNAME -->
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Tên đăng nhập" name="username">

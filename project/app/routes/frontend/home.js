@@ -10,7 +10,7 @@ const layoutNews = __path__views__news + 'frontend'
 
 
 /* GET ĩndex page. */
-router.get('/index', async function(req, res, next) {
+router.get('/', async function(req, res, next) {
   let idCategory = paramsHelpers.getParams(req.params, 'id', '')
   let keyword = paramsHelpers.getParams(req.query, 'search', '')
 

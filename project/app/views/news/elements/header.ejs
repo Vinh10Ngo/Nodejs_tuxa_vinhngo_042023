@@ -3,8 +3,11 @@
 
 <%
 const uploadPath = '/uploads/article/'
-%>
+const url = `/${systemConfigs.prefixNews}/`;
 
+const cleanedURL = url.replace(/\/+/g, '/');
+
+%>
 <header>
     <!-- Header desktop -->
     <div class="container-menu-desktop">
@@ -23,11 +26,11 @@ const uploadPath = '/uploads/article/'
                         </span>
                     </span>
 
-                    <a href="/<%=systemConfigs.prefixNews%>/about" class="left-topbar-item">
+                    <a href="<%=cleanedURL%>about" class="left-topbar-item">
                         About
                     </a>
 
-                    <a href="/<%=systemConfigs.prefixNews%>/contact" class="left-topbar-item">
+                    <a href="<%=cleanedURL%>contact" class="left-topbar-item">
                         Contact
                     </a>
 
@@ -77,11 +80,11 @@ const uploadPath = '/uploads/article/'
                 </li>
             
                 <li class="left-topbar">
-                    <a href="/<%=systemConfigs.prefixNews%>/about" class="left-topbar-item">
+                    <a href="<%=cleanedURL%>about" class="left-topbar-item">
                         About
                     </a>
             
-                    <a href="/<%=systemConfigs.prefixNews%>/contact" class="left-topbar-item">
+                    <a href="<%=cleanedURL%>contact" class="left-topbar-item">
                         Contact
                     </a>
             
@@ -118,21 +121,21 @@ const uploadPath = '/uploads/article/'
         
             <ul class="main-menu-m">
                 <li>
-                    <a href="/<%=systemConfigs.prefixNews%>/index">Home</a>
+                    <a href="<%=cleanedURL%>">Home</a>
                   
 
                 </li>
                 <% itemsCategory.forEach((item, index) => { %>	
                 <li>
-                    <a href="/<%=systemConfigs.prefixNews%>/category/<%= item.id%>"><%= item.name%></a>
+                    <a href="<%=cleanedURL%>category/<%= item.id%>"><%= item.name%></a>
                 </li>
            
                 <% }) %>
                 <li>
                     <a href="#">Features</a>
                     <ul class="sub-menu-m">
-                        <li><a href="/<%=systemConfigs.prefixNews%>about">About Us</a></li>
-                        <li><a href="/<%=systemConfigs.prefixNews%>contact">Contact Us</a></li>
+                        <li><a href="<%=cleanedURL%>about">About Us</a></li>
+                        <li><a href="<%=cleanedURL%>contact">Contact Us</a></li>
                     </ul>
             
                     <span class="arrow-main-menu-m">
@@ -167,13 +170,13 @@ const uploadPath = '/uploads/article/'
         
                     <ul class="main-menu">
                         <li class="main-menu-active">
-                            <a href="/<%=systemConfigs.prefixNews%>/index">Home</a>
+                            <a href="<%=cleanedURL%>">Home</a>
                         </li>
     
                         <% itemsCategory.forEach((item, index) => { %>	
 
-                            <li class="mega-menu-item category-hover" data-format-time="" data-link-prefix="<%=systemConfigs.prefixNews%>" data-link="/<%=systemConfigs.prefixNews%>/category-hover/<%= item.id%>">
-                            <a href="/<%=systemConfigs.prefixNews%>/category/<%= item.id%>"><%= item.name%> </a>
+                            <li class="mega-menu-item category-hover" data-format-time="" data-link-prefix="<%=cleanedURL%>" data-link="<%=cleanedURL%>category-hover/<%= item.id%>">
+                            <a href="<%=cleanedURL%>category/<%= item.id%>"><%= item.name%> </a>
         
                             <div class="sub-mega-menu">
                                
@@ -184,10 +187,10 @@ const uploadPath = '/uploads/article/'
                         </li>
                         <% }) %>
                         <li>
-                            <a href="/<%=systemConfigs.prefixNews%>/about">Đặc tính</a>
+                            <a href="<%=cleanedURL%>about">Đặc tính</a>
                             <ul class="sub-menu">
-                                <li><a href="/<%=systemConfigs.prefixNews%>/about">About Us</a></li>
-                                <li><a href="/<%=systemConfigs.prefixNews%>/contact">Contact Us</a></li>
+                                <li><a href="<%=cleanedURL%>about">About Us</a></li>
+                                <li><a href="<%=cleanedURL%>contact">Contact Us</a></li>
                             </ul>
                         </li>
                     </ul>

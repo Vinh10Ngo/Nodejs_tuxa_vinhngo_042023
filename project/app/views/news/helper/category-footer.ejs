@@ -4,7 +4,7 @@ categoryFooterHelper = (linkPrefix, category) => {
     category.forEach((item, index) => {
 
         xhtmlResult += `<li class="how-bor1 p-rl-5 p-tb-10">
-            <a href="/${linkPrefix}/cateogy/${item.category.id}" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
+            <a href="${linkPrefix}category/${item.category.id}" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
                 ${item.category.name}(${item.count})
             </a>
         </li>`

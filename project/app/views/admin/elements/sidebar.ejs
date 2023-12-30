@@ -1,6 +1,9 @@
 
 <%
-const linkPrefix = systemConfigs.prefixNews + '/auth/'
+const url = `/${systemConfigs.prefixNews}/`;
+
+const cleanedURL = url.replace(/\/+/g, '/');
+
 %>
 <aside class="main-sidebar sidebar-dark-info elevation-4">
     <!-- Brand Logo -->
@@ -133,25 +136,10 @@ const linkPrefix = systemConfigs.prefixNews + '/auth/'
                     </ul>            
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-active="category">
-                        <i class="nav-icon fas fa-book-open"></i>
-                        <p>Configuration<i class="fas fa-angle-left right"></i></p>
+                    <a href="/<%= systemConfigs.prefixAdmin%>/configuration/" class="nav-link" data-active="form">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>Configuration</p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="/<%= systemConfigs.prefixAdmin%>/configuration/general" class="nav-link" data-active="form">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>General</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="/<%= systemConfigs.prefixAdmin%>/configuration/social" class="nav-link" data-active="form">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>Social network</p>
-                            </a>
-                        </li>
-                    </ul>            
                 </li>
                 <li class="nav-item">
                     <a href="/<%= systemConfigs.prefixAdmin%>/contact" class="nav-link" data-active="index">
@@ -161,7 +149,7 @@ const linkPrefix = systemConfigs.prefixNews + '/auth/'
                 </li>
                 
                 <li class="nav-item">
-                    <a href="/<%=linkPrefix%>logout" class="nav-link" data-active="form">
+                    <a href="<%=cleanedURL%>auth/logout" class="nav-link" data-active="form">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>Log Out</p>
                     </a>

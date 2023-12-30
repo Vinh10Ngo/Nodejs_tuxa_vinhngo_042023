@@ -6,9 +6,10 @@ const systemConfigs = require(__path__configs + 'system')
 const notifyHelpers = require(__path__helpers + 'notify')
 const layoutNews = __path__views__news + 'frontend'
 const controllerName = 'contact'
-const paramsHelpers = require(__path__helpers + 'params')
+const sendEmailHelpers = require(__path__helpers + 'send-email')
 const mainValidate = require(__path__validates + controllerName)
 const mainModel = require(__path__models + controllerName)
+const configModel = require(__path__models + 'configuration')
 const linkRedirect = ('/' + systemConfigs.prefixNews + `/${controllerName}/`).replace(/(\/)\1+/g, '$1')
 
 
@@ -28,7 +29,6 @@ router.get('/', async function(req, res, next) {
 router.post('/save', function(req, res, next) {
   req.body = JSON.parse(JSON.stringify(req.body));;
   let item = Object.assign(req.body)
-  let name = paramsHelpers.getParams(req.query, 'name', '')
   let errors = mainValidate.validator(req)
   let username = "phucvinh"
   if(Array.isArray(errors) && errors.length > 0) {
@@ -38,9 +38,14 @@ router.post('/save', function(req, res, next) {
       controllerName,
       errors
     });
-  } else {
-    mainModel.saveItem(item, username).then((item) => {
-      notifyHelpers.show(req, res, linkRedirect, {task: 'contact'})
+  }  else {
+    Promise.all([
+      mainModel.saveItem(item, username),
+      configModel.getFormData({})
+    ]).then(([savedItem, configInfo]) => {
+      notifyHelpers.show(req, res, linkRedirect, {task: 'contact'});
+      // Sử dụng savedItem và itemsList nếu cần
+      sendEmailHelpers.sendEmail(savedItem, configInfo)
     })
   }
 });

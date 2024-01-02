@@ -4,6 +4,7 @@
 <% include ./../../helper/formBody%>
 <% include ./../../helper/image%>
 <% include ./../../helper/choice%>
+<% include ./../../helper/source_by%>
 
 
 <%
@@ -18,8 +19,18 @@ let elementsForm = [
 {for: 'form[special]', label: 'Special',input: choiceHelper(item.special, 'special')},
 {for: 'form[category]', label: 'category', input: selectBoxHelper('category_id', categoryItems, item.category_id, '')},
 {for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
+{for: 'form[created]', label: 'Created', input: sourceByHelper(item.created.user_name, item.created.time)},
 {for: 'form[thumb]', label: 'Thumb', input: inputHelper("file", "thumb", item.thumb, {'id': 'imgInp'})},
 ]   
+
+const indexToInsert = elementsForm.findIndex(el => el.for === 'form[thumb]');
+if (indexToInsert !== -1 && item.id) {
+  elementsForm.splice(indexToInsert, 0, {
+    for: 'form[modified]',
+    label: 'Modified',
+    input: sourceByHelper(item.modified.user_name, item.modified.time)
+  });
+}
 %>
 
 

@@ -5,6 +5,8 @@ const schema = new mongoose.Schema({
     info: {
         address: String,
         copyright: String,
+        content: String,
+        phone: String,
         social: {
             facebook: String,
             youtube: String,

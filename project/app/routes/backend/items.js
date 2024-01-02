@@ -30,11 +30,11 @@ router.get('/form(/:id)?', function(req, res, next) {
   let item =  {name: '', ordering: 0, status: 'novalue', created: {user_name: username, time: Date.now()}, modified: {user_name: username, time: Date.now()}}
   let errors = null
   if(id !== '') {
-   mainModel.getItems(id).then((item)=> {
-    res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleEdit, controllerName, item, errors });
+    mainModel.getItems(id).then((item)=> {
+      res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleEdit, controllerName, item, errors });
     })
   } else {
-    res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleAdd, controllerName, item, errors });
+    res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleAdd, controllerName, item, errors});
   }
 });
 
@@ -46,13 +46,15 @@ router.post('/save', (req, res, next) => {
   let username = "phucvinh"
   let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
   if(Array.isArray(errors) && errors.length > 0) {
-    let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
+    item.created = {user_name: null, time: null}
+    item.modified = {user_name: null, time: null}
+    let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd  
     res.render(`${folderViewsAdmin}form`, { pageTitle, item, controllerName, errors});
   } else {
-      mainModel.saveItem(item, username, {task: taskCurrent}).then(result => {
-        notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
-  })
-}
+    mainModel.saveItem(item, username, {task: taskCurrent}).then(result => {
+      notifyHelpers.show(req, res, linkIndex, {task: taskCurrent})
+    })
+  }
 })
 
 //sort

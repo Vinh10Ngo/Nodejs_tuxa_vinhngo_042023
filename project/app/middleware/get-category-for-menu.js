@@ -6,6 +6,6 @@ module.exports = async (req, res, next) => {
   await categoryModel.listItemsFrontend(null, {task: 'item-in-menu'}).then((items) => {
     res.locals.itemsCategory = items
   })
-  res.locals.countArticlesInCategory = await utilsHelpers.countArticlesInCategory(res.locals.itemsCategory)
+  res.locals.countArticlesInCategory = await utilsHelpers.countArticlesInCategory()
   next()
 }

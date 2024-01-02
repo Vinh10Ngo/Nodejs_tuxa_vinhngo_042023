@@ -11,7 +11,7 @@ const schema = new mongoose.Schema({
         user_name: String, 
         time: Date
     },
-    modified : {
+    modified: {
         user_id: Number, 
         user_name: String, 
         time: Date   

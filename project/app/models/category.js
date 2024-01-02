@@ -115,7 +115,7 @@ module.exports = {
          content: item.content,
            modified : {
              user_id: 0, 
-             user_name: 'admin', 
+             user_name: username, 
              time: Date.now()   
          }
        })

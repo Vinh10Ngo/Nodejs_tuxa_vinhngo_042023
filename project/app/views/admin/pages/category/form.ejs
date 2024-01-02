@@ -1,6 +1,7 @@
 <% include ./../../helper/input%>
 <% include ./../../helper/selectBox%>
 <% include ./../../helper/textArea%>
+<% include ./../../helper/source_by%>
 <% include ./../../helper/formBody%>
 
 <%
@@ -12,7 +13,11 @@ let elementsForm = [
 {for: 'form[ordering]', label: 'Ordering', input: inputHelper("number", "ordering", item.ordering, {'id': 'form[ordering]'})},
 {for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
 {for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
+{for: 'form[created]', label: 'Created', input: sourceByHelper(item.created.user_name, item.created.time)},
 ]
+if (item.id) {
+    elementsForm.push({for: 'form[modified]', label: 'Modified', input: sourceByHelper(item.modified.user_name, item.modified.time)})
+}
 %>
 
 <section class="content">

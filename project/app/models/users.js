@@ -138,10 +138,10 @@ module.exports = {
           id: item.groups_id,
           name: item.groups_name
         },
-           modified : {
-             user_id: 0, 
-             user_name: 'admin', 
-             time: Date.now()   
+        modified : {
+          user_id: 0, 
+          user_name: username, 
+          time: Date.now()   
          }
        })
     }

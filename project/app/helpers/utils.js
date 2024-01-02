@@ -19,11 +19,17 @@ let createFilterStatus = async (currentStatus, collection) => {
       return statusFilter
 }
 
-let countArticlesInCategory = async (category) => {
+let countArticlesInCategory = async () => {
   const articleModel = require(__path__schemas + 'article')
   const allCategories = await articleModel.distinct('category'); // Lấy tất cả các category
   let countArr = []
-    for (const category of allCategories) {
+  const maxCategories = 4; // Số lượng tối đa các category bạn muốn lấy
+
+  // Nếu số lượng category lớn hơn maxCategories, sử dụng slice để giới hạn
+  const categoriesToProcess = allCategories.length > maxCategories
+    ? allCategories.slice(0, maxCategories)
+    : allCategories
+    for (const category of categoriesToProcess) {
         const count = await articleModel.countDocuments({category: category });
         countArr.push({ category: category, count: count });
     }

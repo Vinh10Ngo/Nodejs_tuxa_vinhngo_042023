@@ -59,7 +59,7 @@ router.get('/form(/:id)?', async function(req, res, next) {
     res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleEdit, controllerName, item, errors, groupsItems });
   })
   } else {
-    res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleAdd, controllerName, item, errors, groupsItems });
+    res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleAdd, controllerName, item, errors, groupsItems});
   }
 });
 
@@ -83,6 +83,8 @@ router.post('/save', (req, res, next) => {
       fileHelpers.remove(uploadLink, item.avatar)
       if(taskCurrent == 'edit') item.avatar = item.image_old
       let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
+      item.created = {user_name: null, time: null}
+      item.modified = {user_name: null, time: null}
       res.render(`${folderViewsAdmin}form`, { pageTitle, item, controllerName, errors, groupsItems});
     } else {
       // item.avatar = (req.file == undefined) ? null : req.file.filename

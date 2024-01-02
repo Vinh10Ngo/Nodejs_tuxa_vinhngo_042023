@@ -19,11 +19,17 @@ let elementsForm = [
 {for: 'form[groups]', label: 'Groups', input: selectBoxHelper('groups_id', groupsItems, item.groups_id, '')},
 {for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
 {for: 'form[created]', label: 'Created', input: sourceByHelper(item.created.user_name, item.created.time)},
-{for: 'form[modified]', label: 'Modified', input: sourceByHelper(item.modified.user_name, item.modified.time)},
 {for: 'form[avatar]', label: 'Avatar', input: inputHelper("file", "avatar", item.avatar, {'id': 'imgInp'})},
-
-
 ]
+const indexToInsert = elementsForm.findIndex(el => el.for === 'form[avatar]');
+if (indexToInsert !== -1 && item.id) {
+  elementsForm.splice(indexToInsert, 0, {
+    for: 'form[modified]',
+    label: 'Modified',
+    input: sourceByHelper(item.modified.user_name, item.modified.time)
+  });
+}
+
 %>
 
 <section class="content">

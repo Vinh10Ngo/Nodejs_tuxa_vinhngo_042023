@@ -49,6 +49,8 @@ router.post('/save', (req, res, next) => {
   let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
   if(Array.isArray(errors) && errors.length > 0) {
     let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
+    item.created = {user_name: null, time: null}
+    item.modified = {user_name: null, time: null}
     res.render(`${folderViewsAdmin}form`, { pageTitle, item, controllerName, errors});
   } else {
       mainModel.saveItem(item, username, {task: taskCurrent}).then(result => {

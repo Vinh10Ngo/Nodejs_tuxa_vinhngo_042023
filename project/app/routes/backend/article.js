@@ -31,7 +31,8 @@ const uploadLink = 'public/uploads/article/'
 //form
 router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
-  let item =  {name: '', ordering: 0, status: 'novalue', category_id: '', category_name: '', content: '', slug: ''}
+  let username = "phucvinh"
+  let item =  {name: '', ordering: 0, status: 'novalue', category_id: '', category_name: '', content: '', slug: '', created: {user_name: username, time: Date.now()}, modified: {user_name: username, time: Date.now()}}
   let errors = null
   let categoryItems = []
   await categoryModel.listItemInSelectBox().then((item) => {
@@ -74,6 +75,8 @@ router.post('/save', (req, res, next) => {
       await fileHelpers.remove(uploadLink, item.thumb)
       item.thumb = 'no-avatar.jpeg'
       if(taskCurrent == 'edit') item.thumb = item.image_old
+      item.created = {user_name: null, time: null}
+      item.modified = {user_name: null, time: null}
       let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
       res.render(`${folderViewsAdmin}form`, { pageTitle, item, controllerName, errors, categoryItems});
     } else {

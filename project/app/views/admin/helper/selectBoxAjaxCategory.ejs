@@ -3,7 +3,6 @@
     let xHtmlResult = ''
     items = items.filter(obj => obj.id !== undefined)
     items.forEach((item) => {
-    console.log(item.name)        
         <!-- phần tử được đổ ra phần tử nào có id = optionSelected thì được chọn -->
         let selected = (optionSelected == item.id) ? 'selected = "selected"': ''
         xHtmlResult += `<option value=${item.id} ${selected}>${item.name}</option>`

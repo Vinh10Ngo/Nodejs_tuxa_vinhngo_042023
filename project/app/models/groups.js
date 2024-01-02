@@ -96,7 +96,7 @@ module.exports = {
           groups_acp: item.groups_acp,
             modified : {
               user_id: 0, 
-              user_name: 'admin', 
+              user_name: username, 
               time: Date.now()   
           }
         })

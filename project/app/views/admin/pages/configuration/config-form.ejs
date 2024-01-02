@@ -7,6 +7,8 @@ const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
 let elementsGeneralForm = [
 {for: 'form[address]', label: 'Address', input: inputHelper("text", "info[address]", item.info.address, {'id': 'form[address]'})},
 {for: 'form[copyright]', label: 'Copyright', input: inputHelper("text", "info[copyright]", item.info.copyright, {'id': 'form[copyright]'})},
+{for: 'form[content]', label: 'Content', input: inputHelper("text", "info[content]", item.info.content, {'id': 'form[content]'})},
+{for: 'form[phone]', label: 'Phone', input: inputHelper("text", "info[phone]", item.info.phone, {'id': 'form[phone]'})},
 ]
 let elementsSocialForm = [
 {for: 'form[facebook]', label: 'Facebook', input: inputHelper("text", "info[social][facebook]", item.info.social.facebook, {'id': 'form[facebook]'})},

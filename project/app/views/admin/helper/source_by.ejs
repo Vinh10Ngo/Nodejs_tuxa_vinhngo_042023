@@ -1,5 +1,6 @@
 <% sourceByHelper = (user_name, time) => {
-    let xHtmlResult = `<span class="gliphicon gliphicon-user" aria-hidden="true"></span>${user_name}<br/>
+    let xHtmlResult = ''
+    if (time) xHtmlResult =  `<span class="gliphicon gliphicon-user" aria-hidden="true"></span>${user_name}<br/>
     <span class="gliphicon gliphicon-time" aria-hidden="true"></span>${moment(time).format(systemConfigs.format_long_time)}`
 
     return xHtmlResult

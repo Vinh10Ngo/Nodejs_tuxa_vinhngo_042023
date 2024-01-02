@@ -10,6 +10,8 @@ module.exports = {
       info: {
         address: item.info.address,
         copyright: item.info.copyright,
+        content: item.info.content,
+        phone: item.info.phone,
         social: {
           facebook: item.info.social.facebook,
           youtube: item.info.social.youtube,

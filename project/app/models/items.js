@@ -104,15 +104,15 @@ module.exports = {
     }
     if (options.task == 'edit') {
       return mainModel.updateOne({_id: item.id},
-        {status: item.status, 
-         ordering: parseInt(item.ordering),
-         name: item.name,
-         content: item.content,
-           modified : {
-             user_id: 0, 
-             user_name: 'admin', 
-             time: Date.now()   
-         }
+        { status: item.status, 
+          ordering: parseInt(item.ordering),
+          name: item.name,
+          content: item.content,
+          modified : {
+            user_id: 0, 
+            user_name: username, 
+            time: Date.now()   
+          }
        })
     }
  },

@@ -28,11 +28,12 @@ const folderViewsAdmin = __path__views__admin + `pages/${controllerName}/`
 //form
 router.get('/form(/:id)?', function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
-  let item =  {name: '', ordering: 0, status: 'novalue', slug: ''}
+  let username = "phucvinh"
+  let item =  {name: '', ordering: 0, status: 'novalue', slug: '', created: {user_name: username, time: Date.now()}, modified: {user_name: username, time: Date.now()}}
   let errors = null
   if(id !== '') {
    mainModel.getItems(id).then((item)=> {
-    item.slug = slug(item.name)
+     item.slug = slug(item.name)
       res.render(`${folderViewsAdmin}form`, { pageTitle: pageTitleEdit, controllerName, item, errors });
     })
   } else {
@@ -53,6 +54,8 @@ router.post('/save', (req, res, next) => {
   let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
   if(Array.isArray(errors) && errors.length > 0) {
     let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
+    item.created = {user_name: null, time: null}
+    item.modified = {user_name: null, time: null}
     res.render(`${folderViewsAdmin}form`, { pageTitle, item, controllerName, errors});
   } else {
       mainModel.saveItem(item, username, {task: taskCurrent}).then(result => {

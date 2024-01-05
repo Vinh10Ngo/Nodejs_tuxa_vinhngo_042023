@@ -1,5 +1,5 @@
 module.exports = {
-    password: 'Ishi.Red.09',
+    password: 'phucvinh123456',
     database: 'project-nodejs-2',
     col_items: 'items',
     col_groups: 'groups',

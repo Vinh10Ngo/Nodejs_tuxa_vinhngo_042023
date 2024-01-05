@@ -3,6 +3,7 @@ var errorResponse = require('../utils/errorResponse')
 const errorHandler =  (err, req, res, next) =>  {
     console.log(err.name.red)
     let error = {...err}
+    console.log(error.name);
     if(error.name ===  'CastError') {
         let message = 'Không tồn tại dữ liệu'
         error = new errorResponse(404, message)

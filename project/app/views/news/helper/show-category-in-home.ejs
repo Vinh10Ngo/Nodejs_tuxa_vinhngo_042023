@@ -1,0 +1,26 @@
+<%
+showCategoryInHomeHelper = (category, link) => {
+    let arr = [
+        {classDiv: 'how2-cl1', classH3: 'cl12', eachCategory: category[0]},
+        {classDiv: 'how2-cl2', classH3: 'cl13', eachCategory: category[1]},
+        {classDiv: 'how2-cl3', classH3: 'cl14', eachCategory: category[2]},
+        {classDiv: 'how2-cl1', classH3: 'cl12', eachCategory: category[3]},
+        {classDiv: 'how2-cl2', classH3: 'cl13', eachCategory: category[4]},
+        {classDiv: 'how2-cl3', classH3: 'cl14', eachCategory: category[5]}
+    ]
+    
+    let htmlResult = ''
+    arr.forEach((item, index) => {
+        htmlResult += `<div class="tab01 p-b-20">
+            <div class="tab01-head how2 ${item.classDiv} bocl12 flex-s-c m-r-10 m-r-0-sr991">
+                <a href="${link}category/${item.eachCategory.id}">
+                <h3 class="f1-m-2 ${item.classH3} tab01-title">
+                    ${item.eachCategory.name}
+                </h3>
+                </a>
+            </div>
+        </div>`
+    })
+    return htmlResult
+}
+%>

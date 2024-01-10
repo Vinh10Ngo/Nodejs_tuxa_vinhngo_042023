@@ -223,12 +223,13 @@ module.exports = {
       limit = 0
       select = 'name created category.name category.id thumb special content'
     }
+    
     return mainModel
     .find(find).select(select).sort(sort).limit(limit)
   }, 
   getItemsFrontend: (params = null, options = null) => {
     return mainModel.findById(params.id)
-    .select('name created category.name category.id thumb content')
+    .select('name created category.name category.id thumb content view')
   }, 
   countArticleFrontend: (params = null, options = null) =>{
     let condition = {}

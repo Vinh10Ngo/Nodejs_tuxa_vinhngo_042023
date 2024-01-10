@@ -18,9 +18,10 @@ router.get('/:id', async function(req, res, next) {
   let itemsCategory = []
   let itemsInCategory = []
   let itemsSpecialCategory = []
-  let perPage = 1
+  let perPage = 3
   let totalItems = 1
   let pageRange = 3
+  let category = ''
 
   await categoryModel.listItemsFrontend(null, {task: 'item-in-menu'}).then((items) => {
     itemsCategory = items
@@ -39,6 +40,10 @@ router.get('/:id', async function(req, res, next) {
   .then((items) => {
     itemsInCategory = items
   })
+
+  await categoryModel.getItemFrontend({id: idCategory}).then((items) => {
+    category = items
+  })
   
   let paginationCatgoryPage = await utilsHelpers.paginate(page, totalPages, pageRange)
   
@@ -53,7 +58,8 @@ router.get('/:id', async function(req, res, next) {
     pageTitle: 'Category',
     keyword,
     totalItems,
-    paginationCatgoryPage
+    paginationCatgoryPage,
+    category
   }); 
 });
 

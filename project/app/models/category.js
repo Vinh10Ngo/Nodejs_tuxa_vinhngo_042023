@@ -135,9 +135,12 @@ module.exports = {
       find = {status: 'active'}
       sort = {ordering: 'asc'}
       select = 'name'
-      limit = 3
+      limit = 6
     }
     return mainModel
     .find(find).select(select).sort(sort).limit(limit)
+ }, 
+ getItemFrontend: (params = null) => {
+  return mainModel.findById(params.id)
  }
 }

@@ -22,6 +22,7 @@ router.get('/:id', async function(req, res, next) {
 
   await articleModel.getItemsFrontend({id: idBlogDetail}, null).then((items) => {
     itemsBlogDetail = items
+    console.log(itemsBlogDetail);
   })
   await articleModel.countView({id: idBlogDetail}).then((items) => {
   })

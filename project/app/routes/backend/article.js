@@ -59,7 +59,6 @@ router.post('/save', (req, res, next) => {
     req.body = JSON.parse(JSON.stringify(req.body));
     let item = Object.assign(req.body)
     item.slug = slug(item.name)
-    item.content = item.content.replace(/<\/?p>/g, '')
     item.content = he.decode(item.content)
     let username = 'phucvinh'
     item.thumb = (req.file == undefined) ? null : req.file.filename

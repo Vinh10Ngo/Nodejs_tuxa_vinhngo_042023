@@ -17,7 +17,7 @@ router.get('/', async function(req, res, next) {
   let itemsSpecial = []
   let itemsLatest = []
   let itemsInCategory = []
-  let itemsCategoryIndex = []
+  let categoryInIndex = []
   let totalItems = 1
 
   await articleModel.listItemsFrontend(null, {task: 'item-special'}).then((items) => {
@@ -31,9 +31,9 @@ router.get('/', async function(req, res, next) {
     itemsInCategory = items
   })
   await categoryModel.listItemsFrontend(null, {task: 'category-in-index'}).then((items) => {
-    itemsCategoryIndex = items
+    categoryInIndex = items
   })
-  
+
   await articleModel.countArticleFrontend({id: idCategory }, {task: 'item-in-category'}).then((data) => {
     totalItems = data
   })
@@ -45,29 +45,14 @@ router.get('/', async function(req, res, next) {
     itemsSpecial,
     itemsLatest,
     itemsInCategory,
-    itemsCategoryIndex,
+    categoryInIndex,
     pageTitle: 'Home',
     idCategory,
     keyword,
     totalItems,
   });
 })
-router.get('/category-list/:id', async function(req, res, next) {
-  let idCategory = paramsHelpers.getParams(req.params, 'id', '')
-  let itemsInCategory = []
-  await articleModel.listItemsFrontend({id: idCategory}, {task: 'item-in-category'}).then((items) => {
-    itemsInCategory = items
-  })
-  res.json(itemsInCategory)
-})
 
-router.get('/category-hover/:id', async function(req, res, next) {
-  let idCategory = paramsHelpers.getParams(req.params, 'id', '')
-  let itemsInCategory = []
-  await articleModel.listItemsFrontend({id: idCategory}, {task: 'item-in-category'}).then((items) => {
-    itemsInCategory = items
-  })
-  res.json(itemsInCategory)
-})
+
 
 module.exports = router;

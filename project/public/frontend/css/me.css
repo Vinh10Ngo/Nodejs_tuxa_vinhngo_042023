@@ -25,3 +25,9 @@
   background-color: yellow;
   /* Các thuộc tính CSS khác để highlight */
 }
+
+.mega-menu-item a::after,
+.main-menu-active a::after {
+  display: none;
+}
+

@@ -65,18 +65,7 @@ const cleanedURL = url.replace(/\/+/g, '/');
         <!-- Menu Mobile -->
         <div class="menu-mobile">
             <ul class="topbar-mobile">
-                <li class="left-topbar">
-                    <span class="left-topbar-item flex-wr-s-c">
-                        <span>
-                            New York, NY
-                        </span>
-            
-                        <img class="m-b-1 m-rl-8" src="/frontend/images/icons/icon-night.png" alt="IMG">
-            
-                        <span>
-                            HI 58° LO 56°
-                        </span>
-                    </span>
+                <li class="left-topbar">    
                 </li>
             
                 <li class="left-topbar">
@@ -149,7 +138,7 @@ const cleanedURL = url.replace(/\/+/g, '/');
         <div class="wrap-logo container">
             <!-- Logo desktop -->		
             <div class="logo">
-                <a href="index.html"><img src="/frontend/images/icons/logo-01.png" alt="LOGO"></a>
+                <a href="<%=cleanedURL%>"><img src="/frontend/images/icons/logo-01.png" alt="LOGO"></a>
             </div>	
         
             <!-- Banner -->
@@ -175,16 +164,9 @@ const cleanedURL = url.replace(/\/+/g, '/');
     
                         <% itemsCategory.forEach((item, index) => { %>	
 
-                            <li class="mega-menu-item category-hover" data-format-time="" data-link-prefix="<%=cleanedURL%>" data-link="<%=cleanedURL%>category-hover/<%= item.id%>">
+                            <li class="mega-menu-item">
                             <a href="<%=cleanedURL%>category/<%= item.id%>"><%= item.name%> </a>
-        
-                            <div class="sub-mega-menu">
-                               
-                                <div class="article-list">
-
-                                </div>
-                            </div>
-                        </li>
+                         </li>
                         <% }) %>
                         <li>
                             <a href="<%=cleanedURL%>about">Đặc tính</a>

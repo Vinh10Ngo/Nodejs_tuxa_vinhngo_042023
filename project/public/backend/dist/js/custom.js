@@ -1,4 +1,6 @@
 CKEDITOR.replace( 'content' );
+CKEDITOR.replace( 'about' );
+
 
 $(document).ready(function () {
     var ckbAll = $("#check-all");

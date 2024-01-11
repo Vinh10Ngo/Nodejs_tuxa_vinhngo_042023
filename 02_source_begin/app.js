@@ -4,6 +4,8 @@ var cors          = require('cors')
 var morgan        = require('morgan')
 var colors        = require('colors')
 var errorHandler  = require('./app/middleware/error')
+var cookieParser = require('cookie-parser')
+const validator   = require('express-validator'); 
 
 const mongoose = require('mongoose');
 
@@ -11,7 +13,8 @@ var app = express();
 app.use(express.json());
 app.use(cors())
 app.use(morgan('tiny'))
-
+app.use(validator());
+app.use(cookieParser())
 
 const pathConfig        = require('./path');
 global.__base           = __dirname + '/';
@@ -21,6 +24,7 @@ global.__path_schemas   = __path_app + pathConfig.folder_schemas + '/';
 global.__path_models    = __path_app + pathConfig.folder_models + '/';
 global.__path_routers   = __path_app + pathConfig.folder_routers + '/';
 global.__path_configs   = __path_app + pathConfig.folder_configs + '/';
+global.__path_validates = __path_app + pathConfig.folder_validates + '/';
 
 
 

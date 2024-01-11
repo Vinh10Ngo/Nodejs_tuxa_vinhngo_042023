@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var asyncHandler = require('../middleware/async');
-var { protect, authorize } = require('../middleware/auth');
 var errorResponse   = require('../utils/ErrorResponse')
 
-const controllerName = 'items'
+const controllerName = 'user'
 const MainModel = require(__path_models + controllerName)
 const MainValidate	= require(__path_validates + controllerName);
 
@@ -23,7 +22,7 @@ router.get('/:id', asyncHandler (async (req, res, next) => {
         data: data
     })  
 }))
-router.post('/add', protect, authorize('admin', 'publisher'), asyncHandler (async (req, res, next) => {
+router.post('/add', asyncHandler (async (req, res, next) => {
     let err = await validateReq(req, res, next)
     if(!err){
         const data = await MainModel.create(req.body);
@@ -33,14 +32,14 @@ router.post('/add', protect, authorize('admin', 'publisher'), asyncHandler (asyn
         })
     }
 }))
-router.delete('/delete/:id', protect, authorize('admin', 'publisher'), asyncHandler (async (req, res, next) => {
+router.delete('/delete/:id', asyncHandler (async (req, res, next) => {
     const data = await MainModel.deleteItems({id: req.params.id}, {task: 'one'})
     res.status(201).json({
         success: true,
         data: data
     })  
 }))
-router.put('/edit/:id', protect, authorize('admin', 'publisher'), asyncHandler(async (req, res, next) => {
+router.put('/edit/:id', asyncHandler(async (req, res, next) => {
     let err = await validateReq(req,res, next);
     if(!err){
         const data = await MainModel.editItem({'id' : req.params.id,'body' : req.body} , {'task' : 'edit'})

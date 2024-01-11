@@ -18,7 +18,7 @@ router.get('/:id', async function(req, res, next) {
   let itemsCategory = []
   let itemsInCategory = []
   let itemsSpecialCategory = []
-  let perPage = 3
+  let perPage = 4
   let totalItems = 1
   let pageRange = 3
   let category = ''

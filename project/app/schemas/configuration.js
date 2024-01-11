@@ -20,7 +20,9 @@ const schema = new mongoose.Schema({
         email: String,
         password: String,
         BCC: String
-    }
+    },
+    about: String,
+
 });
 
 module.exports= mongoose.model(databaseConfigs.col_configuration, schema)

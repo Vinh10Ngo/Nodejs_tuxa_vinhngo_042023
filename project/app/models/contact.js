@@ -13,7 +13,7 @@ module.exports = {
     
   listItems: (params, options = null) => {
     let objWhere = {}
-    let sort = {}
+    let sort = {'time': 'desc'}
       if (params.currentStatus !== 'all') {
           objWhere.status = params.currentStatus
         }
@@ -27,7 +27,6 @@ module.exports = {
           { message: keywordRegex }
         ];
       }
-     sort[params.sortField] = params.sortType
 
    return mainModel
     .find(objWhere)

@@ -12,8 +12,8 @@ let createParams = (req) => {
 
   params.currentStatus = getParams(req.params, 'status', 'all')
   
-  params.sortField = getParams(req.session, 'sort_field', 'ordering')
-  params.sortType = getParams(req.session, 'sort_type', 'asc')
+  params.sortField = getParams(req.session, 'sort_field', 'created.time')
+  params.sortType = getParams(req.session, 'sort_type', 'desc')
 
   params.groupID = getParams(req.session, 'groups_id', 'allvalue')
   params.categoryID = getParams(req.session, 'category_id', 'allvalue')

@@ -1,4 +1,4 @@
-const MainModel 	= require(__path_schemas + 'items');
+const MainModel 	= require(__path_schemas + 'user');
 
 
 module.exports = {
@@ -43,8 +43,9 @@ module.exports = {
                 .select({})
         }
     },
-    create: (item) => {
-        return new MainModel(item).save()
+    create: async (item) => {
+        const user = await new MainModel(item).save();
+        return  await user.getSignedJwtToken();
     },
     deleteItems: (params, options = null) => {
         if (options.task == 'one') {

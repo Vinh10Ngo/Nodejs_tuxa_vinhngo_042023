@@ -26,6 +26,7 @@ module.exports = {
         password: item.send_email.password,
         BCC: item.send_email.BCC
       },
+      about: item.about,
       modified: {
         user_id: 0,
         user_name: username,

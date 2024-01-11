@@ -1,16 +1,37 @@
-option sortHelper
-id inputHelper
-content textarea form undefined
-thông báo khi ấn vào inactive
-avatar validate 
-params.groupID
+option sortHelper --> ok
+id inputHelper --> ok
+content textarea form undefined --> ok
+avatar validate --> ok
 update groups.id (undefined)
-reload => delete
-content => undefined
-edit avatar
-2 validate avatar
-delete error back form 
-back form
+reload => delete --> ok
+delete error back form --> ok
+back form --> ok
+
+save history 
+change format time frontend --> ok
+no data 
+page title --> ok
+error page
+info management
+show a lot of category type (view_type, include)
+content --> ok
+change dasboard file --> ok
+sidebar login --> ok
+delete icon home index --> ok
+news file me.js frontend
+news menu
+optimaze phần phân trang --> ok
+add modified username (article + category). add created username --> ok
+check namesake --> ok
+add username + password into form --> ok
+image error 404
+tag manager
+created id
+slug Article
+Password format --> ok
+content group content accept
+time form backend category, article --ok
+search all ?
 <!-- 
 <a href="/<%= linkPrefix%>form/<%= item.id%>" class="rounded-circle btn btn-sm btn-info" title="Edit">
     <i class="fas fa-pencil-alt"></i>
@@ -19,8 +40,8 @@ back form
 <a href="/<%= linkPrefix%>delete/<%= item.id%>" class="rounded-circle btn btn-sm btn-danger" title="Delete">
     <i class="fas fa-trash-alt"></i>
 </a> -->    
+    
+<%- JSON.stringify() %>
 
-choiceHelper
-find groupsACPHelper
-folderViewsAdmin
-        <a href=""><b><%=pageTitle%></b></a>
+
+

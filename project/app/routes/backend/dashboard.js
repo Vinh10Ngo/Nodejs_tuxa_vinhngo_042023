@@ -8,6 +8,7 @@ const usersModel = require(__path__models + 'users')
 const groupsModel = require(__path__models + 'groups')
 const categoryModel = require(__path__models + 'category')
 const articleModel = require(__path__models + 'article')
+const contactModel = require(__path__models + 'contact')
 
 const paramsHelpers = require(__path__helpers + 'params')
 const folderViewsAdmin = __path__views__admin + `pages/${controllerName}/`
@@ -20,6 +21,7 @@ router.get('/', async(req, res, next) => {
   let countGroups = 0
   let countCategory = 0
   let countArticle = 0
+  let countContact = 0
 
   let params = paramsHelpers.createParams(req)
   await itemsModel.countItems(params).then((data) => {
@@ -37,14 +39,18 @@ router.get('/', async(req, res, next) => {
   await articleModel.countItems(params).then((data) => {
     countArticle = data
   })
-  
+  await contactModel.countItems(params).then((data) => {
+    countContact = data
+  })
+
   res.render(`${folderViewsAdmin}dashboard`, {
      pageTitle: 'Dashboard',
      countItems,
      countUsers,
      countGroups,
      countCategory,
-     countArticle 
+     countArticle,
+     countContact 
 
   });
 });

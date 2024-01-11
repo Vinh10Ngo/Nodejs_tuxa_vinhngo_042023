@@ -22,12 +22,13 @@ const cleanedURL = url.replace(/\/+/g, '/');
 <body class="animsition">
 	
 	<!-- Header -->
-
-
-	<!-- Breadcrumb -->
 	<div class="container">
 		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
-			<% include ./../../elements/search%>
+			<div class="f2-s-1 p-r-30 size-w-0 m-tb-6 flex-wr-s-c">
+			</div>
+
+            <% include ./../../elements/search%>
+
 		</div>
 	</div>
 
@@ -40,15 +41,21 @@ const cleanedURL = url.replace(/\/+/g, '/');
 					<div class="p-r-10 p-r-0-sr991">
 						<div class="m-t--40 p-b-40">
 							<!-- Item post -->
+							<% if (itemsKeyword.length == 0) { %>
+								<div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
+									Không có dữ liệu
+								</div>
+							<% } %>
 							<% itemsKeyword.forEach((item, index) => { %>	
+								
                                 <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
-								<a href="<%=cleanedURL%>blog-list/<%= item.id%>" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
+								<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
 									<img src="<%=uploadPath + item.thumb%>" alt="<%=item.name%>">
 								</a>
 
 								<div class="size-w-9 w-full-sr575 m-b-25">
 									<h5 class="p-b-12" >
-										<a id="textToHighlight" data-keyword="<%= keyword %>" href="<%=cleanedURL%>blog-list/<%= item.id%>" class="f1-l-1 cl2 hov-cl10 trans-03 respon2">
+										<a id="textToHighlight" data-keyword="<%= keyword %>" href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="f1-l-1 cl2 hov-cl10 trans-03 respon2">
 											<%=item.name%> 
 										</a>
 									</h5>

@@ -1,4 +1,4 @@
-const MainModel 	= require(__path_schemas + 'items');
+const MainModel 	= require(__path_schemas + 'careers');
 
 
 module.exports = {
@@ -33,6 +33,7 @@ module.exports = {
         if(options.task == 'all'){
             return MainModel
                 .find(find)
+                .populate({path: 'restaurants', select: 'name'})
                 .select(select)
                 .sort(sort)
                 .skip(skip).limit(limit)
@@ -43,17 +44,24 @@ module.exports = {
                 .select({})
         }
     },
-    create: (item) => {
+    createItem: (item) => {
         return new MainModel(item).save()
     },
-    deleteItems: (params, options = null) => {
+    deleteItem: (params, options = null) => {
         if (options.task == 'one') {
             return MainModel.deleteOne({_id: params.id})
         }
     },
-    editItems: (params, options = null) => {
+    editItem: (params, options = null) => {
         if (options.task == 'edit') {
             return MainModel.updateOne({_id: params.id}, params.body)
         }
+    },
+    event: (params, options = null) => {
+        let type = params.type
+        if(type !== 'like' && type !== 'dislike') return
+
+        return MainModel.findByIdAndUpdate(params.id,{$inc: {[type]: 1}}, {new: true})
+
     }
 }

@@ -1,21 +1,10 @@
-const uploadPath = '/uploads/article/'
-function formatTime(fulltime) {
-  const date = new Date(fulltime);
 
-  const day = date.getDate();
-  const month = date.getMonth() + 1; // Tháng bắt đầu từ 0, cần cộng thêm 1
-  const year = date.getFullYear();
-
-  const formattedDate = `${day}/${month}/${year}`;
-  return formattedDate
-}
 
 
 
 document.addEventListener("DOMContentLoaded", function() {
   const keyword = document.getElementById('textToHighlight').dataset.keyword;
   const elements = document.querySelectorAll('#textToHighlight');
-  console.log(keyword);
 
   elements.forEach(element => {
     const content = element.textContent;

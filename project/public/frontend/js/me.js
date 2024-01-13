@@ -1,13 +1,11 @@
 
 
-
-
 document.addEventListener("DOMContentLoaded", function() {
   const keyword = document.getElementById('textToHighlight').dataset.keyword;
   const elements = document.querySelectorAll('#textToHighlight');
 
   elements.forEach(element => {
-    const content = element.textContent;
+    const name = element.textContent;
     const regex = new RegExp(
       keyword.replace(/./g, function(match) {
         if (match === 'a') {
@@ -29,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
       'gi'
     );
 
-    element.innerHTML = content.replace(regex, match => `<span class="highlight">${match}</span>`);
+    element.innerHTML = name.replace(regex, match => `<span class="highlight">${match}</span>`);
   });
 });
 

@@ -52,6 +52,15 @@ app.use(validator({
   customValidators: {
     isNotEqual: (value1, value2) => {
       return value1!== value2
+    },
+    isNameshake: (oldNames, name) => {
+      console.log('abc');
+      for (let i = 0; i < oldNames.length; i++) {
+        if (oldNames[i].name === name) {
+           return true
+        }
+      }
+      return false
     }
   }
 }))

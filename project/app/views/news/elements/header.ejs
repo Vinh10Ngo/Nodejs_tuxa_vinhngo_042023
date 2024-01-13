@@ -22,9 +22,6 @@ const cleanedURL = url.replace(/\/+/g, '/');
                         Contact
                     </a>
 
-                    <a href="#" class="left-topbar-item">
-                        Sing up
-                    </a>
                     <%- showMenuUser(userInfo) %>
                     
                 </div>
@@ -65,34 +62,12 @@ const cleanedURL = url.replace(/\/+/g, '/');
                         Contact
                     </a>
             
-                    <a href="#" class="left-topbar-item">
-                        Sing up
-                    </a>
-            
                     <%- showMenuUser(userInfo) %>
 
                 </li>
             
                 <li class="right-topbar">
-                    <a href="#">
-                        <span class="fab fa-facebook-f"></span>
-                    </a>
-            
-                    <a href="#">
-                        <span class="fab fa-twitter"></span>
-                    </a>
-            
-                    <a href="#">
-                        <span class="fab fa-pinterest-p"></span>
-                    </a>
-            
-                    <a href="#">
-                        <span class="fab fa-vimeo-v"></span>
-                    </a>
-            
-                    <a href="#">
-                        <span class="fab fa-youtube"></span>
-                    </a>
+                    <%- socialLinkHelper(configInfo) %>
                 </li>
             </ul>
         

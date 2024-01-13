@@ -32,6 +32,7 @@ router.get('/', async function(req, res, next) {
   })
   await categoryModel.listItemsFrontend(null, {task: 'category-in-index'}).then((items) => {
     categoryInIndex = items
+    console.log(categoryInIndex);
   })
 
   await articleModel.countArticleFrontend({id: idCategory }, {task: 'item-in-category'}).then((data) => {

@@ -31,5 +31,16 @@
   display: none;
 }
 
+.bg0.error-image {
+  background-color: #f0f0f0; /* Màu nền có thể thay đổi theo ý muốn */
+  height: 100vh; /* Chiều cao của container sẽ là 100% chiều cao của cửa sổ xem */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.image-container.error2-image img {
+  max-width: 100%; /* Hình ảnh sẽ thu nhỏ lại khi vượt quá kích thước của container */
+  height: auto; /* Giữ tỷ lệ khung hình khi thu nhỏ */
+}
 

@@ -39,6 +39,13 @@ const cleanedURL = url.replace(/\/+/g, '/');
 			<div class="row justify-content-center">
 				<div class="col-md-10 col-lg-8 p-b-80">
 					<div class="row">
+						<% if (itemsInCategory.length == 0) { %>
+							<div class="col-sm-6 p-r-25 p-r-15-sr991">
+								<div class="m-b-45">
+									<h3>Không có dữ liệu</h3>
+								</div>
+							</div>
+						<% } %>
 							<% itemsInCategory.forEach((item, index) => { %>	
 							<div class="col-sm-6 p-r-25 p-r-15-sr991">
 								<!-- Item latest -->	

@@ -1,9 +1,9 @@
 const mainModel = require(__path__schemas + 'users')
 const groupsModel = require(__path__schemas + 'groups')
-const notifyConfigs = require(__path__configs + 'notify');
 const fileHelpers  = require(__path__helpers + 'file')
 const uploadLink = 'public/uploads/users/'
 const crypto = require('crypto');
+var md5 = require('md5');
 
 
 module.exports = {
@@ -116,10 +116,11 @@ module.exports = {
   },
   saveItem: (item, username, options = null) => {
     if (options.task == 'add') {
+      item.password = md5(item.password)
       item.groups = {
         id: item.groups_id,
         name: item.groups_name
-      }
+      },
       item.created = {
         user_id: 0, 
         user_name: username, 
@@ -132,6 +133,8 @@ module.exports = {
         {status: item.status, 
          ordering: parseInt(item.ordering),
          name: item.name,
+         username: item.username,
+         password: md5(item.password),
          avatar: item.avatar,
          content: item.content,
          groups: {

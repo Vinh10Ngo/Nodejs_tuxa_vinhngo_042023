@@ -80,7 +80,8 @@ router.post('/save', (req, res, next) => {
         groupsItems = item
         groupsItems.unshift({_id: 'novalue', name: 'Choose group'})
       })
-      fileHelpers.remove(uploadLink, item.avatar)
+      await fileHelpers.remove(uploadLink, item.avatar)
+      item.avatar = 'no-avatar.jpeg'
       if(taskCurrent == 'edit') item.avatar = item.image_old
       let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
       item.created = {user_name: null, time: null}

@@ -196,11 +196,11 @@ module.exports = {
     let limit = 4
     if (options.task == 'item-special') {
       find = {status: 'active', special: 'yes'}
-      sort = {ordering: 'asc'}
+      sort = {ordering: 'asc', name : 'asc'}
     }
     if (options.task == 'item-special-category') {
       find = {status: 'active', special: 'yes'}
-      sort = {ordering: 'asc'}
+      sort = {ordering: 'asc', name : 'asc'}
       limit = 5
     }
     if (options.task == 'item-latest') {
@@ -209,17 +209,17 @@ module.exports = {
     }
     if (options.task == 'item-in-category') {
       find = {status: 'active', 'category.id': params.id}
-      sort = {ordering: 'asc'}
+      sort = {ordering: 'asc', name : 'asc'}
       limit = 4
     }
     if (options.task == 'item-in-category-page') {    
       find = {status: 'active', 'category.id': params.id}
-      sort = {ordering: 'asc'}
+      sort = {ordering: 'asc', name : 'asc'}
       limit = 0
     }
     if (options.task == 'item-keyword') {    
       find = {status: 'active', name: { $regex: params.keyword, $options: 'i' }}
-      sort = {ordering: 'asc'}
+      sort = {ordering: 'asc', name : 'asc'}
       limit = 0
       select = 'name created category.name category.id thumb special content'
     }

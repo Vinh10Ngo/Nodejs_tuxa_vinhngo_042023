@@ -26,6 +26,8 @@ router.get('/login', function(req, res, next) {
         layout: layoutLogin,
      });
 });
+
+
 router.get('/logout', function(req, res, next) {
   req.logout(function(err) {
     if (err) { 

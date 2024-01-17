@@ -32,7 +32,6 @@ router.get('/', async function(req, res, next) {
   .limit(perPage)
   .then((items) => {
     itemsKeyword = items
-    console.log(itemsKeyword);
   })
   await articleModel.countArticleFrontend({keyword: keyword}, {task: 'item-keyword'}).then((data) => {
     totalItems = data

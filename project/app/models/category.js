@@ -128,12 +128,12 @@ module.exports = {
     let limit = 0
     if (options.task == 'item-in-menu') {
       find = {status: 'active'}
-      sort = {ordering: 'asc'}
+      sort = {ordering: 'asc', name : 'asc'}
       select = 'name'
     }
     if (options.task == 'category-in-index') {
       find = {status: 'active'}
-      sort = {ordering: 'asc'}
+      sort = {ordering: 'asc', name : 'asc'}
       select = 'name'
       limit = 6
     }

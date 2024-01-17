@@ -25,13 +25,15 @@ add modified username (article + category). add created username --> ok
 check namesake --> ok
 add username + password into form --> ok
 image error 404
-tag manager
+tag manager --ok
 created id
-slug Article
+slug Article --ok
 Password format --> ok
 content group content accept
 time form backend category, article --ok
-search all ?
+search all ? --ok
+password md5 save
+nameshake groups validate
 <!-- 
 <a href="/<%= linkPrefix%>form/<%= item.id%>" class="rounded-circle btn btn-sm btn-info" title="Edit">
     <i class="fas fa-pencil-alt"></i>

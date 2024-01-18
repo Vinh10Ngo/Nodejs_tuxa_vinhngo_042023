@@ -4,14 +4,14 @@ const linkRedirect = ('/' + systemConfigs.prefixNews + `/${controllerName}/`).re
 
 module.exports = (req, res, next) => {
     if (req.isAuthenticated()) {
-      if(req.user.username == 'phucvinh') {
+      if(req.user.groups.groups_acp == 'yes') {
           next()
       } else {  
           res.redirect(`${linkRedirect}no-permission`)
       }
 
     } else {
-            next()
-        // res.redirect(`${linkRedirect}login`)
+            // next()
+        res.redirect(`${linkRedirect}login`)
     }
 }

@@ -39,9 +39,11 @@ module.exports = function(passport) {
               const groupsID = user.groups.id              
               groupsModel.getItems(groupsID).then((groupsInfo) => {
                 if (groupsInfo) {
-                  user.groups = groupsInfo 
+                  user.groups = {
+                    name: groupsInfo.name,
+                    groups_acp: groupsInfo.groups_acp
+                  } 
                 }
-                console.log(user.groups);
                 done(null, user)   
               })
             } else {

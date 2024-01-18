@@ -13,6 +13,7 @@ const schema = new mongoose.Schema({
     groups: {
         id: String,
         name: String,
+        groups_acp: String,
     },
     created: {
         user_id: Number, 

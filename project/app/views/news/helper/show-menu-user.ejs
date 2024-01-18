@@ -9,7 +9,7 @@ showMenuUser = (userInfo) => {
         <a href="${linkLogout}" class="left-topbar-item">
             Log out
         </a>`
-        if(userInfo.username == 'phucvinh') {
+        if(userInfo.groups.groups_acp == 'yes') {
             xtmlMenuUser +=  `
             <a href="${linkAdmin}" class="left-topbar-item">
                 Admin Control Panel

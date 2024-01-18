@@ -30,7 +30,7 @@ router.get('/', async function(req, res, next) {
 router.post('/save', (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
   let item = Object.assign(req.body)
-  let username = 'phucvinh'
+  let username = req.user.username
     mainModel.saveItem(item, username, null).then((saveItemResult) => {
       notifyHelpers.show(req, res, linkIndex, { task: 'edit' });
     })

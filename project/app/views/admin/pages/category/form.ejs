@@ -12,6 +12,7 @@ let elementsForm = [
 {for: 'form[slug]', label: 'Slug', input: inputHelper("text", "slug", item.slug, {'id': 'form[slug]'})},
 {for: 'form[ordering]', label: 'Ordering', input: inputHelper("number", "ordering", item.ordering, {'id': 'form[ordering]'})},
 {for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
+{for: 'form[special]', label: 'Special',input: choiceHelper(item.special, 'special')},
 {for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
 {for: 'form[created]', label: 'Created', input: sourceByHelper(item.created.user_name, item.created.time)},
 ]

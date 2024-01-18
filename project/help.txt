@@ -9,17 +9,17 @@ back form --> ok
 
 save history 
 change format time frontend --> ok
-no data 
+no data --ok
 page title --> ok
-error page
-info management
-show a lot of category type (view_type, include)
+error page --ok
+info management --ok
+show a lot of category type (view_type, include) --ok
 content --> ok
 change dasboard file --> ok
 sidebar login --> ok
 delete icon home index --> ok
-news file me.js frontend
-news menu
+news file me.js frontend --ok
+news menu --ok
 optimaze phần phân trang --> ok
 add modified username (article + category). add created username --> ok
 check namesake --> ok
@@ -32,8 +32,8 @@ Password format --> ok
 content group content accept
 time form backend category, article --ok
 search all ? --ok
-password md5 save
-nameshake groups validate
+password md5 save --ok
+nameshake groups validate --ok
 <!-- 
 <a href="/<%= linkPrefix%>form/<%= item.id%>" class="rounded-circle btn btn-sm btn-info" title="Edit">
     <i class="fas fa-pencil-alt"></i>

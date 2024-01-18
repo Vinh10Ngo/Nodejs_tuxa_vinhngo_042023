@@ -1,7 +1,6 @@
 
 const notifyConfigs = require(__path__configs + 'notify');
 const util = require('util')
-const groupsModel = require(__path__schemas + 'groups')
 
 const options = {
     name: {min: 3, max: 20},
@@ -17,7 +16,5 @@ module.exports = {
         req.checkBody('status', notifyConfigs.ERROR_STATUS).isNotEqual(options.status.value)
         req.checkBody('content', util.format(notifyConfigs.ERROR_NAME, options.content.min, options.content.max)).isLength({min: options.content.min, max: options.content.max})
         req.checkBody('groups_acp', notifyConfigs.ERROR_GROUPS_ACP).notEmpty()
-        const oldNames = await groupsModel.find({})
-        req.checkBody('name', notifyConfigs.ERROR_STATUS).isNameshake(oldNames, req.body.name)
     }
 }

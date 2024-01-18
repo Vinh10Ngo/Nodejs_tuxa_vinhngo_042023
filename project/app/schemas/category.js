@@ -7,6 +7,7 @@ const schema = new mongoose.Schema({
     status: String, 
     ordering: Number, 
     content: String,
+    special: String,
     created: {
         user_id: Number, 
         user_name: String, 

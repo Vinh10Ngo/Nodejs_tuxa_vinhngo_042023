@@ -13,6 +13,7 @@ const linkRedirect = ('/' + systemConfigs.prefixNews + `/${controllerName}/`).re
 const middleGetCategoryForMenu = require(__path__middleware + 'get-category-for-menu')
 const middleGetMostPopularItems = require(__path__middleware + 'get-most-popular-items')
 const middleGetUserInfo = require(__path__middleware + 'get-user-info')
+const middleGetConfigInfo = require(__path__middleware + 'get-config-info')
 
 router.get('/login', function(req, res, next) {
   if (req.isAuthenticated()) {
@@ -37,7 +38,7 @@ router.get('/logout', function(req, res, next) {
   });
 });
 
-router.get('/no-permission', middleGetUserInfo, middleGetCategoryForMenu, middleGetMostPopularItems, async(req, res, next) => {
+router.get('/no-permission', middleGetConfigInfo, middleGetUserInfo, middleGetCategoryForMenu, middleGetMostPopularItems, async(req, res, next) => {
   res.render(`${folderViewsNews}no-permission`, {
     layout: layoutNews,
     pageTitle: 'No Permission',

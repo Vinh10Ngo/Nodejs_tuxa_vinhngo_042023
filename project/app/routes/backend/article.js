@@ -31,7 +31,7 @@ const uploadLink = 'public/uploads/article/'
 //form
 router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
-  let username = "phucvinh"
+  let username = 'phucvinh'
   let item =  {name: '', ordering: 0, status: 'novalue', category_id: '', category_name: '', content: '', slug: '', created: {user_name: username, time: Date.now()}, modified: {user_name: username, time: Date.now()}}
   let errors = null
   let categoryItems = []
@@ -195,17 +195,18 @@ router.get('(/:status)?', async (req, res, next) => {
         notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
      });      
     })
+     //change special
+  router.post('/change-special/:id/:special', function(req, res, next) {
+    let username = 'phucvinh'
+    let currentSpecial = paramsHelpers.getParams(req.params, 'special', 'yes')
+    let id = paramsHelpers.getParams(req.params, 'id', '')
+    mainModel.special(id, currentSpecial, username).then(result => {
+      res.send({special: (currentSpecial === 'yes') ? 'no' : 'yes' 
+      })
+    });  
   });
-  //change special
-router.post('/change-special/:id/:special', function(req, res, next) {
-  let username = 'phucvinh'
-  let currentSpecial = paramsHelpers.getParams(req.params, 'special', 'yes')
-  let id = paramsHelpers.getParams(req.params, 'id', '')
-mainModel.special(id, currentSpecial, username).then(result => {
-  res.send({special: (currentSpecial === 'yes') ? 'no' : 'yes' 
-    })
-  });  
 });
+ 
 module.exports = router;
 
 

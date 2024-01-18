@@ -25,7 +25,6 @@ let createParams = (req) => {
     pageRanges: 3,
     currentPage : parseInt(getParams(req.query, 'page', 1)) 
   } 
-  
   return params
 }
 

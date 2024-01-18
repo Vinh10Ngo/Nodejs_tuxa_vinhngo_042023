@@ -43,7 +43,7 @@ router.post('/save', (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
   let item = Object.assign(req.body)
   let errors = mainValidate.validator(req)
-  let username = "phucvinh"
+  let username = 'phucvinh'
   let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
   if(Array.isArray(errors) && errors.length > 0) {
     item.created = {user_name: null, time: null}
@@ -89,7 +89,7 @@ router.get('(/:status)?', async (req, res, next) => {
  
   //change status
   router.post('/change-status/:id/:status', function(req, res, next) {
-    let username = "phucvinh"
+    let username = 'phucvinh'
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.changeStatus(id, currentStatus, username, {task: "update-one"}).then((result) => {
@@ -98,7 +98,7 @@ router.get('(/:status)?', async (req, res, next) => {
   });
   //change status - multi 
   router.post('/change-status/:status', function(req, res, next) {
-  let username = "phucvinh"
+  let username = 'phucvinh'
   let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     mainModel.changeStatus(req.body.cid, currentStatus, username, {task: "update-multi"}).then(result => {
       notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
@@ -121,7 +121,7 @@ router.get('(/:status)?', async (req, res, next) => {
   });
   // change - single - ordering
   router.post('/change-single-ordering', function(req, res, next) {
-    let username = "phucvinh"
+    let username = 'phucvinh'
     let id = req.body.id
     let ordering = req.body.ordering
        mainModel.changeOrderingAjax(id, ordering, username).then(result => {
@@ -130,7 +130,7 @@ router.get('(/:status)?', async (req, res, next) => {
     })
   //change ordering -   multi 
   router.post('/change-ordering', function(req, res, next) {
-    let username = "phucvinh"
+    let username = 'phucvinh'
     let cids = req.body.cid
     let orderings = req.body.ordering
        mainModel.changeOdering(cids, orderings, username).then(result => {

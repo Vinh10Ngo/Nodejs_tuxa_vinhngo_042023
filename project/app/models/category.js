@@ -22,7 +22,7 @@ module.exports = {
 
        return mainModel
         .find(objWhere)
-        .select('name status ordering created modified slug')
+        .select('name status ordering created modified slug special')
         .sort(sort)
         .skip((params.pagination.currentPage-1)*params.pagination.totalItemsPerPage)
         .limit(params.pagination.totalItemsPerPage)
@@ -111,6 +111,7 @@ module.exports = {
         {status: item.status, 
          ordering: parseInt(item.ordering),
          name: item.name,
+          special: item.special,
          slug: item.slug,
          content: item.content,
            modified : {
@@ -121,7 +122,19 @@ module.exports = {
        })
     }
  },
- listItemsFrontend: (params = null, options = null) => {
+ special: (id, currentSpecial, username, options = null) => {
+    let special = (currentSpecial === 'yes') ? 'no' : 'yes'
+    let data = {
+      special: special,
+      modified : {
+        user_id: 0, 
+        user_name: username, 
+        time: Date.now()   
+    }
+  }
+    return mainModel.updateOne({_id: id}, data)
+  },
+  listItemsFrontend: (params = null, options = null) => {
   let find = {}
     let select = ''
     let sort = {}
@@ -132,15 +145,19 @@ module.exports = {
       select = 'name'
     }
     if (options.task == 'category-in-index') {
-      find = {status: 'active'}
+      find = {status: 'active', special: 'yes'}
       sort = {ordering: 'asc', name : 'asc'}
       select = 'name'
       limit = 6
     }
+   
     return mainModel
     .find(find).select(select).sort(sort).limit(limit)
- }, 
- getItemFrontend: (params = null) => {
+  }, 
+  getItemFrontend: (params = null) => {
   return mainModel.findById(params.id)
- }
+  },
+  getItemsCondition: (params) => {
+  return mainModel.find(params)
+  }
 }

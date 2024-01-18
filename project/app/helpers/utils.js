@@ -1,4 +1,6 @@
 
+const notifyConfigs = require(__path__configs + 'notify');
+
 let createFilterStatus = async (currentStatus, collection) => {
   const currentModel = require(__path__schemas + collection)
     let statusFilter = [
@@ -54,11 +56,21 @@ let paginate = (pageNumber, totalPages, pageRange) => {
   return { start, end, pages };
 }
 
+let isNameshake = (oldNames, name) => {
+  for (let i = 0; i < oldNames.length; i++) {
+    if (oldNames[i].name === name) {
+       return notifyConfigs.ERROR_NAMESHAKE
+    }
+  }
+  return false
+}
+
 
 
 module.exports = {
     createFilterStatus: createFilterStatus, 
     countArticlesInCategory: countArticlesInCategory,
     paginate: paginate,
+    isNameshake: isNameshake
     
 }

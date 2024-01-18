@@ -36,28 +36,12 @@ module.exports = function(passport) {
         try {
           await usersModel.getItems(id).then((user) => {
             if (user) {
-              const groupsID = user.groups.id
-              // Giả sử info là đối tượng ban đầu
-              const info = {
-                name: 'John Doe',
-                age: 30,
-                email: 'john@example.com',
-                address: '123 Street, City',
-                // ... các trường khác
-              };
-
-              // Tạo đối tượng mới từ info chỉ chứa các trường mong muốn
-              const newInfo = {
-                name: info.name,
-                email: info.email,
-                // Thêm các trường khác nếu cần thiết
-              };
-
-              
+              const groupsID = user.groups.id              
               groupsModel.getItems(groupsID).then((groupsInfo) => {
                 if (groupsInfo) {
                   user.groups = groupsInfo 
                 }
+                console.log(user.groups);
                 done(null, user)   
               })
             } else {

@@ -121,8 +121,11 @@ module.exports = {
         user_id: 0, 
         user_name: username, 
         time: Date.now()    
+      }
     }
-  }
   return mainModel.updateOne({_id: id}, data)
+  },
+  getItemsCondition: (params) => {
+    return mainModel.find(params)
   }
 }

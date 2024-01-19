@@ -1,8 +1,11 @@
-const MainModel 	= require(__path_schemas + 'careers');
+const MainModel 	= require(__path_schemas + 'category');
+const ProductModel 	= require(__path_schemas + 'product');
 
 
 module.exports = {
     listItems: (params, options = null) => {
+        let id = (params.id) ? params.id : ''
+        params = (params.id) ? params.query : params
         // coppy params
         const queryFind = { ...params };
         let find,select,sort 
@@ -27,22 +30,25 @@ module.exports = {
         }
         //pagination
         const page  = parseInt(params.page) || 1;
-        const limit = parseInt(params.limit) || 3;
+        const limit = parseInt(params.limit) || 6;
         const skip  = ( page-1 )*limit;
 
         if(options.task == 'all'){
             return MainModel
                 .find(find)
-                .populate({path: 'restaurants', select: 'name'})
+                .populate({path: 'product', select: 'name'})
                 .select(select)
                 .sort(sort)
                 .skip(skip).limit(limit)
         }
-        if(options.task == 'one'){
-            return MainModel
-                .findById(params.id)
-                .select({})
-        }
+        if(options.task == 'getProduct'){
+            if (id !== 'all') Object.assign(find, {"category.id": id})  
+            return ProductModel
+                .find(find)
+                .select(select)
+                .sort(sort)
+                .skip(skip).limit(limit)
+            }
     },
     createItem: (item) => {
         return new MainModel(item).save()
@@ -57,11 +63,5 @@ module.exports = {
             return MainModel.updateOne({_id: params.id}, params.body)
         }
     },
-    event: (params, options = null) => {
-        let type = params.type
-        if(type !== 'like' && type !== 'dislike') return
-
-        return MainModel.findByIdAndUpdate(params.id,{$inc: {[type]: 1}}, {new: true})
-
-    }
+   
 }

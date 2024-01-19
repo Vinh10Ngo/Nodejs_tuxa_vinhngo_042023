@@ -1,4 +1,4 @@
-const MainModel 	= require(__path_schemas + 'items');
+const MainModel 	= require(__path_schemas + 'product');
 
 
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
         }
         //pagination
         const page  = parseInt(params.page) || 1;
-        const limit = parseInt(params.limit) || 3;
+        const limit = parseInt(params.limit) || 6;
         const skip  = ( page-1 )*limit;
 
         if(options.task == 'all'){
@@ -46,14 +46,25 @@ module.exports = {
     create: (item) => {
         return new MainModel(item).save()
     },
-    deleteItems: (params, options = null) => {
+    deleteItem: (params, options = null) => {
         if (options.task == 'one') {
             return MainModel.deleteOne({_id: params.id})
         }
     },
-    editItems: (params, options = null) => {
+    editItem: (params, options = null) => {
         if (options.task == 'edit') {
             return MainModel.updateOne({_id: params.id}, params.body)
         }
+    },
+    event: (params, options = null) => {
+        let number = 1
+        let type = params.type
+        if(type !== 'like' && type !== 'dislike') return
+        if (type == 'dislike') {
+            type = 'like'
+            number = -1
+        }
+
+        return MainModel.findByIdAndUpdate(params.id,{$inc: {[type]: number}}, {new: true})
     }
 }

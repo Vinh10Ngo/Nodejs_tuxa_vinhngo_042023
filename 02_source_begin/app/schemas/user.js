@@ -17,7 +17,10 @@ var schema = new mongoose.Schema({
 })
 
 schema.pre('save', function(next) {
-	const salt = bcrypt.genSaltSync(10);
+	if (!this.isModified('password')) {
+		next()
+	}
+	var salt = bcrypt.genSaltSync(10);
 	this.password = bcrypt.hashSync(this.password, salt);
 	next()
 })
@@ -26,6 +29,17 @@ schema.methods.getSignedJwtToken = function() {
 	return jwt.sign({ id : this._id}, systemConfig.JWT_SECRET, {
 		expiresIn : systemConfig.JWT_EXP
 	})
+}
+
+schema.methods.updateNew = async function(userNew) {
+	const isMatch = await bcrypt.compare(userNew.password, this.password)
+	if (!isMatch) {
+		var salt = bcrypt.genSaltSync(10);
+		userNew.password = bcrypt.hashSync(userNew.password, salt)
+		return userNew
+	}
+	userNew.password = this.password
+	return userNew
 }
 
 schema.statics.findByCredentials = async function (email,password) {

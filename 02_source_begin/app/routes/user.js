@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var asyncHandler = require('../middleware/async');
-var errorResponse   = require('../utils/ErrorResponse')
+var ErrorResponse   = require('../utils/ErrorResponse')
 
 const controllerName = 'user'
 const MainModel = require(__path_models + controllerName)
@@ -33,7 +33,7 @@ router.post('/add', asyncHandler (async (req, res, next) => {
     }
 }))
 router.delete('/delete/:id', asyncHandler (async (req, res, next) => {
-    const data = await MainModel.deleteItems({id: req.params.id}, {task: 'one'})
+    const data = await MainModel.deleteItem({id: req.params.id}, {task: 'one'})
     res.status(201).json({
         success: true,
         data: data
@@ -53,7 +53,7 @@ router.put('/edit/:id', asyncHandler(async (req, res, next) => {
 const validateReq = async (req, res, next) => {
     let err = await MainValidate.validator(req)
     if(Object.keys(err).length > 0) {
-        next(new errorResponse(400, err));
+        next(new ErrorResponse(400, err));
         return true
     }
     return false

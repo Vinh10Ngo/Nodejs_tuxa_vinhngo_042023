@@ -1,5 +1,6 @@
 const MainModel 	= require(__path_schemas + 'user');
-
+const SendEmail     = require(__path_utils + 'SendEmail')
+const crypto 	    = require('crypto');
 
 module.exports = {
  
@@ -20,7 +21,42 @@ module.exports = {
         const user = await MainModel.findOne({email: item.email})
         if (!user) return false
         const resetToken = user.resetPassword()
-        await new MainModel(user).save()
-        return resetToken
+        await user.save()
+
+         //creat resetURL
+        const resetURL = `/api/v1/auth/resetPassword/${resetToken}`;
+        const message = `Truy cập vào link để đổi pass : ${resetURL}`;
+
+        try {
+            await SendEmail({
+                email : user.email,
+                subject : "Thay đổi PassWord",
+                message
+            })
+            return 'Vui lòng check email của bạn';
+        } catch (err) {
+            console.log(err);
+            user.resetPassToken = undefined,
+            user.resetPassTokenExp = undefined,
+            await user.save();
+            return 'Không thể gửi email , vui lòng thử lại';
+        }
+    },
+    resetPassword : async (item) => {
+        const resetPassToken = crypto
+            .createHash('sha256')
+            .update(item.resetToken)
+            .digest('hex');
+        const user = await MainModel.findOne({
+            resetPassToken: resetPassToken,
+            resetPassTokenExp: { $gt: Date.now() }
+        })
+        if (!user) return false
+
+        user.password = item.password
+        user.resetPassToken     = undefined,
+        user.resetPassTokenExp  = undefined,
+        await user.save()
+        return user
     },
 }

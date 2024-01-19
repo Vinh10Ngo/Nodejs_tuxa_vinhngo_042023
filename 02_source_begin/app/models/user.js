@@ -47,14 +47,17 @@ module.exports = {
         const user = await new MainModel(item).save();
         return  await user.getSignedJwtToken();
     },
-    deleteItems: (params, options = null) => {
+    deleteItem: (params, options = null) => {
         if (options.task == 'one') {
             return MainModel.deleteOne({_id: params.id})
         }
     },
-    editItems: (params, options = null) => {
+    editItem: async (params, options = null) => {
         if (options.task == 'edit') {
-            return MainModel.updateOne({_id: params.id}, params.body)
+            const user = await MainModel.findById(params.id)
+            const userNew = await user.updateNew(params.body)
+            await MainModel.updateOne({_id: params.id}, userNew)
+            return userNew
         }
     }
 }

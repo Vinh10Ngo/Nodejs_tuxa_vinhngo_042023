@@ -1,5 +1,5 @@
-var errorResponse = require('../utils/errorResponse')
-var notify        = require('./../configs/notify')
+var ErrorResponse   = require(__path_utils + 'ErrorResponse')
+var notify          = require(__path_configs + 'notify');
 
 const errorHandler =  (err, req, res, next) =>  {
     console.log(err)
@@ -7,7 +7,7 @@ const errorHandler =  (err, req, res, next) =>  {
     // console.log(error);
     if(error.name ===  'CastError') {
         let message = notify.ERROR_CASTERROR
-        error = new errorResponse(404, message)
+        error = new ErrorResponse(404, message)
     }
     res.status(error.statusCode || 500).json({
         success: false,

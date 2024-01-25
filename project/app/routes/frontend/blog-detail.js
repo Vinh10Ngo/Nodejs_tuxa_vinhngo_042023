@@ -19,7 +19,7 @@ router.get('/:id', async function(req, res, next) {
 
 
   let idBlogDetail = paramsHelpers.getParams(req.params, 'id', '')
-
+  
   await articleModel.getItemsFrontend({id: idBlogDetail}, null).then((items) => {
     itemsBlogDetail = items
   })
@@ -29,6 +29,11 @@ router.get('/:id', async function(req, res, next) {
   await articleModel.listItemsFrontend({ keyword: keyword}, {task: 'item-keyword'}).then((items) => {
     itemsKeyword = items
   })
+
+  await articleModel.recordRecentlyViewedArticle({id: idBlogDetail}).then((items) => {
+    console.log(items);
+  })
+
 
   res.render(`${folderViewsNews}blog-detail`, { 
     layout: layoutNews,

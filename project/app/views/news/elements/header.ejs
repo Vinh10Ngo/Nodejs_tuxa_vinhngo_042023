@@ -3,6 +3,8 @@
 
 <%
 const uploadPath = '/uploads/article/'
+const uploadPathLogo = '/uploads/config/'
+
 const url = `/${systemConfigs.prefixNews}/`;
 
 const cleanedURL = url.replace(/\/+/g, '/');
@@ -37,7 +39,7 @@ const cleanedURL = url.replace(/\/+/g, '/');
         <div class="wrap-header-mobile">
             <!-- Logo moblie -->		
             <div class="logo-mobile">
-                <a href="<%=cleanedURL%>"><img src="/frontend/images/icons/logo-01.png" alt="IMG-LOGO"></a>
+                <a href="<%=cleanedURL%>"><img src="<%=uploadPathLogo + configInfo[0].info.logo %>" alt="IMG-LOGO" width="200" height="100"></a>
             </div>
         
             <!-- Button show menu -->
@@ -102,7 +104,7 @@ const cleanedURL = url.replace(/\/+/g, '/');
         <div class="wrap-logo container">
             <!-- Logo desktop -->		
             <div class="logo">
-                <a href="<%=cleanedURL%>"><img src="/frontend/images/icons/logo-01.png" alt="LOGO"></a>
+                <a href="<%=cleanedURL%>"><img src="<%=uploadPathLogo + configInfo[0].info.logo %>" alt="LOGO" width="200" height="100"></a>
             </div>	
         
             <!-- Banner -->
@@ -114,12 +116,12 @@ const cleanedURL = url.replace(/\/+/g, '/');
             <div class="main-nav">
                 <!-- Menu desktop -->
                 <nav class="menu-desktop">
-                    <a class="logo-stick" href="index.html">
-                        <img src="/frontend/images/icons/logo-01.png" alt="LOGO">
+                    <a class="logo-stick" href="<%=cleanedURL%>">
+                        <img src="<%=uploadPathLogo + configInfo[0].info.logo %>" alt="LOGO" width="200" height="100">
                     </a>
         
-                    <ul class="main-menu">
-                        <li class="main-menu-active">
+                    <ul class="main-menu" id="menu">
+                        <li class="mega-menu-item">
                             <a href="<%=cleanedURL%>">Home</a>
                         </li>
     

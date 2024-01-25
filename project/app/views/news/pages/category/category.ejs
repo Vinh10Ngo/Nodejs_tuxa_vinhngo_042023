@@ -50,13 +50,13 @@ const cleanedURL = url.replace(/\/+/g, '/');
 							<div class="col-sm-6 p-r-25 p-r-15-sr991">
 								<!-- Item latest -->	
 								<div class="m-b-45">
-									<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="wrap-pic-w hov1 trans-03">
+									<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="wrap-pic-w big-image hov1 trans-03">
 										<img src="<%= uploadPath + item.thumb%>" alt="<%= item.name%>">
 									</a>
 							
 									<div class="p-t-16">
 										<h5 class="p-b-5">
-											<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="f1-m-3 cl2 hov-cl10 trans-03">
+											<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="f1-m-3 cl2 hov-cl10 trans-03 clamp-text">
 												<%= item.name%> 
 											</a>
 										</h5>

@@ -12,6 +12,7 @@ module.exports = {
         copyright: item.info.copyright,
         content: item.info.content,
         phone: item.info.phone,
+        logo: item.info.logo,
         social: {
           facebook: item.info.social.facebook,
           youtube: item.info.social.youtube,

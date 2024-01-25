@@ -5,6 +5,8 @@
 
 <%
 const uploadPath = '/uploads/article/'
+const uploadPathLogo = '/uploads/config/'
+
 const url = `/${systemConfigs.prefixNews}/`;
 
 const cleanedURL = url.replace(/\/+/g, '/');
@@ -17,10 +19,10 @@ const cleanedURL = url.replace(/\/+/g, '/');
                 <div class="col-lg-4 p-b-20">
                     <div class="size-h-3 flex-s-c">
                         <a href="<%=cleanedURL%>">
-                            <img class="max-s-full" src="/frontend/images/icons/logo-02.png" alt="LOGO">
+                            <img class="max-s-full" src="<%=uploadPathLogo + configInfo[0].info.logo %>" alt="LOGO" width="200" height="100">
                         </a>
                     </div>
-
+                    <br>
                     <div>
                         <p class="f1-s-1 cl11 p-b-16">
                             <%=configInfo[0].info.content%>

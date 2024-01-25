@@ -46,6 +46,10 @@ const cleanedURL = url.replace(/\/+/g, '/');
 									Không có dữ liệu
 								</div>
 							<% } %>
+							<h3>
+								Bạn đang search với keyword <strong><%= keyword %></strong> <br>
+								Có tổng cộng <strong><%= totalItems %></strong> kết quả được tìm thấy
+							</h3>							
 							<% itemsKeyword.forEach((item, index) => { %>	
 								
                                 <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">

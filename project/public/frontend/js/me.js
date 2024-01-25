@@ -31,6 +31,26 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 
+// Lấy đường dẫn hiện tại
+var currentPath = window.location.pathname;
+
+// Lấy danh sách các thẻ li trong menu
+var menuItems = document.getElementById('menu').getElementsByTagName('li');
+
+// Kiểm tra từng thẻ li trong menu
+for (var i = 0; i < menuItems.length; i++) {
+    var menuItemLink = menuItems[i].querySelector('a');
+
+    // So sánh đường dẫn hiện tại với href của từng thẻ a
+    if (currentPath === menuItemLink.getAttribute('href')) {
+        // Nếu trùng khớp, thêm class main-menu-active và loại bỏ class mega-menu-item
+        menuItems[i].classList.add('main-menu-active');
+        menuItems[i].classList.remove('mega-menu-item');
+    } else {
+        // Nếu không trùng khớp, giữ nguyên các class khác của mỗi mục
+        menuItems[i].classList.remove('main-menu-active');
+    }
+}
 
 
 

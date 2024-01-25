@@ -173,10 +173,16 @@ $(document).ready(function () {
         $(this).append(avatar).css({'display': 'none'})
     })
     $('form[name=form_upload]').submit(function(event) {
-        let avatar = $(this).find('input[name=thumb]')
+        let thumb = $(this).find('input[name=thumb]')
         $(this).find('input[name=thumb]').remove()
-        $(this).append(avatar).css({'display': 'none'})
+        $(this).append(thumb).css({'display': 'none'})
     })
+    $('form[name=form_upload]').submit(function(event) {
+        let logo = $(this).find('input[name=info[logo]]')
+        $(this).find('input[name=info[logo]]').remove()
+        $(this).append(logo).css({'display': 'none'})
+    })
+
     var path = window.location.href;
  
     $('a.nav-link').each(function() {
@@ -190,7 +196,15 @@ $(document).ready(function () {
             image_preview.src = URL.createObjectURL(file)
         }
       }
- 
+    // Lấy phần tử cần di chuyển lên trước
+    var logoContainer = document.getElementById('logoContainer');
+
+    // Lấy phần tử cần di chuyển lên sau
+    var logo2Input  = document.getElementById('form[logo2]');
+
+    // Di chuyển logoContainer lên trước logo2Input
+    logo2Input.parentNode.insertBefore(logoContainer, logo2Input);
+
 });
 
 

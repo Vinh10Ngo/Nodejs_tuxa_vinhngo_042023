@@ -7,6 +7,7 @@ const schema = new mongoose.Schema({
         copyright: String,
         content: String,
         phone: String,
+        logo: String,
         social: {
             facebook: String,
             youtube: String,

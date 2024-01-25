@@ -43,6 +43,7 @@ router.get('/', async function(req, res, next) {
 
   res.render(`${folderViewsNews}blog-list`, { 
     layout: layoutNews,
+    totalItems,
     controllerName,
     idCategory,
     keyword,

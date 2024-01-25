@@ -7,5 +7,7 @@ module.exports = {
     col_category: 'category',
     col_article: 'article',
     col_configuration: 'configuration',
-    col_contact: 'contact'
+    col_contact: 'contact',
+    col_recently_viewed: 'recently-viewed'
+
 }

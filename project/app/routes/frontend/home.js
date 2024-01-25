@@ -6,8 +6,7 @@ const paramsHelpers = require(__path__helpers + 'params')
 const categoryModel = require(__path__models + 'category')
 const folderViewsNews = __path__views__news + 'pages/home/'
 const layoutNews = __path__views__news + 'frontend'
-
-
+const utilsHelpers = require(__path__helpers + 'utils')
 
 /* GET ĩndex page. */
 router.get('/', async function(req, res, next) {
@@ -19,6 +18,8 @@ router.get('/', async function(req, res, next) {
   let itemsInCategory = []
   let categoryInIndex = []
   let totalItems = 1
+  let recentlyViewed = []
+
 
   await articleModel.listItemsFrontend(null, {task: 'item-special'}).then((items) => {
     itemsSpecial = items
@@ -38,9 +39,12 @@ router.get('/', async function(req, res, next) {
     totalItems = data
   })
  
+  await articleModel.getRecentlyViewedArticle({}).then((items) => {
+    recentlyViewed = items;
+  })
 
-   
-    res.render(`${folderViewsNews}index`, { 
+  recentlyViewed = utilsHelpers.removeDuplicatesKeepFirst(recentlyViewed);
+  res.render(`${folderViewsNews}index`, { 
     layout: layoutNews,
     itemsSpecial,
     itemsLatest,
@@ -50,6 +54,7 @@ router.get('/', async function(req, res, next) {
     idCategory,
     keyword,
     totalItems,
+    recentlyViewed
   });
 })
 

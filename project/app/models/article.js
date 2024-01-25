@@ -1,4 +1,5 @@
 const mainModel = require(__path__schemas + 'article')
+const recentlyViewedModel = require(__path__schemas + 'recently-viewed')
 const categoryModel = require(__path__schemas + 'category')
 const fileHelpers  = require(__path__helpers + 'file')
 const uploadLink = 'public/uploads/article/'
@@ -247,6 +248,22 @@ module.exports = {
   getMostPopularArticles: () => {
     return mainModel.find().sort({ view: -1 }).limit(3)
   }, 
- 
- 
+  getRecentlyViewedArticle: (params) => {
+    return recentlyViewedModel.find(params).sort({ timestamp: -1 }).limit(4).populate('postId', 'name created category.name category.id thumb content view');
+  },
+  recordRecentlyViewedArticle: async (params) => {
+    const maxRecentlyViewed = 5; // Số lượng tối đa bài viết được ghi nhận
+  
+    // Kiểm tra số lượng bài viết đã ghi nhận
+    const countRecentlyViewed = await recentlyViewedModel.countDocuments();
+  
+    // Nếu đã đạt tới giới hạn, xóa bài viết cũ nhất
+    if (countRecentlyViewed >= maxRecentlyViewed) {
+      await recentlyViewedModel.findOneAndDelete({}, { sort: { timestamp: 1 } });
+    }
+  
+    // Thêm bài viết mới vào danh sách đã ghi nhận
+    return recentlyViewedModel.create({ postId: params.id });
+  }
+  
 }

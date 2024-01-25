@@ -140,13 +140,13 @@ const cleanedURL = url.replace(/\/+/g, '/');
                     <div class="col-sm-6 p-r-25 p-r-15-sr991">
                         <!-- Item latest -->	
                         <div class="m-b-45">
-                            <a href="<%=cleanedURL%>blog-detail/<%= itemsLatest[i].id%>" class="wrap-pic-w hov1 trans-03">
+                            <a href="<%=cleanedURL%>blog-detail/<%= itemsLatest[i].id%>" class="wrap-pic-w big-image hov1 trans-03">
                                 <img src="<%= uploadPath + itemsLatest[i].thumb%>" alt="<%= itemsLatest[i].thumb%>">
                             </a>
             
                             <div class="p-t-16">
                                 <h5 class="p-b-5">
-                                    <a href="<%=cleanedURL%>blog-detail/<%= itemsLatest[i].id%>" class="f1-m-3 cl2 hov-cl10 trans-03">
+                                    <a href="<%=cleanedURL%>blog-detail/<%= itemsLatest[i].id%>" class="f1-m-3 cl2 hov-cl10 trans-03 clamp-text">
                                         <%= itemsLatest[i].name%> 
                                     </a>
                                 </h5>
@@ -168,8 +168,53 @@ const cleanedURL = url.replace(/\/+/g, '/');
                         </div>
                     </div>
                     <% } %> 
+
                 </div>
             </div>
+            <div class="col-md-10 col-lg-8 p-b-20">
+                <div class="how2 how2-cl4 flex-s-c m-r-10 m-r-0-sr991">
+                    <h3 class="f1-m-2 cl3 tab01-title">
+                        Recently Viewed Articles
+                    </h3>
+                </div>
+            
+                <div class="row p-t-35">
+                    <% for (let i = 0; i < recentlyViewed.length; i++) { %>
+                    <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                        <!-- Item latest -->	
+                        <div class="m-b-45">
+                            <a href="<%=cleanedURL%>blog-detail/<%= recentlyViewed[i].postId.id%>" class="wrap-pic-w big-image hov1 trans-03">
+                                <img src="<%= uploadPath + recentlyViewed[i].postId.thumb%>" alt="<%= recentlyViewed[i].postId.thumb%>">
+                            </a>
+            
+                            <div class="p-t-16">
+                                <h5 class="p-b-5">
+                                    <a href="<%=cleanedURL%>blog-detail/<%= recentlyViewed[i].postId.id%>" class="f1-m-3 cl2 hov-cl10 trans-03 clamp-text">
+                                        <%= recentlyViewed[i].postId.name%> 
+                                    </a>
+                                </h5>
+            
+                                <span class="cl8">
+                                    <a href="<%=cleanedURL%>blog-detail/<%= recentlyViewed[i].postId.id%>" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                        <%= recentlyViewed[i].postId.created.user_name%>
+                                    </a>
+            
+                                    <span class="f1-s-3 m-rl-3">
+                                        -
+                                    </span>
+            
+                                    <span class="f1-s-3">
+                                        <%- formatTimeHelper (recentlyViewed[i].postId.created.time) %>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %> 
+
+                </div>
+            </div>
+            
             <div class="col-md-10 col-lg-4">
                 <div class="p-l-10 p-rl-0-sr991 p-b-20">
                     <!-- Video -->

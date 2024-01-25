@@ -1,6 +1,6 @@
 
 module.exports = (req, res, next) => {
-    let userInfo = {}
+  let userInfo = {}
   if (req.isAuthenticated()) {
     userInfo = req.user
   } 

@@ -65,12 +65,34 @@ let isNameshake = (oldNames, name) => {
   return false
 }
 
+let removeDuplicatesKeepFirst = (arr) => {
+  const uniqueItems = new Map();
+
+  for (let i = 0; i < arr.length; i++) {
+    const currentItem = arr[i];
+    const postIdKey = currentItem.postId.id.toString();
+
+    // Nếu postId chưa tồn tại trong Map, thêm vào Map
+    if (!uniqueItems.has(postIdKey)) {
+      uniqueItems.set(postIdKey, currentItem);
+    }
+  }
+
+  // Chuyển đổi Map thành mảng các giá trị để lấy mảng kết quả
+  const uniqueRecentlyViewed = Array.from(uniqueItems.values());
+
+  return uniqueRecentlyViewed;
+}
+
+
+
 
 
 module.exports = {
     createFilterStatus: createFilterStatus, 
     countArticlesInCategory: countArticlesInCategory,
     paginate: paginate,
-    isNameshake: isNameshake
+    isNameshake: isNameshake,
+    removeDuplicatesKeepFirst
     
 }

@@ -68,3 +68,149 @@
   overflow: hidden;
 }
 
+/* CSS */
+.row-equal-height {
+  display: flex;
+}
+
+.row-equal-height [class*="col-"] {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-equal-height [class*="col-"] > div {
+  flex-grow: 1;
+}
+
+.row-equal-height [class*="col-"] a {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center; /* Áp dụng text-align: center cho tất cả các ô */
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+
+    #coinPriceTable td {
+      max-width: 50px; /* Đặt chiều rộng tối đa cho ô */
+      word-wrap: break-word; /* Cho phép chữ tự xuống dòng */
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    #coinPriceTable th,
+#coinPriceTable td {
+  text-align: center; /* Căn giữa nội dung trong ô */
+}
+
+#coinPriceTable th:first-child,
+#coinPriceTable td:first-child {
+  width: 10%; /* Đặt chiều rộng cho cột # */
+}
+
+#coinPriceTable th:nth-child(2),
+#coinPriceTable td:nth-child(2) {
+  width: 30%; /* Đặt chiều rộng cho cột Name */
+}
+
+#coinPriceTable th:nth-child(3),
+#coinPriceTable td:nth-child(3) {
+  width: 30%; /* Đặt chiều rộng cho cột Price */
+}
+
+#coinPriceTable th:nth-child(4),
+#coinPriceTable td:nth-child(4),
+#coinPriceTable th:nth-child(5),
+#coinPriceTable td:nth-child(5) {
+  width: 15%; /* Đặt chiều rộng cho cột Percent Change 24h và Percent Change 1h */
+}
+
+  .table th,
+  .table td {
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+
+  .circle-image-container {
+    position: relative;
+    overflow: hidden;
+    width: 200px; /* Điều chỉnh kích thước của hình chữ nhật theo mong muốn */
+    height: 200px; /* Điều chỉnh kích thước của hình chữ nhật theo mong muốn */
+  }
+
+  .circle-image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .circle-image-container::before {
+    content: '';
+    display: block;
+    padding: 15%; /* Điều chỉnh kích thước hình tròn bằng cách thiết lập padding */
+  }
+  .text-right img {
+    border-radius: 50%;
+}
+.logo.text-right.circle-image-container {
+  position: relative;
+  overflow: visible;
+}
+
+.logo.text-right.circle-image-container .dropdown-menu {
+  position: absolute;
+  z-index: 10000;
+  top: 100%;
+  left: -100%; /* Sử dụng left với giá trị âm hoặc 0 */
+  margin-top: 10px;
+  overflow: visible;
+  max-width: 200px;
+  margin-right: -10px; /* Điều chỉnh khoảng cách từ phần border phải của dropdown đến phần border phải của button */
+  width: 200px; /* Đặt chiều rộng theo ý muốn */
+  max-height: 300px; /* Đặt chiều cao tối đa theo ý muốn */
+  overflow-y: auto; /* Cho phép cuộn nếu nội dung quá lớn */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

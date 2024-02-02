@@ -72,9 +72,21 @@ router.post('/save', (req, res, next) => {
     item.avatar = (req.file == undefined) ? null : req.file.filename
     let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
     let errors = mainValidate.validator(req, item, err, taskCurrent)
+    if (taskCurrent == 'edit') errors = errors.filter(element => element.param !== 'password');
+    let oldUserNames = await mainModel.getItemsCondition({})
+    let errorUserNameshake = utilsHelpers.isUserNameshake(oldUserNames, item.username)
     let username = req.user.username
-
+    if (taskCurrent == 'add') {
+      if (errorUserNameshake !== false && errors == false) {
+        errors = []
+        errors.push({param: 'username', msg: errorUserNameshake})
+      }
+    }
     if(Array.isArray(errors) && errors.length > 0) {
+      if (taskCurrent == 'add') {
+        if (errors[0].msg == errorUserNameshake) errors.pop()
+        if (errorUserNameshake !== false) errors.push({param: 'username', msg: errorUserNameshake})
+      }
       let groupsItems = []     
       await groupsModel.listItemInSelectBox().then((item) => {
         groupsItems = item

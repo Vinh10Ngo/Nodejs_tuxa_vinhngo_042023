@@ -47,11 +47,14 @@ const cleanedURL = url.replace(/\/+/g, '/');
 								</div>
 							<% } %>
 							<h3>
+								<% if (keyword == '') { %>
+									Bạn đang search với keyword <strong>rỗng</strong> <br>
+								<% } else { %>
 								Bạn đang search với keyword <strong><%= keyword %></strong> <br>
+								<% } %>								
 								Có tổng cộng <strong><%= totalItems %></strong> kết quả được tìm thấy
 							</h3>							
-							<% itemsKeyword.forEach((item, index) => { %>	
-								
+							<% itemsKeyword.forEach((item, index) => { %>									
                                 <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
 								<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
 									<img src="<%=uploadPath + item.thumb%>" alt="<%=item.name%>">
@@ -65,9 +68,8 @@ const cleanedURL = url.replace(/\/+/g, '/');
 									</h5>
 
 									<div class="cl8 p-b-18">
-										<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="f1-s-4 cl8 hov-cl10 trans-03">
-											<%=item.created.user_name%> 
-										</a>
+										<%=item.created.user_name%> 
+
 
 										<span class="f1-s-3 m-rl-3">
 											-

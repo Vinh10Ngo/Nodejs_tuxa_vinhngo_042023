@@ -1,5 +1,4 @@
 const mainModel = require(__path__schemas + 'article')
-const recentlyViewedModel = require(__path__schemas + 'recently-viewed')
 const categoryModel = require(__path__schemas + 'category')
 const fileHelpers  = require(__path__helpers + 'file')
 const uploadLink = 'public/uploads/article/'
@@ -142,7 +141,7 @@ module.exports = {
         },
            modified : {
              user_id: 0, 
-             user_name: 'admin', 
+             user_name: username, 
              time: Date.now()   
          }
        })
@@ -192,18 +191,14 @@ module.exports = {
   },
   listItemsFrontend: (params = null, options = null) => {
     let find = {}
-    let select = 'name created category.name category.id thumb special'
+    let select = 'name created category.name category.id thumb special content'
     let sort = {}
     let limit = 4
     if (options.task == 'item-special') {
       find = {status: 'active', special: 'yes'}
       sort = {ordering: 'asc', name : 'asc'}
     }
-    if (options.task == 'item-special-category') {
-      find = {status: 'active', special: 'yes'}
-      sort = {ordering: 'asc', name : 'asc'}
-      limit = 5
-    }
+   
     if (options.task == 'item-latest') {
       find = {status: 'active'}
       sort = {'created.time': 'desc'}
@@ -224,9 +219,21 @@ module.exports = {
       limit = 0
       select = 'name created category.name category.id thumb special content'
     }
+    if (options.task == 'most-popular') {    
+      find = {status: 'active'}
+      sort = { view: -1 }
+      limit = 3
+      select = 'name created category.name category.id thumb special content'
+    }
+    if (options.task == 'all') {    
+      find = {status: 'active'}
+      sort = {ordering: 'asc', name : 'asc'}
+      limit = 0
+      select = 'name created category.name category.id thumb special content'
+    }
     
     return mainModel
-    .find(find).select(select).sort(sort).limit(limit)
+    .find(find).select(select).sort(sort).limit(limit).populate('category.id')
   }, 
   getItemsFrontend: (params = null, options = null) => {
     return mainModel.findById(params.id)
@@ -245,25 +252,7 @@ module.exports = {
   countView: (params = null) => {
     return mainModel.updateOne({ '_id': params.id }, { $inc: { 'view': 1 } })
   },
-  getMostPopularArticles: () => {
-    return mainModel.find().sort({ view: -1 }).limit(3)
-  }, 
-  getRecentlyViewedArticle: (params) => {
-    return recentlyViewedModel.find(params).sort({ timestamp: -1 }).limit(4).populate('postId', 'name created category.name category.id thumb content view');
-  },
-  recordRecentlyViewedArticle: async (params) => {
-    const maxRecentlyViewed = 5; // Số lượng tối đa bài viết được ghi nhận
-  
-    // Kiểm tra số lượng bài viết đã ghi nhận
-    const countRecentlyViewed = await recentlyViewedModel.countDocuments();
-  
-    // Nếu đã đạt tới giới hạn, xóa bài viết cũ nhất
-    if (countRecentlyViewed >= maxRecentlyViewed) {
-      await recentlyViewedModel.findOneAndDelete({}, { sort: { timestamp: 1 } });
-    }
-  
-    // Thêm bài viết mới vào danh sách đã ghi nhận
-    return recentlyViewedModel.create({ postId: params.id });
-  }
+ 
+ 
   
 }

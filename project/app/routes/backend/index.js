@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
+const middleGetUserInfo = require(__path__middleware + 'get-user-info')
 const middleAuthetication = require(__path__middleware + 'auth')
 
 /* GET home page. */
-router.use('/', middleAuthetication, require('./home'));
+router.use('/', middleAuthetication, middleGetUserInfo, require('./home'));
 router.use('/items', require('./items'));
 router.use('/configuration', require('./configuration'));
 router.use('/dashboard', require('./dashboard'));

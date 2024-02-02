@@ -4,6 +4,7 @@
 <%
 const uploadPath = '/uploads/article/'
 const uploadPathLogo = '/uploads/config/'
+const uploadPathAvatar = '/uploads/users/'
 
 const url = `/${systemConfigs.prefixNews}/`;
 
@@ -41,6 +42,15 @@ const cleanedURL = url.replace(/\/+/g, '/');
             <div class="logo-mobile">
                 <a href="<%=cleanedURL%>"><img src="<%=uploadPathLogo + configInfo[0].info.logo %>" alt="IMG-LOGO" width="200" height="100"></a>
             </div>
+            <% if (userInfo && Object.keys(userInfo).length > 0) { %>
+                <div class="logo-mobile text-right">
+                <% if (userInfo.groups.groups_acp == 'yes') { %>
+                    <a href="/<%= systemConfigs.prefixAdmin%>/users/form/<%=userInfo.id%>"><img src="<%=uploadPathAvatar + userInfo.avatar %>" alt="IMG-LOGO" width="200" height="100"></a>
+                <% } else { %>
+                    <a href="/<%= systemConfigs.prefixAdmin%>/auth/no-permission"><img src="<%=uploadPathAvatar + userInfo.avatar %>" alt="IMG-LOGO" width="200" height="100"></a>
+                <% } %>
+                </div>
+            <% } %>
         
             <!-- Button show menu -->
             <div class="btn-show-menu-mobile hamburger hamburger--squeeze m-r--8">
@@ -87,7 +97,7 @@ const cleanedURL = url.replace(/\/+/g, '/');
            
                 <% }) %>
                 <li>
-                    <a href="#">Features</a>
+                    <a href="<%=cleanedURL%>about">Đặc tính</a>
                     <ul class="sub-menu-m">
                         <li><a href="<%=cleanedURL%>about">About Us</a></li>
                         <li><a href="<%=cleanedURL%>contact">Contact Us</a></li>
@@ -106,7 +116,29 @@ const cleanedURL = url.replace(/\/+/g, '/');
             <div class="logo">
                 <a href="<%=cleanedURL%>"><img src="<%=uploadPathLogo + configInfo[0].info.logo %>" alt="LOGO" width="200" height="100"></a>
             </div>	
-        
+            <% if (userInfo && Object.keys(userInfo).length > 0) { %>
+                <div class="logo text-right circle-image-container">
+                <% if (userInfo.groups.groups_acp == 'yes') { %>
+                    <a href="/<%= systemConfigs.prefixAdmin%>/users/form/<%=userInfo.id%>" class="mr-3"  data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"><img src="<%=uploadPathAvatar + userInfo.avatar %>" alt="LOGO" width="200" height="100"></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/<%= systemConfigs.prefixAdmin%>/users/form/<%=userInfo.id%>"><strong style="text-align: right;"><%=userInfo.name%></strong></a>
+                            <a class="dropdown-item" href="/<%= systemConfigs.prefixAdmin%>/users/form/<%=userInfo.id%>"><%=userInfo.username%></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="<%=cleanedURL%>auth/change-password">Change Password</a>
+                          </div>
+                <% } else { %>
+                    <a href="/<%= systemConfigs.prefixAdmin%>/auth/no-permission" class="mr-3"  data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"><img src="<%=uploadPathAvatar + userInfo.avatar %>" alt="LOGO" width="200" height="100"></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/<%= systemConfigs.prefixAdmin%>/auth/no-permission"><strong style="text-align: right;"><%=userInfo.name%></strong></a>
+                            <a class="dropdown-item" href="/<%= systemConfigs.prefixAdmin%>/auth/no-permission"><%=userInfo.username%></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="<%=cleanedURL%>auth/change-password">Change Password</a>
+                          </div>
+                <% } %>
+                </div>
+            <% } %>
             <!-- Banner -->
         </div>
 
@@ -119,7 +151,7 @@ const cleanedURL = url.replace(/\/+/g, '/');
                     <a class="logo-stick" href="<%=cleanedURL%>">
                         <img src="<%=uploadPathLogo + configInfo[0].info.logo %>" alt="LOGO" width="200" height="100">
                     </a>
-        
+                   
                     <ul class="main-menu" id="menu">
                         <li class="mega-menu-item">
                             <a href="<%=cleanedURL%>">Home</a>
@@ -139,6 +171,17 @@ const cleanedURL = url.replace(/\/+/g, '/');
                             </ul>
                         </li>
                     </ul>
+                    <% if (userInfo && Object.keys(userInfo).length > 0) { %>
+                    <% if (userInfo.groups.groups_acp == 'yes') { %>
+                        <a class="logo-stick text-right" href="/<%= systemConfigs.prefixAdmin%>/users/form/<%=userInfo.id%>">
+                            <img  src="<%=uploadPathAvatar + userInfo.avatar %>" alt="LOGO" width="200" height="100">
+                        </a>
+                    <% } else { %>
+                        <a class="logo-stick text-right" href="/<%= systemConfigs.prefixAdmin%>/auth/no-permission">
+                            <img  src="<%=uploadPathAvatar + userInfo.avatar %>" alt="LOGO" width="200" height="100">
+                        </a>
+                    <% } %>
+                    <% } %>
                 </nav>
             </div>
         </div>	

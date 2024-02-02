@@ -4,20 +4,23 @@ const url = `/${systemConfigs.prefixNews}/`;
 
 const cleanedURL = url.replace(/\/+/g, '/');
 
+const uploadPathAvatar = 'uploads/users/'
+
 %>
 <aside class="main-sidebar sidebar-dark-info elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-        <span class="brand-text font-weight-light">ZendVN</span>
+    <a href="/<%= systemConfigs.prefixAdmin%>/users/form/<%= userInfo.id%>" class="brand-link">
+
+        <img src="/<%= uploadPathAvatar +  userInfo.avatar %>" alt="ZendVN Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light"><%= userInfo.name%></span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-           
             <div class="info">
-                <a href="#" class="d-block">Admin ZendVN</a>
+                <a href="/<%= systemConfigs.prefixAdmin%>/users/form/<%= userInfo.id%>" class="d-block">Admin <%= userInfo.username%></a>
             </div>
         </div>
 
@@ -147,7 +150,12 @@ const cleanedURL = url.replace(/\/+/g, '/');
                         <p>Contact</p>
                     </a>
                 </li>
-                
+                <li class="nav-item">
+                    <a href="<%=cleanedURL%>auth/change-password" class="nav-link" data-active="form">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>Change Password</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="<%=cleanedURL%>auth/logout" class="nav-link" data-active="form">
                         <i class="nav-icon fas fa-edit"></i>

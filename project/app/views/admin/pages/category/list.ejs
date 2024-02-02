@@ -8,7 +8,8 @@
 <% include ./../../helper/checkAll%>
 <% include ./../../helper/checkBox%>
 <% include ./../../helper/controls%>
-<% include ./../../helper/special%>  
+<% include ./../../helper/special%> 
+<% include ./../../helper/view-type%>  
 
 
 <% include ./../../elements/flash%>
@@ -82,6 +83,7 @@ let elementsControl = [
                                 <%- sortHelper(linkPrefix, 'Slug', 'slug', params.sortField, params.sortType, 'width:20%') %>
                                 <%- sortHelper(linkPrefix, 'Status', 'status', params.sortField, params.sortType) %>
                                 <%- sortHelper(linkPrefix, 'Special', 'special', params.sortField, params.sortType) %>
+                                <%- sortHelper(linkPrefix, 'View Type', 'view_type', params.sortField, params.sortType) %>
                                 <%- sortHelper(linkPrefix, 'Ordering', 'ordering', params.sortField, params.sortType) %>
                                 <th class="text-center">Created</th> 
                                 <th class="text-center">Modified</th>                             
@@ -89,7 +91,7 @@ let elementsControl = [
                             </tr>
                         </thead>
                         <tbody>
-
+                            <% if(items.length > 0) { %>
 							<% items.forEach((item, index) => { %>	
 								<tr>
 									<td class="text-center">
@@ -107,6 +109,9 @@ let elementsControl = [
                                     <td >
                                         <%- specialHelper(linkPrefix, item.special, item.id) %>                                   
                                     </td>
+                                    <td >
+                                        <%- viewTypeHelper(linkPrefix, item.view_type, item.id) %>                                   
+                                    </td>
 									<td class="text-center position-relative"><input type="number" value="<%= item.ordering%>" class="form-control form-control-sm m-auto text-center ordering" data-link="/<%= linkPrefix%>change-single-ordering" style="width: 65px" id="chkOrdering[1]" data-id="<%= item.id%>" min="1"></td>
                                     <td>
                                         <%- sourceByHelper(item.created.user_name, item.created.time)%>
@@ -120,6 +125,9 @@ let elementsControl = [
 									</td>
 								</tr>
 							<% }) %>
+                            <% } else { %>
+                                <tr><td colspan="11"><h3>Không có dữ liệu</h3></td></tr>
+                                <% } %>
                         </tbody>
                     </table>
                 </form>

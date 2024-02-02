@@ -43,19 +43,22 @@ router.get('/form(/:id)?', function(req, res, next) {
 router.post('/save', async (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
   let item = Object.assign(req.body)
-  mainValidate.validator(req)
-  let errors = req.validationErrors()
+  let errors = mainValidate.validator(req)
   let oldnames = await mainModel.getItemsCondition({})
   let errorNameshake = utilsHelpers.isNameshake(oldnames, item.name)
   let username = req.user.username
   let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
-  if (errorNameshake !== false && errors == false) {
-    errors = []
-    errors.push({param: 'name', msg: errorNameshake})
+  if (taskCurrent == 'add') {
+    if (errorNameshake !== false && errors == false) {
+      errors = []
+      errors.push({param: 'name', msg: errorNameshake})
+    }
   }
   if(Array.isArray(errors) && errors.length > 0) {
-    if (errors[0].msg == errorNameshake) errors.pop()
-    if (errorNameshake !== false) errors.push({param: 'name', msg: errorNameshake})
+    if (taskCurrent == 'add') {
+      if (errors[0].msg == errorNameshake) errors.pop()
+      if (errorNameshake !== false) errors.push({param: 'name', msg: errorNameshake})
+    }
     let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
     item.created = {user_name: null, time: null}
     item.modified = {user_name: null, time: null}

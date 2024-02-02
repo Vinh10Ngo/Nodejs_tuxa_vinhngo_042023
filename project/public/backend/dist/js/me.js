@@ -55,6 +55,30 @@ $('.ordering').change(function () {
      }
    })
  })
+ $('a.ajax-view-type').click(function (e) {
+  e.preventDefault()
+ let currentElement = $(this)
+ let currentClass = currentElement.attr('data-current-class')
+ let currentName = currentElement.attr('data-current-name')
+ let link = currentElement.attr('href')
+ $.ajax({
+   type: 'POST',
+   url: link,
+   dataType: 'json',
+   success: function (data) {
+     toastr["success"]("cập nhập view type thành công") 
+     let view_type = data.view_type
+     let classViewType = currentElement.data(view_type + '-class')
+     let nameViewType = currentElement.data(view_type + '-name')
+     let linkViewType = link.replace(link.match('[^/]+$'), view_type)
+     currentElement.attr('data-current-class', classViewType)
+      currentElement.attr('data-current-name', nameViewType)
+     currentElement.removeClass(currentClass).addClass(classViewType)
+     currentElement.text(nameViewType)
+     currentElement.attr('href', linkViewType)
+   }
+ })
+})
   $('a.ajax-status').click(function (e) {
     e.preventDefault()
    let currentElement = $(this)

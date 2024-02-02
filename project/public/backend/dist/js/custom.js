@@ -196,14 +196,6 @@ $(document).ready(function () {
             image_preview.src = URL.createObjectURL(file)
         }
       }
-    // Lấy phần tử cần di chuyển lên trước
-    var logoContainer = document.getElementById('logoContainer');
-
-    // Lấy phần tử cần di chuyển lên sau
-    var logo2Input  = document.getElementById('form[logo2]');
-
-    // Di chuyển logoContainer lên trước logo2Input
-    logo2Input.parentNode.insertBefore(logoContainer, logo2Input);
 
 });
 

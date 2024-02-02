@@ -17,8 +17,9 @@ router.get('/', async function(req, res, next) {
   let itemsLatest = []
   let itemsInCategory = []
   let categoryInIndex = []
+  let allArticle = []
   let totalItems = 1
-  let recentlyViewed = []
+  let userId = (req.user !== undefined) ? req.user.id : null
 
 
   await articleModel.listItemsFrontend(null, {task: 'item-special'}).then((items) => {
@@ -34,16 +35,15 @@ router.get('/', async function(req, res, next) {
   await categoryModel.listItemsFrontend(null, {task: 'category-in-index'}).then((items) => {
     categoryInIndex = items
   })
+  await articleModel.listItemsFrontend(null, {task: 'all'}).then((items) => {
+    allArticle = items
+  })
 
   await articleModel.countArticleFrontend({id: idCategory }, {task: 'item-in-category'}).then((data) => {
     totalItems = data
   })
- 
-  await articleModel.getRecentlyViewedArticle({}).then((items) => {
-    recentlyViewed = items;
-  })
 
-  recentlyViewed = utilsHelpers.removeDuplicatesKeepFirst(recentlyViewed);
+ 
   res.render(`${folderViewsNews}index`, { 
     layout: layoutNews,
     itemsSpecial,
@@ -54,7 +54,8 @@ router.get('/', async function(req, res, next) {
     idCategory,
     keyword,
     totalItems,
-    recentlyViewed
+    userId,
+    allArticle
   });
 })
 

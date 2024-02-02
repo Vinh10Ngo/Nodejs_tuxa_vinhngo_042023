@@ -8,6 +8,7 @@ const layoutNews = __path__views__news + 'frontend'
 const controllerName = 'contact'
 const sendEmailHelpers = require(__path__helpers + 'send-email')
 const mainValidate = require(__path__validates + controllerName)
+const paramsHelpers = require(__path__helpers + 'params')
 const mainModel = require(__path__models + controllerName)
 const configModel = require(__path__models + 'configuration')
 const linkRedirect = ('/' + systemConfigs.prefixNews + `/${controllerName}/`).replace(/(\/)\1+/g, '$1')
@@ -17,12 +18,14 @@ const linkRedirect = ('/' + systemConfigs.prefixNews + `/${controllerName}/`).re
 /* GET ĩndex page. */
 router.get('/', async function(req, res, next) {
   let errors = null
+  let keyword = paramsHelpers.getParams(req.query, 'search', '')
 
   res.render(`${folderViewsNews}contact`, { 
     layout: layoutNews,
     pageTitle: 'Contact',
     controllerName,
-    errors
+    errors,
+    keyword
     
   });
 });

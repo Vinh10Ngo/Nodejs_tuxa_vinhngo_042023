@@ -8,6 +8,7 @@ const schema = new mongoose.Schema({
     ordering: Number, 
     content: String,
     special: String,
+    view_type: String,
     created: {
         user_id: Number, 
         user_name: String, 

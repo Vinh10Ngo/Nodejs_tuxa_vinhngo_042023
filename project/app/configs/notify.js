@@ -18,12 +18,18 @@ module.exports = {
     ERROR_UPLOADS_THUMB: 'vui lòng chọn thumb',
     ERROR_LIMIT: 'Kích thước file không phù hợp',
     ERROR_CATEGORY: 'Category phải khác rỗng',
-    ERROR_EMAIL: 'chiều dài email từ %d đến %d kí tự',
+    ERROR_USERNAME: 'chiều dài username từ %d đến %d kí tự',
     ERROR_PASSWORD: 'chiều dài mật khẩu từ %d đến %d kí tự',
+    ERROR_NEW_PASSWORD: 'chiều dài mật khẩu mới từ %d đến %d kí tự',
     ERROR_LOGIN_USERNAME_NOTEXIST: 'Username không tồn tại',
     ERROR_LOGIN_PASSWORD_INCORRECT: 'Mật khẩu không chính xác',
     ERROR_LOGIN: 'Thông tin đăng nhập không chính xác',
-    ERROR_NAMESHAKE: 'Tên đã tồn tại',
     SUCCESS_CONTACT: 'Gửi thông tin liên hệ thành công',
-    ERROR_NAMESHAKE: 'Name đã tồn tại'
+    ERROR_NAMESHAKE: 'Name đã tồn tại',
+    ERROR_USERNAMESHAKE: 'Username đã tồn tại',
+    ERROR_VIEW_TYPE: 'View Type phải khác rỗng',
+    ERROR_DUPLICATE_PASSWORD: 'Mật khẩu không được trùng với mật khẩu cũ',
+    ERROR_WRONG_PASSWORD: 'Mật khẩu cũ không chính xác',
+    ERROR_CONFIRM_PASSWORD_EMPTY: 'Vui lòng xác nhận lại mật khẩu mới',
+    ERROR_CONFIRM_PASSWORD: 'Mật khẩu không khớp với mật khẩu trên'
 }

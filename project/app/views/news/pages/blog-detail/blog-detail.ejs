@@ -33,7 +33,7 @@ const cleanedURL = url.replace(/\/+/g, '/');
 				<div class="col-md-10 col-lg-8 p-b-30">
 					<div class="p-r-10 p-r-0-sr991">
 						<!-- Blog Detail -->
-						<div class="p-b-70">
+						<div class="p-b-70" id="recentlyViewedPostsForUser" data-post="<%= JSON.stringify(itemsBlogDetail)%>" data-user-id="<%= userId%>">
 							<a href="<%=cleanedURL%>category/<%= itemsBlogDetail.category.id%>" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
 								<%= itemsBlogDetail.category.name%>
 							</a>
@@ -44,9 +44,8 @@ const cleanedURL = url.replace(/\/+/g, '/');
 							
 							<div class="flex-wr-s-s p-b-40">
 								<span class="f1-s-3 cl8 m-r-15">
-									<a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
-										<%= itemsBlogDetail.created.user_name%>
-									</a>
+									<%= itemsBlogDetail.created.user_name%>
+
 						
 									<span class="m-rl-3">-</span>
 						

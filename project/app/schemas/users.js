@@ -24,7 +24,8 @@ const schema = new mongoose.Schema({
         user_id: Number, 
         user_name: String, 
         time: Date   
-    }
+    },
+
 });
 
 module.exports= mongoose.model(databaseConfigs.col_users, schema)

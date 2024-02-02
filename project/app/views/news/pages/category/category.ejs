@@ -1,5 +1,6 @@
 <% include ./../../helper/category-pagination%>
 <% include ./../../helper/format-time%>
+<% include ./../../helper/summary%>
 
 
 <%
@@ -17,7 +18,7 @@ const cleanedURL = url.replace(/\/+/g, '/');
 <body class="animsition">
 
 	<div class="container">
-		<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+		<div class=" d-flex justify-content-between bg0 flex-wr-sb-c p-rl-20 p-tb-8">
 			<div class="f2-s-1 p-r-30 size-w-0 m-tb-6 flex-wr-s-c">
 			</div>
 
@@ -26,7 +27,7 @@ const cleanedURL = url.replace(/\/+/g, '/');
 		</div>
 	</div>
 	<!-- Page heading -->
-	<div class="container p-t-4 p-b-40">
+	<div class="d-flex justify-content-between container p-t-4 p-b-40">
 		<h2 class="f1-l-1 cl2">
 			<%=category.name%>
 		</h2>
@@ -46,38 +47,76 @@ const cleanedURL = url.replace(/\/+/g, '/');
 								</div>
 							</div>
 						<% } %>
-							<% itemsInCategory.forEach((item, index) => { %>	
-							<div class="col-sm-6 p-r-25 p-r-15-sr991">
-								<!-- Item latest -->	
-								<div class="m-b-45">
-									<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="wrap-pic-w big-image hov1 trans-03">
-										<img src="<%= uploadPath + item.thumb%>" alt="<%= item.name%>">
+						<% itemsInCategory.forEach((item, index) => { %>
+							<% if (item.category.view_type == 'grid') { %>	
+								<div class="col-sm-6 p-r-25 p-r-15-sr991">
+									<!-- Item latest -->	
+									<div class="m-b-45">
+										<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="wrap-pic-w big-image hov1 trans-03">
+											<img src="<%= uploadPath + item.thumb%>" alt="<%= item.name%>">
+										</a>
+								
+										<div class="p-t-16">
+											<h5 class="p-b-5">
+												<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="f1-m-3 cl2 hov-cl10 trans-03 clamp-text">
+													<%= item.name%> 
+												</a>
+											</h5>
+								
+											<span class="cl8">
+												<%= item.created.user_name%>
+
+								
+												<span class="f1-s-3 m-rl-3">
+													-
+												</span>
+								
+												<span class="f1-s-3">
+													<%- formatTimeHelper (item.created.time) %>
+												</span>
+											</span>
+										</div>
+									</div>
+								</div>
+							<% } else if (item.category.view_type == 'list') { %>	
+								<div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
+									<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
+										<img src="<%=uploadPath + item.thumb%>" alt="<%=item.name%>">
 									</a>
-							
-									<div class="p-t-16">
-										<h5 class="p-b-5">
-											<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="f1-m-3 cl2 hov-cl10 trans-03 clamp-text">
+	
+									<div class="size-w-9 w-full-sr575 m-b-25">
+										<h5 class="p-b-12" >
+											<a id="textToHighlight" data-keyword="<%= keyword %>" href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="f1-l-1 cl2 hov-cl10 trans-03 respon2">
 												<%= item.name%> 
 											</a>
 										</h5>
-							
-										<span class="cl8">
-											<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="f1-s-4 cl8 hov-cl10 trans-03">
-												<%= item.created.user_name%>
-											</a>
-							
+	
+										<div class="cl8 p-b-18">
+											<%=item.created.user_name%> 
+
+	
 											<span class="f1-s-3 m-rl-3">
 												-
 											</span>
-							
+	
 											<span class="f1-s-3">
 												<%- formatTimeHelper (item.created.time) %>
 											</span>
-										</span>
+										</div>
+	
+										<p class="f1-s-1 cl6 p-b-24">
+											<%-summaryHelper(item.content)%> 
+										</p>
+	
+										<a href="<%=cleanedURL%>blog-detail/<%= item.id%>" class="f1-s-1 cl9 hov-cl10 trans-03">
+											Read More
+											<i class="m-l-2 fa fa-long-arrow-alt-right"></i>
+										</a>
 									</div>
 								</div>
-							</div>
-							<% }) %>					
+							<% } %>	
+						<% }) %>
+				
 					</div>
 					<!-- Pagination -->
 					<%- categoryPaginationHelper(cleanedURL, totalPages, idCategory, paginationCatgoryPage) %>

@@ -3,6 +3,7 @@ var md5 = require('md5');
 const usersModel = require(__path__models + 'users')
 var LocalStrategy = require('passport-local').Strategy;
 const groupsModel = require(__path__models + 'groups')
+const articleModel = require(__path__models + 'article')
 const notifyConfigs = require(__path__configs + 'notify');
 
 module.exports = function(passport) {
@@ -34,7 +35,7 @@ module.exports = function(passport) {
       
       passport.deserializeUser(async (id, done) => {
         try {
-          await usersModel.getItems(id).then((user) => {
+          await usersModel.getItems(id).then( (user) => {
             if (user) {
               const groupsID = user.groups.id              
               groupsModel.getItems(groupsID).then((groupsInfo) => {

@@ -17,7 +17,6 @@ router.get('/:id', async function(req, res, next) {
   const page = paramsHelpers.getParams(req.query, 'page', 1) 
   let itemsCategory = []
   let itemsInCategory = []
-  let itemsSpecialCategory = []
   let perPage = 4
   let totalItems = 1
   let pageRange = 3
@@ -26,24 +25,30 @@ router.get('/:id', async function(req, res, next) {
   await categoryModel.listItemsFrontend(null, {task: 'item-in-menu'}).then((items) => {
     itemsCategory = items
   })
-  await articleModel.listItemsFrontend(null, {task: 'item-special-category'}).then((items) => {
-    itemsSpecialCategory = items
-  });
+  
   await articleModel.countArticleFrontend({id: idCategory }, {task: 'item-in-category'}).then((data) => {
     totalItems = data
   })
   let totalPages = Math.ceil(totalItems/perPage)
 
+  await categoryModel.getItemFrontend({id: idCategory}).then((items) => {
+    category = items
+  })
+  
   await articleModel.listItemsFrontend({ id: idCategory}, {task: 'item-in-category-page'})
   .skip((page - 1) * perPage)
   .limit(perPage)
   .then((items) => {
     itemsInCategory = items
   })
+  itemsInCategory.forEach ((item, index) => {
+    item.category = {
+      id: item.category.id,
+      name: item.category.name,
+      view_type: category.view_type
+    }
+  }) 
 
-  await categoryModel.getItemFrontend({id: idCategory}).then((items) => {
-    category = items
-  })
   
   let paginationCatgoryPage = await utilsHelpers.paginate(page, totalPages, pageRange)
   
@@ -54,7 +59,6 @@ router.get('/:id', async function(req, res, next) {
     controllerName,
     totalPages,
     idCategory,
-    itemsSpecialCategory,
     pageTitle: 'Category',
     keyword,
     totalItems,

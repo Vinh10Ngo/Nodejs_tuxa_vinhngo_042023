@@ -114,7 +114,17 @@ module.exports = {
       return mainModel.deleteMany({_id: {$in: id}})
      }
   },
-  saveItem: (item, username, options = null) => {
+  saveItem: (item, username, options = null, itemReq = null) => {
+    if (options.task == 'change-password') {
+      return mainModel.updateOne({_id: item.id},
+        {password: md5(itemReq.new_password),
+          modified : {
+            user_id: 0, 
+            user_name: username, 
+            time: Date.now()   
+          }
+        })
+    }
     if (options.task == 'add') {
       item.password = md5(item.password)
       item.groups = {
@@ -134,7 +144,6 @@ module.exports = {
          ordering: parseInt(item.ordering),
          name: item.name,
          username: item.username,
-         password: md5(item.password),
          avatar: item.avatar,
          content: item.content,
          groups: {
@@ -184,5 +193,8 @@ module.exports = {
     return mainModel.find({status: 'active', username: username}).select('username password avatar status groups.name')
     }
   },
+  getItemsCondition: (params) => {
+    return mainModel.find(params)
+    }
  
 }

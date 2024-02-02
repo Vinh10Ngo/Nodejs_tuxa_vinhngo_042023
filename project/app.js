@@ -116,7 +116,9 @@ app.use( function(err, req, res, next) {
   // render the error page.
   if (systemConfigs.env == 'dev') {
     res.status(err.status || 500);
-    res.render(__path__views__admin + 'pages/error', { pageTitle: 'Page Not Found' });
+    res.render(__path__views__admin + 'pages/error', {
+       pageTitle: 'Page Not Found' ,
+    });   
   }
   if(systemConfigs.env == 'production') {
     res.status(err.status || 500);

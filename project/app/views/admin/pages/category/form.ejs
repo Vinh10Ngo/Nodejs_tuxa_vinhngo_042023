@@ -3,6 +3,7 @@
 <% include ./../../helper/textArea%>
 <% include ./../../helper/source_by%>
 <% include ./../../helper/formBody%>
+<% include ./../../helper/choice%>
 
 <%
 const linkPrefix = systemConfigs.prefixAdmin + `/${controllerName}/`
@@ -13,6 +14,7 @@ let elementsForm = [
 {id: 'form[ordering]', for: 'form[ordering]', label: 'Ordering', input: inputHelper("number", "ordering", item.ordering, {'id': 'form[ordering]'})},
 {id: 'form[status]', for: 'form[status]', label: 'Status', input: selectBoxHelper('status', systemConfigs.status_value, item.status, '')},
 {id: 'form[special]', for: 'form[special]', label: 'Special',input: choiceHelper(item.special, 'special')},
+{id: 'form[view_type]', for: 'form[view_type]', label: 'View Type',input: selectBoxHelper('view_type', systemConfigs.view_type_value, item.view_type, '')},
 {id: 'form[content]', for: 'form[content]', label: 'Content', input: textAreaHelper('content', item.content)},
 {id: 'form[created]', for: 'form[created]', label: 'Created', input: sourceByHelper(item.created.user_name, item.created.time)},
 ]

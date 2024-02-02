@@ -22,7 +22,7 @@ module.exports = {
 
        return mainModel
         .find(objWhere)
-        .select('name status ordering created modified slug special')
+        .select('name status ordering created modified slug special view_type')
         .sort(sort)
         .skip((params.pagination.currentPage-1)*params.pagination.totalItemsPerPage)
         .limit(params.pagination.totalItemsPerPage)
@@ -112,6 +112,7 @@ module.exports = {
          ordering: parseInt(item.ordering),
          name: item.name,
           special: item.special,
+          view_type: item.view_type,
          slug: item.slug,
          content: item.content,
            modified : {
@@ -134,6 +135,18 @@ module.exports = {
   }
     return mainModel.updateOne({_id: id}, data)
   },
+  viewType: (id, currentViewType, username, options = null) => {
+    let view_type = (currentViewType === 'list') ? 'grid' : 'list'
+    let data = {
+      view_type: view_type,
+      modified : {
+        user_id: 0, 
+        user_name: username, 
+        time: Date.now()   
+    }
+  }
+    return mainModel.updateOne({_id: id}, data)
+  },
   listItemsFrontend: (params = null, options = null) => {
   let find = {}
     let select = ''
@@ -142,7 +155,7 @@ module.exports = {
     if (options.task == 'item-in-menu') {
       find = {status: 'active'}
       sort = {ordering: 'asc', name : 'asc'}
-      select = 'name'
+      select = 'name view_type'
     }
     if (options.task == 'category-in-index') {
       find = {status: 'active', special: 'yes'}

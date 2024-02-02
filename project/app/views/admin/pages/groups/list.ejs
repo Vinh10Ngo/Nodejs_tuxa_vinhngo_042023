@@ -88,7 +88,7 @@ let elementsControl = [
                             </tr>
                         </thead>
                         <tbody>
-
+                            <% if(items.length > 0) { %>
 							<% items.forEach((item, index) => { %>	
 								<tr>
 									<td class="text-center">
@@ -117,6 +117,9 @@ let elementsControl = [
 									</td>
 								</tr>
 							<% }) %>
+                            <% } else { %>
+                                <tr><td colspan="9"><h3>Không có dữ liệu</h3></td></tr>
+                                <% } %>  
                         </tbody>
                     </table>
                 </form>

@@ -11,8 +11,9 @@ const schema = new mongoose.Schema({
     view: Number,
     special: String,
     category: {
-        id: String,
+        id: String, 
         name: String,
+        view_type: String
     },
     created: {
         user_id: Number, 
@@ -24,7 +25,6 @@ const schema = new mongoose.Schema({
         user_name: String, 
         time: Date   
     },
-
 });
 
 module.exports= mongoose.model(databaseConfigs.col_article, schema)

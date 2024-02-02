@@ -8,6 +8,5 @@ module.exports = {
     col_article: 'article',
     col_configuration: 'configuration',
     col_contact: 'contact',
-    col_recently_viewed: 'recently-viewed'
 
 }

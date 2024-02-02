@@ -48,19 +48,22 @@ router.post('/save', async (req, res, next) => {
   req.body = JSON.parse(JSON.stringify(req.body));
   let item = Object.assign(req.body)
   item.slug = slug(item.name)
-  mainValidate.validator(req)
-  let errors = req.validationErrors()
+  let errors = mainValidate.validator(req)
   let oldnames = await mainModel.getItemsCondition({})
   let errorNameshake = utilsHelpers.isNameshake(oldnames, item.name)
   let username = req.user.username
   let taskCurrent = (item !== 'undefined' && item.id !== '') ? 'edit' : 'add'
-  if (errorNameshake !== false && errors == false) {
-    errors = []
-    errors.push({param: 'name', msg: errorNameshake})
+  if (taskCurrent == 'add') {  
+    if (errorNameshake !== false && errors == false) {
+      errors = []
+      errors.push({param: 'name', msg: errorNameshake})
+    }
   }
   if(Array.isArray(errors) && errors.length > 0) {
-    if (errors[0].msg == errorNameshake) errors.pop()
-    if (errorNameshake !== false) errors.push({param: 'name', msg: errorNameshake})
+    if (taskCurrent == 'add') {
+      if (errors[0].msg == errorNameshake) errors.pop()
+      if (errorNameshake !== false) errors.push({param: 'name', msg: errorNameshake})
+    }   
     let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
     item.created = {user_name: null, time: null}
     item.modified = {user_name: null, time: null}
@@ -157,6 +160,15 @@ router.get('(/:status)?', async (req, res, next) => {
     mainModel.special(id, currentSpecial, username).then(result => {
       res.send({special: (currentSpecial === 'yes') ? 'no' : 'yes' 
       })
+    });  
+  });
+  //change view type
+  router.post('/change-view-type/:id/:view_type', function(req, res, next) {
+    let username = req.user.username
+    let currentViewType = paramsHelpers.getParams(req.params, 'view_type', 'list')
+    let id = paramsHelpers.getParams(req.params, 'id', '')
+    mainModel.viewType(id, currentViewType, username).then((result) => {
+      res.send({view_type: (currentViewType === 'list') ? 'grid' : 'list'})
     });  
   });
 });

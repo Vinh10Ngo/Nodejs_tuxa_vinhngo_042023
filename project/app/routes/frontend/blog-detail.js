@@ -15,8 +15,7 @@ router.get('/:id', async function(req, res, next) {
   let idCategory = ''
   let keyword = paramsHelpers.getParams(req.query, 'search', '')
   let itemsBlogDetail = []
-  let itemsKeyword = []
-
+  let userId = (req.user !== undefined) ? req.user.id : null
 
   let idBlogDetail = paramsHelpers.getParams(req.params, 'id', '')
   
@@ -26,14 +25,6 @@ router.get('/:id', async function(req, res, next) {
   await articleModel.countView({id: idBlogDetail}).then((items) => {
   })
  
-  await articleModel.listItemsFrontend({ keyword: keyword}, {task: 'item-keyword'}).then((items) => {
-    itemsKeyword = items
-  })
-
-  await articleModel.recordRecentlyViewedArticle({id: idBlogDetail}).then((items) => {
-    console.log(items);
-  })
-
 
   res.render(`${folderViewsNews}blog-detail`, { 
     layout: layoutNews,
@@ -41,9 +32,9 @@ router.get('/:id', async function(req, res, next) {
     controllerName,
     pageTitle: 'Blog-Detail',
     idCategory,
-    itemsKeyword,
     keyword,
-    itemsBlogDetail
+    userId,
+    idBlogDetail
   });
 });
 

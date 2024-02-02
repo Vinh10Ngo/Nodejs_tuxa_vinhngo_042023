@@ -45,5 +45,3 @@ nameshake groups validate --ok
     
 <%- JSON.stringify() %>
 
-
-

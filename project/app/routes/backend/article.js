@@ -4,6 +4,7 @@ var router = express.Router ();
 const controllerName = 'article'
 const he = require('he')
 var slug = require('slug')
+
 const mainModel = require(__path__models + controllerName)
 const categoryModel = require(__path__models + 'article')
 const fileHelpers  = require(__path__helpers + 'file')
@@ -79,9 +80,9 @@ router.post('/save', (req, res, next) => {
       let pageTitle = (taskCurrent == 'edit') ? pageTitleEdit : pageTitleAdd
       res.render(`${folderViewsAdmin}form`, { pageTitle, item, controllerName, errors, categoryItems});
     } else {
-      // item.thumb = (req.file == undefined) ? null : req.file.filename
         if (req.file == undefined) {
           item.thumb = item.image_old
+          console.log('item.image_old: ', item.image_old);
         } else {
           item.thumb = req.file.filename
           if (taskCurrent == 'edit') fileHelpers.remove(uploadLink, item.image_old)

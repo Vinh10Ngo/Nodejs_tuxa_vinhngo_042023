@@ -31,6 +31,9 @@ if (indexToInsert !== -1 && item.id) {
   });
 }
 
+if (item.id) {
+  elementsForm = elementsForm.filter(element => element.id !== 'form[password]');
+}
 %>
 
 <section class="content">

@@ -1,3 +1,7 @@
+Installing Node.js and npm
+
+Adding npm to the environment PATH
+
 Pull the source code and **open the project** folder in the IDE.
 
 Run the command '**npm i**' in the terminal to install the Node Modules directory.

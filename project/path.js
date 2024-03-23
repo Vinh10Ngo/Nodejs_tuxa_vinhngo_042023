@@ -11,6 +11,8 @@ module.exports = {
     folder__views__news: 'news',
     folder__models :'models',
     folder__public :'public',
-    folder__upload :'uploads'
+    folder__upload :'uploads',
+    folder__data :'_data'
+
 
 }

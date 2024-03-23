@@ -1,7 +1,7 @@
 module.exports = {
     prefixAdmin: 'admin',
     prefixNews: '',
-    env: 'production', // dev production
+    env: 'dev', // dev production
     format_long_time: 'HH:mm DD-MM-YYYY',
     status_value: [
         {id: 'novalue', name: '- Select status -'},

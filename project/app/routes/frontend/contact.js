@@ -33,7 +33,7 @@ router.post('/save', function(req, res, next) {
   req.body = JSON.parse(JSON.stringify(req.body));;
   let item = Object.assign(req.body)
   let errors = mainValidate.validator(req)
-  let username = req.user.username
+  let username = 'phucvinh'
   if(Array.isArray(errors) && errors.length > 0) {
     res.render(`${folderViewsNews}contact`, { 
       layout: layoutNews,

@@ -94,7 +94,6 @@ $('.ordering').change(function () {
        let status = data.status
        let classStatus = currentElement.data(status + '-class')
        let iconStatus = currentElement.data(status + '-icon')
-
        let linkStatus = link.replace(link.match('[^/]+$'), status)
        currentElement.attr('data-current-class', classStatus)
        currentElement.attr('data-current-icon', iconStatus)

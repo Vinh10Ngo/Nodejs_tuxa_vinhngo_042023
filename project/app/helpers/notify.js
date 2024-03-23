@@ -34,7 +34,7 @@ module.exports = {
                 break;     
             case 'contact':
                 notifyContent = notifyConfigs.SUCCESS_CONTACT
-                break;                              
+                break;                               
             default:
                 notifyContent = ''
                 break;

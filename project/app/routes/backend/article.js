@@ -32,7 +32,7 @@ const uploadLink = 'public/uploads/article/'
 //form
 router.get('/form(/:id)?', async function(req, res, next) {
   let id = paramsHelpers.getParams(req.params, 'id', '')
-  let username = req.user.username
+  let username = 'phucvinh'
   let item =  {name: '', ordering: 0, status: 'novalue', category_id: '', category_name: '', content: '', slug: '', created: {user_name: username, time: Date.now()}, modified: {user_name: username, time: Date.now()}}
   let errors = null
   let categoryItems = []
@@ -61,7 +61,7 @@ router.post('/save', (req, res, next) => {
     let item = Object.assign(req.body)
     item.slug = slug(item.name)
     item.content = he.decode(item.content)
-    let username = req.user.username
+    let username = 'phucvinh'
     item.thumb = (req.file == undefined) ? null : req.file.filename
     let taskCurrent = (item !== undefined && item.id !== '') ? 'edit' : 'add'
     let errors = mainValidate.validator(req, item, err, taskCurrent)
@@ -82,7 +82,6 @@ router.post('/save', (req, res, next) => {
     } else {
         if (req.file == undefined) {
           item.thumb = item.image_old
-          console.log('item.image_old: ', item.image_old);
         } else {
           item.thumb = req.file.filename
           if (taskCurrent == 'edit') fileHelpers.remove(uploadLink, item.image_old)
@@ -107,7 +106,7 @@ router.get('/filter-category/:category_id', function(req, res, next) {
   req.session.category_id = paramsHelpers.getParams(req.params, 'category_id', '')
   // trả về linkIndex rơi vào trường hợp (/:status)?
   res.redirect(linkIndex)  
-  })
+})
 // List items
 router.get('(/:status)?', async (req, res, next) => {
   let params = paramsHelpers.createParams(req)
@@ -136,7 +135,7 @@ router.get('(/:status)?', async (req, res, next) => {
   })
   //change status
   router.post('/change-status/:id/:status', function(req, res, next) {
-    let username = req.user.username
+    let username = 'phucvinh'
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.changeStatus(id, currentStatus, username, {task: "update-one"}).then(result => {
@@ -146,7 +145,7 @@ router.get('(/:status)?', async (req, res, next) => {
   // change category
   router.post('/change-category', function(req, res, next) {
    let id = req.body.id
-   let username = req.user.username
+   let username = 'phucvinh'
    let categoryID = req.body.category_id
    let categoryName = req.body.category_name
    mainModel.changecategory(id, categoryID, categoryName, username).then(result => {
@@ -156,7 +155,7 @@ router.get('(/:status)?', async (req, res, next) => {
   
   //change status - multi 
   router.post('/change-status/:status', function(req, res, next) {
-    let username = req.user.username
+    let username = 'phucvinh'
     let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
     mainModel.changeStatus(req.body.cid, currentStatus, username, {task: "update-multi"}).then(result => {
       notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
@@ -180,7 +179,7 @@ router.get('(/:status)?', async (req, res, next) => {
   });
   // change - single - ordering
   router.post('/change-single-ordering', function(req, res, next) {
-    let username = req.user.username
+    let username = 'phucvinh'
     let id = req.body.id
     let ordering = req.body.ordering
        mainModel.changeOrderingAjax(id, ordering, username).then(result => {
@@ -189,7 +188,7 @@ router.get('(/:status)?', async (req, res, next) => {
     })
   //change ordering -   multi 
   router.post('/change-ordering', function(req, res, next) {
-    let username = req.user.username
+    let username = 'phucvinh'
     let cids = req.body.cid
     let orderings = req.body.ordering
        mainModel.changeOdering(cids, orderings, username).then(result => {
@@ -198,7 +197,7 @@ router.get('(/:status)?', async (req, res, next) => {
     })
      //change special
   router.post('/change-special/:id/:special', function(req, res, next) {
-    let username = req.user.username
+    let username = 'phucvinh'
     let currentSpecial = paramsHelpers.getParams(req.params, 'special', 'yes')
     let id = paramsHelpers.getParams(req.params, 'id', '')
     mainModel.special(id, currentSpecial, username).then(result => {

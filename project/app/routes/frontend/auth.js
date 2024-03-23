@@ -56,7 +56,7 @@ router.post('/change-password/post', function(req, res, next) {
     req.body = JSON.parse(JSON.stringify(req.body));
     let item = Object.assign(req.body);
     let errors = mainValidate.validator(req);
-    let username = req.user.username
+    let username = 'phucvinh'
     errors = errors.filter(element => element.param !== 'username');
     if (item.password !== '') passwordMd5 = md5(item.password)
     if (item.new_password !== '') newPasswordMd5 = md5(item.new_password)

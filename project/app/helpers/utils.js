@@ -1,5 +1,6 @@
-
+const fs = require('fs');
 const notifyConfigs = require(__path__configs + 'notify');
+const path = require('path');
 
 let createFilterStatus = async (currentStatus, collection) => {
   const currentModel = require(__path__schemas + collection)
@@ -72,14 +73,83 @@ let isUserNameshake = (oldUserNames, username) => {
   }
   return false
 }
+let createFilterStatusRss = async (currentStatus, articleRssArr) => {
+    let statusFilter = [
+        {name:'all', value: 'all', count: 4, link: '#', class: 'default'},
+        {name:'active', value: 'active', count: 5, link: '#', class: 'default'},
+        {name:'inactive',value: 'inactive', count: 6, link: '#', class: 'default'}
+      ]
+    
+        for (let index = 0; index < statusFilter.length; index ++) {
+          let item = statusFilter[index] 
+          if (item.value === currentStatus) statusFilter[index].class = 'success'
+          if (item.value !== 'all') {
+            statusFilter[index].count = articleRssArr.filter(ele => ele.status.includes(item.value)).length
+          } else {
+            statusFilter[index].count = articleRssArr.length
+          }
+        }
+        return statusFilter
+}
+let idCounter = 1;
+let generateId = (name) => {
+  return `id_${name}_${idCounter++}`;
+}
+let pushItem = (arr, spreadArr) => {
+  if (arr.length == 0) {
+    arr.push(...spreadArr)
+    return arr
+  } else {
+    for (let i = 0; i < arr.length; i++ ) {
+      if (arr[i]) {
+        return arr
+      } else {
+        arr.push(...spreadArr)
+        return arr
+      }
+    }
+  }
+}
 
+let saveArrToFile = (data) => {
+  const jsonData = JSON.stringify(data);
+  const filePath = path.join(__path__data, 'articleRss.json');
 
+  fs.writeFile(filePath, jsonData, 'utf8', (err) => {
+      if (err) {
+          console.error('Error writing JSON file:', err);
+      } else {
+          console.log('JSON file has been saved');
+      }
+  });
+}
 
+let readFileJson = async () => {
+   // Đường dẫn tuyệt đối hoặc tương đối đến tệp JSON
+   const filePath = path.join(__path__data, 'articleRss.json');
+
+   try {
+       // Sử dụng fs.promises.readFile để đọc dữ liệu từ tệp JSON
+       const data = await fs.promises.readFile(filePath, 'utf8');
+       let jsonData = []
+       // Phân tích cú pháp dữ liệu JSON
+       if (data) jsonData = JSON.parse(data);
+       return jsonData;
+   } catch (error) {
+       console.error('Lỗi khi đọc hoặc phân tích cú pháp dữ liệu JSON:', error);
+       throw error; // Throw error để nó có thể được xử lý ở nơi gọi
+   }
+} 
 module.exports = {
     createFilterStatus: createFilterStatus, 
     countArticlesInCategory: countArticlesInCategory,
     paginate: paginate,
     isNameshake: isNameshake,
-    isUserNameshake
+    isUserNameshake,
+    generateId,
+    createFilterStatusRss,
+    pushItem,
+    saveArrToFile,
+    readFileJson
     
 }

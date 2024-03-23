@@ -32,7 +32,7 @@ router.post('/save', (req, res, next) => {
   uploadLogo (req, res, (err) => {
     req.body = JSON.parse(JSON.stringify(req.body));
     let item = Object.assign(req.body)
-    let username = req.user.username
+    let username = 'phucvinh'
     if (req.file == undefined) {
       item.info.logo = item.info.image_old
     } else {

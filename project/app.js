@@ -23,6 +23,7 @@ require('dotenv').config()
 global.__base =  __dirname + '/'
 global.__path__app =  __base + pathConfig.folder__app + '/'
 global.__path__configs =  __path__app + pathConfig.folder__configs + '/'
+global.__path__data =  __path__app + pathConfig.folder__data + '/'
 global.__path__helpers =  __path__app + pathConfig.folder__helpers + '/'
 global.__path__routes =  __path__app + pathConfig.folder__routes + '/'
 global.__path__schemas =  __path__app + pathConfig.folder__schemas + '/'

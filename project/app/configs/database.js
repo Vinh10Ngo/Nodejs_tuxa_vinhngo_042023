@@ -5,6 +5,7 @@ module.exports = {
     col_groups: 'groups',
     col_users: 'users',
     col_category: 'category',
+    col_category_rss: 'categoryRss',
     col_article: 'article',
     col_configuration: 'configuration',
     col_contact: 'contact',

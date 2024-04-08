@@ -12,9 +12,9 @@ router.use('/contact', require('./contact'));
 router.use('/groups', require('./groups'));
 router.use('/users', require('./users'));
 router.use('/category', require('./category'));
-router.use('/categoryRss', require('./categoryRss'));
+router.use('/category-rss', require('./category-rss'));
 router.use('/article', require('./article'));
-router.use('/articleRss', require('./articleRss'));
+router.use('/article-rss', require('./article-rss'));
 
 
 

@@ -15,5 +15,7 @@ router.use('/category', require('./category'));
 router.use('/about', require('./about'));
 router.use('/blog-list', require('./blog-list'));
 router.use('/contact', require('./contact'));
+router.use('/general-news-category', require('./general-news-category'));
+router.use('/general-news-blog', require('./general-news-blog'));
 
 module.exports = router;

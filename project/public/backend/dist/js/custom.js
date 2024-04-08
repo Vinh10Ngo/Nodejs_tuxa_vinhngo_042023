@@ -167,12 +167,9 @@ $(document).ready(function () {
         var linkRedirect = '/' + path[1] + '/' + path[2] + '/filter-category/' + $(this).val()
         window.location.pathname = linkRedirect
     })
+   
 
-    $('select[name="filter_category_Rss"]').change(function() {
-        var path = window.location.pathname.split('/')
-        var linkRedirect = '/' + path[1] + '/' + path[2] + '/filter-category_Rss/' + $(this).val()
-        window.location.pathname = linkRedirect
-    })
+    
 
     $('form[name=form_upload]').submit(function(event) {
         let avatar = $(this).find('input[name=avatar]')

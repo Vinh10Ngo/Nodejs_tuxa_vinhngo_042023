@@ -153,69 +153,69 @@ router.get('(/:status)?', async (req, res, next) => {
       params
     });
   })
-  //change status
-  router.post('/change-status/:id/:status', function(req, res, next) {
-    let username = 'phucvinh'
-    let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    let id = paramsHelpers.getParams(req.params, 'id', '')
-    mainModel.changeStatus(id, currentStatus, username, {task: "update-one"}).then(result => {
-      res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
-    });  
+});
+//change status
+router.post('/change-status/:id/:status', function(req, res, next) {
+  let username = 'phucvinh'
+  let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
+  let id = paramsHelpers.getParams(req.params, 'id', '')
+  mainModel.changeStatus(id, currentStatus, username, {task: "update-one"}).then(result => {
+    res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
+  });  
+});
+// change group
+router.post('/change-group', function(req, res, next) {
+ let id = req.body.id
+ let username = 'phucvinh'
+ let groupID = req.body.groups_id
+ let groupName = req.body.groups_name
+ mainModel.changeGroup(id, groupID, groupName, username).then(result => {
+  res.send({})
   });
-  // change group
-  router.post('/change-group', function(req, res, next) {
-   let id = req.body.id
-   let username = 'phucvinh'
-   let groupID = req.body.groups_id
-   let groupName = req.body.groups_name
-   mainModel.changeGroup(id, groupID, groupName, username).then(result => {
-    res.send({})
-    });
+})
+
+//change status - multi 
+router.post('/change-status/:status', function(req, res, next) {
+  let username = 'phucvinh'
+  let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
+  mainModel.changeStatus(req.body.cid, currentStatus, username, {task: "update-multi"}).then(result => {
+    notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
+  });  
+});
+
+//delete
+router.get('/delete/:id/', function(req, res, next) {
+  let id = paramsHelpers.getParams(req.params, 'id', '')
+   
+  mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
+    notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
+  });
+})
+
+// delete - multi 
+router.post('/delete', function(req, res, next) {
+  mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
+    notifyHelpers.show(req, res, linkIndex, {task: 'delete_multi', total: result.deletedCount})
+  });  
+});
+ // change - single - ordering
+ router.post('/change-single-ordering', function(req, res, next) {
+  let username = 'phucvinh'
+  let id = req.body.id
+  let ordering = req.body.ordering
+     mainModel.changeOrderingAjax(id, ordering, username).then(result => {
+      res.send({'notify': {'tilte': notifyConfigs.ORDERING_SUCCESS, 'class': 'success'}})
+   });      
   })
-  
-  //change status - multi 
-  router.post('/change-status/:status', function(req, res, next) {
-    let username = 'phucvinh'
-    let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    mainModel.changeStatus(req.body.cid, currentStatus, username, {task: "update-multi"}).then(result => {
-      notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
-    });  
-  });
-  
-  //delete
-  router.get('/delete/:id/', function(req, res, next) {
-    let id = paramsHelpers.getParams(req.params, 'id', '')
-     
-    mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
-      notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
-    });
-  })
-  
-  // delete - multi 
-  router.post('/delete', function(req, res, next) {
-    mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
-      notifyHelpers.show(req, res, linkIndex, {task: 'delete_multi', total: result.deletedCount})
-    });  
-  });
-   // change - single - ordering
-   router.post('/change-single-ordering', function(req, res, next) {
-    let username = 'phucvinh'
-    let id = req.body.id
-    let ordering = req.body.ordering
-       mainModel.changeOrderingAjax(id, ordering, username).then(result => {
-        res.send({'notify': {'tilte': notifyConfigs.ORDERING_SUCCESS, 'class': 'success'}})
-     });      
-    })
-  //change ordering -   multi 
-  router.post('/change-ordering', function(req, res, next) {
-    let username = 'phucvinh'
-    let cids = req.body.cid
-    let orderings = req.body.ordering
-       mainModel.changeOdering(cids, orderings, username).then(result => {
-        notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
-     });      
-    })
-  });
+//change ordering -   multi 
+router.post('/change-ordering', function(req, res, next) {
+  let username = 'phucvinh'
+  let cids = req.body.cid
+  let orderings = req.body.ordering
+     mainModel.changeOdering(cids, orderings, username).then(result => {
+      notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
+   });      
+})
 module.exports = router;
 
 

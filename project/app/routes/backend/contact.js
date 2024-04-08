@@ -46,39 +46,39 @@ router.get('(/:status)?', async (req, res, next) => {
       params
     });
   })
-  //change status
-  router.post('/change-status/:id/:status', function(req, res, next) {
-    let username = 'phucvinh'
-    let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    let id = paramsHelpers.getParams(req.params, 'id', '')
-    mainModel.changeStatus(id, currentStatus, username, {task: "update-one"}).then((result) => {
-      res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
-    });  
-  });
-  //change status - multi 
-  router.post('/change-status/:status', function(req, res, next) {
+});
+
+//change status
+router.post('/change-status/:id/:status', function(req, res, next) {
   let username = 'phucvinh'
   let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    mainModel.changeStatus(req.body.cid, currentStatus, username, {task: "update-multi"}).then(result => {
-      notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
-    });
+  let id = paramsHelpers.getParams(req.params, 'id', '')
+  mainModel.changeStatus(id, currentStatus, username, {task: "update-one"}).then((result) => {
+    res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
+  });  
+});
+//change status - multi 
+router.post('/change-status/:status', function(req, res, next) {
+let username = 'phucvinh'
+let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
+  mainModel.changeStatus(req.body.cid, currentStatus, username, {task: "update-multi"}).then(result => {
+    notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
   });
-  
-  //delete
-  router.get('/delete/:id/', function(req, res, next) {
-    let id = paramsHelpers.getParams(req.params, 'id', '')
-    mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
-      notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
-  });
+});
+
+//delete
+router.get('/delete/:id/', function(req, res, next) {
+  let id = paramsHelpers.getParams(req.params, 'id', '')
+  mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
+    notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
+});
 })
-  
-  // delete - multi 
-  router.post('/delete', function(req, res, next) {
-    mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
-      notifyHelpers.show(req, res, linkIndex, {task: 'delete_multi', total: result.deletedCount})
-    });  
-  });
- 
+
+// delete - multi 
+router.post('/delete', function(req, res, next) {
+  mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
+    notifyHelpers.show(req, res, linkIndex, {task: 'delete_multi', total: result.deletedCount})
+  });  
 });
 
 module.exports = router;

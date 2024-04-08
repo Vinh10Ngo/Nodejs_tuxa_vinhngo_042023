@@ -25,7 +25,6 @@ let elementsControl = [
 {collection: 'delete', class: "rounded-circle btn btn-sm btn-danger delete", icon: "fas fa-trash-alt", title: "Delete"}
 ]
 %>
-<%- JSON.stringify(articleRssFilterArr) %>
 
 <section class="content">
     <div class="container-fluid">
@@ -42,12 +41,9 @@ let elementsControl = [
             <div class="card-body">
                 <div class="row justify-content-between">
                     <div class="mb-1">
-                        <!-- Filter Status -->
-                        <%- filterStatusHelper(linkPrefix, statusFilter, params.keyword) %>    
                     </div>
                     <div class="mb-1">
                         <!-- Category Selectbox -->
-                        <%- selectBoxHelper('filter_category_Rss', categoryRss, params.categoryID, '') %>                   
                     </div>
                     
                     <div class="mb-1">
@@ -88,8 +84,8 @@ let elementsControl = [
                                 </th>
                                 <th class="text-center">ID</th>
                                 <%- sortHelper(linkPrefix, 'Title', 'title', params.sortField, params.sortType, 'width:20%') %>
-                                <%- sortHelper(linkPrefix, 'Status', 'status', params.sortField, params.sortType) %>
                                 <%- sortHelper(linkPrefix, 'Link', 'link', params.sortField, params.sortType, 'width:20%') %>
+                                <%- sortHelper(linkPrefix, 'Thumb', 'thumb', params.sortField, params.sortType, 'width:20%') %>
                                 <%- sortHelper(linkPrefix, 'Publish Date', 'pubDate', params.sortField, params.sortType, 'width:20%') %>
                                 <%- sortHelper(linkPrefix, 'Guid', 'guid', params.sortField, params.sortType, 'width:20%') %>
                                 <th class="text-center">Action</th>
@@ -104,21 +100,13 @@ let elementsControl = [
 									</td>
 									<td class="text-center"><%= index +1 %></td>
 									<td class="text-wrap" style="min-width: 180px"><%- hightlightHelper(item.title, params.keyword) %></td>
-									</td>
                                     
-                                    <td class="text-center position-relative">
-                                        <%- JSON.stringify(item.status) %>
-                                        <%- statusHelper(linkPrefix, item.status, item.id)%>
-                                    </td>  
                                     <td class="text-wrap" style="min-width: 180px"><%= item.link%></td>
-									</td>   
+                                    <td class="text-wrap" style="min-width: 100px"><img id="image_preview" src="<%= item.thumb%>" alt="${alt}" width="${width}" height="${height}">
+                                        </td>
                                     <td class="text-wrap" style="min-width: 180px"><%= item.pubDate%></td>
-									</td>                              
                                     <td class="text-wrap" style="min-width: 180px"><%= item.guid%></td>
-									</td> 
-									</td>
-                                    </td>                                                                       
-                                
+                                    
 									<td class="text-center">
                                        <%- ControlsHelper(elementsControl, linkPrefix, item.id)%>
 									</td>

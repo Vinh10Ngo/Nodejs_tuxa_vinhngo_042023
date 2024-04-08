@@ -1,6 +1,7 @@
 const fs = require('fs');
 const notifyConfigs = require(__path__configs + 'notify');
 const path = require('path');
+const cheerio = require('cheerio');
 
 let createFilterStatus = async (currentStatus, collection) => {
   const currentModel = require(__path__schemas + collection)
@@ -73,47 +74,16 @@ let isUserNameshake = (oldUserNames, username) => {
   }
   return false
 }
-let createFilterStatusRss = async (currentStatus, articleRssArr) => {
-    let statusFilter = [
-        {name:'all', value: 'all', count: 4, link: '#', class: 'default'},
-        {name:'active', value: 'active', count: 5, link: '#', class: 'default'},
-        {name:'inactive',value: 'inactive', count: 6, link: '#', class: 'default'}
-      ]
-    
-        for (let index = 0; index < statusFilter.length; index ++) {
-          let item = statusFilter[index] 
-          if (item.value === currentStatus) statusFilter[index].class = 'success'
-          if (item.value !== 'all') {
-            statusFilter[index].count = articleRssArr.filter(ele => ele.status.includes(item.value)).length
-          } else {
-            statusFilter[index].count = articleRssArr.length
-          }
-        }
-        return statusFilter
-}
+
 let idCounter = 1;
 let generateId = (name) => {
   return `id_${name}_${idCounter++}`;
 }
-let pushItem = (arr, spreadArr) => {
-  if (arr.length == 0) {
-    arr.push(...spreadArr)
-    return arr
-  } else {
-    for (let i = 0; i < arr.length; i++ ) {
-      if (arr[i]) {
-        return arr
-      } else {
-        arr.push(...spreadArr)
-        return arr
-      }
-    }
-  }
-}
 
-let saveArrToFile = (data) => {
+
+let saveArrToFile = (data, file) => {
   const jsonData = JSON.stringify(data);
-  const filePath = path.join(__path__data, 'articleRss.json');
+  const filePath = path.join(__path__data, file);
 
   fs.writeFile(filePath, jsonData, 'utf8', (err) => {
       if (err) {
@@ -124,9 +94,9 @@ let saveArrToFile = (data) => {
   });
 }
 
-let readFileJson = async () => {
+let readFileJson = async (file) => {
    // Đường dẫn tuyệt đối hoặc tương đối đến tệp JSON
-   const filePath = path.join(__path__data, 'articleRss.json');
+   const filePath = path.join(__path__data, file);
 
    try {
        // Sử dụng fs.promises.readFile để đọc dữ liệu từ tệp JSON
@@ -136,10 +106,48 @@ let readFileJson = async () => {
        if (data) jsonData = JSON.parse(data);
        return jsonData;
    } catch (error) {
-       console.error('Lỗi khi đọc hoặc phân tích cú pháp dữ liệu JSON:', error);
-       throw error; // Throw error để nó có thể được xử lý ở nơi gọi
+       if (error) return []
    }
 } 
+
+let pushArticleRssTotalArr = (categoryRssArr, articleRssTotalArr, categoryEdited) => {
+  let articleRssTotalArrPushed = []
+  categoryRssArr.forEach((item, index) => {
+    let itemInCateogory = []
+    // have 4 item.rss.channel.item
+    for (let i = 0; i < categoryEdited.length; i++) {
+      if (item.rss.channel.item) {
+        if (item.rss.channel.title == categoryEdited[i].name) {
+          itemInCateogory = item.rss.channel.item.map((eachItemInCategory) => {
+            return {...eachItemInCategory, categoryId: categoryEdited[i].id }
+          })
+        }
+      }
+    }
+    if (item.rss.channel.item) {
+        articleRssTotalArr.push(...itemInCateogory)
+    }
+  })
+  articleRssTotalArr.forEach((article, index) => {
+    if (article !== undefined) {
+      const $ = cheerio.load(article.description);
+      const imgUrl = $('img').attr('src')
+      articleRssTotalArrPushed.push({...article, id: generateId('article_rss'), thumb: imgUrl})
+    }
+  })
+  return articleRssTotalArrPushed
+}
+let editCategoryRss = (categoryRssArr) => {
+  const categoryRss = categoryRssArr.map((item, index) => {
+    return {
+      name: item.rss.channel.title,
+      ...item,
+      id: generateId('category')
+    };
+  });
+  return categoryRss
+}
+
 module.exports = {
     createFilterStatus: createFilterStatus, 
     countArticlesInCategory: countArticlesInCategory,
@@ -147,9 +155,9 @@ module.exports = {
     isNameshake: isNameshake,
     isUserNameshake,
     generateId,
-    createFilterStatusRss,
-    pushItem,
     saveArrToFile,
-    readFileJson
+    readFileJson,
+    pushArticleRssTotalArr,
+    editCategoryRss,
     
 }

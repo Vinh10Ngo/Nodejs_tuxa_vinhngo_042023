@@ -35,13 +35,11 @@ search all ? --ok
 password md5 save --ok
 nameshake groups validate --ok
 <!-- 
-<a href="/<%= linkPrefix%>form/<%= item.id%>" class="rounded-circle btn btn-sm btn-info" title="Edit">
-    <i class="fas fa-pencil-alt"></i>
-</a>
-
-<a href="/<%= linkPrefix%>delete/<%= item.id%>" class="rounded-circle btn btn-sm btn-danger" title="Delete">
-    <i class="fas fa-trash-alt"></i>
-</a> -->    
+   
     
 <%- JSON.stringify() %>
+
+contact in dasboard
+transfer id into slug
+edit font category word in header beautifully
 

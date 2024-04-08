@@ -17,6 +17,7 @@ let createParams = (req) => {
 
   params.groupID = getParams(req.session, 'groups_id', 'allvalue')
   params.categoryID = getParams(req.session, 'category_id', 'allvalue')
+  params.categoryGeneralNewsId = getParams(req.session, 'category_general_news_id', 'allBlog')
 
  
   params.pagination = {

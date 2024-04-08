@@ -133,80 +133,79 @@ router.get('(/:status)?', async (req, res, next) => {
       params
     });
   })
-  //change status
-  router.post('/change-status/:id/:status', function(req, res, next) {
-    let username = 'phucvinh'
-    let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    let id = paramsHelpers.getParams(req.params, 'id', '')
-    mainModel.changeStatus(id, currentStatus, username, {task: "update-one"}).then(result => {
-      res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
-    });  
-  });
-  // change category
-  router.post('/change-category', function(req, res, next) {
-   let id = req.body.id
-   let username = 'phucvinh'
-   let categoryID = req.body.category_id
-   let categoryName = req.body.category_name
-   mainModel.changecategory(id, categoryID, categoryName, username).then(result => {
-    res.send({})
-    });
-  })
-  
-  //change status - multi 
-  router.post('/change-status/:status', function(req, res, next) {
-    let username = 'phucvinh'
-    let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
-    mainModel.changeStatus(req.body.cid, currentStatus, username, {task: "update-multi"}).then(result => {
-      notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
-    });  
-  });
-  
-  //delete
-  router.get('/delete/:id/', function(req, res, next) {
-    let id = paramsHelpers.getParams(req.params, 'id', '')
-     
-    mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
-      notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
-    });
-  })
-  
-  // delete - multi 
-  router.post('/delete', function(req, res, next) {
-    mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
-      notifyHelpers.show(req, res, linkIndex, {task: 'delete_multi', total: result.deletedCount})
-    });  
-  });
-  // change - single - ordering
-  router.post('/change-single-ordering', function(req, res, next) {
-    let username = 'phucvinh'
-    let id = req.body.id
-    let ordering = req.body.ordering
-       mainModel.changeOrderingAjax(id, ordering, username).then(result => {
-        res.send({'notify': {'tilte': notifyConfigs.ORDERING_SUCCESS, 'class': 'success'}})
-     });      
-    })
-  //change ordering -   multi 
-  router.post('/change-ordering', function(req, res, next) {
-    let username = 'phucvinh'
-    let cids = req.body.cid
-    let orderings = req.body.ordering
-       mainModel.changeOdering(cids, orderings, username).then(result => {
-        notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
-     });      
-    })
-     //change special
-  router.post('/change-special/:id/:special', function(req, res, next) {
-    let username = 'phucvinh'
-    let currentSpecial = paramsHelpers.getParams(req.params, 'special', 'yes')
-    let id = paramsHelpers.getParams(req.params, 'id', '')
-    mainModel.special(id, currentSpecial, username).then(result => {
-      res.send({special: (currentSpecial === 'yes') ? 'no' : 'yes' 
-      })
-    });  
-  });
 });
- 
+//change status
+router.post('/change-status/:id/:status', function(req, res, next) {
+  let username = 'phucvinh'
+  let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
+  let id = paramsHelpers.getParams(req.params, 'id', '')
+  mainModel.changeStatus(id, currentStatus, username, {task: "update-one"}).then(result => {
+    res.send({status: (currentStatus === 'active') ? 'inactive' : 'active'})
+  });  
+});
+// change category
+router.post('/change-category', function(req, res, next) {
+ let id = req.body.id
+ let username = 'phucvinh'
+ let categoryID = req.body.category_id
+ let categoryName = req.body.category_name
+ mainModel.changecategory(id, categoryID, categoryName, username).then(result => {
+  res.send({})
+  });
+})
+
+//change status - multi 
+router.post('/change-status/:status', function(req, res, next) {
+  let username = 'phucvinh'
+  let currentStatus = paramsHelpers.getParams(req.params, 'status', 'active')
+  mainModel.changeStatus(req.body.cid, currentStatus, username, {task: "update-multi"}).then(result => {
+    notifyHelpers.show(req, res, linkIndex, {task: 'change_status_multi', total: result.matchedCount})
+  });  
+});
+
+//delete
+router.get('/delete/:id/', function(req, res, next) {
+  let id = paramsHelpers.getParams(req.params, 'id', '')
+   
+  mainModel.deleteItem(id, {task: 'delete-one'}).then(result => {
+    notifyHelpers.show(req, res, linkIndex, {task: 'delete'})
+  });
+})
+
+// delete - multi 
+router.post('/delete', function(req, res, next) {
+  mainModel.deleteItem(req.body.cid, {task: 'delete-many'}).then(result => {
+    notifyHelpers.show(req, res, linkIndex, {task: 'delete_multi', total: result.deletedCount})
+  });  
+});
+// change - single - ordering
+router.post('/change-single-ordering', function(req, res, next) {
+  let username = 'phucvinh'
+  let id = req.body.id
+  let ordering = req.body.ordering
+     mainModel.changeOrderingAjax(id, ordering, username).then(result => {
+      res.send({'notify': {'tilte': notifyConfigs.ORDERING_SUCCESS, 'class': 'success'}})
+   });      
+  })
+//change ordering -   multi 
+router.post('/change-ordering', function(req, res, next) {
+  let username = 'phucvinh'
+  let cids = req.body.cid
+  let orderings = req.body.ordering
+     mainModel.changeOdering(cids, orderings, username).then(result => {
+      notifyHelpers.show(req, res, linkIndex, {task: 'change_ordering'})
+   });      
+  })
+   //change special
+router.post('/change-special/:id/:special', function(req, res, next) {
+  let username = 'phucvinh'
+  let currentSpecial = paramsHelpers.getParams(req.params, 'special', 'yes')
+  let id = paramsHelpers.getParams(req.params, 'id', '')
+  mainModel.special(id, currentSpecial, username).then(result => {
+    res.send({special: (currentSpecial === 'yes') ? 'no' : 'yes' 
+    })
+  });  
+});
 module.exports = router;
 
 

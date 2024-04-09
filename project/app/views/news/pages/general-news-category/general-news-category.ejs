@@ -7,6 +7,7 @@ const url = `/${systemConfigs.prefixNews}/` ;
 const cleanedURL = url.replace(/\/+/g, '/');
 
 %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,13 +36,13 @@ const cleanedURL = url.replace(/\/+/g, '/');
 						<div class="col-sm-6 p-r-25 p-r-15-sr991">
 							<!-- Item latest -->	
 							<div class="m-b-45">
-								<a href="" class="wrap-pic-w hov1 trans-03">
+								<a href="<%= cleanedURL%>general-news-blog/<%= item.id%>" class="wrap-pic-w hov1 trans-03">
 									<img src="<%= item.thumb%>" alt="IMG">
 								</a>
 						
 								<div class="p-t-16">
 									<h5 class="p-b-5">
-										<a href="<%= cleanedURL%>/general-news-blog/<%= item.id%>" class="f1-m-3 cl2 hov-cl10 trans-03">
+										<a href="<%= cleanedURL%>general-news-blog/<%= item.id%>" class="f1-m-3 cl2 hov-cl10 trans-03">
 											<%= item.title%> 
 										</a>
 									</h5>

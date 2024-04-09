@@ -16,7 +16,6 @@ router.get('/:id', async function(req, res, next) {
     let categoryRssEdited = []
     let {articleRssFilterArrOutside, categoryRssEditedOutside} = await RssModel.listItemArticleFrontend(req, obj, RssModel, articleRssFilterArr, categoryRssEdited)
     let eachArticle = await RssModel.getEachArticle(id, articleRssFilterArrOutside)
-    await RssModel.listItemArticleFrontend
     res.render(`${folderViewsNews}general-news-blog`, { 
         pageTitle: 'General News',
         layout: layoutNews,

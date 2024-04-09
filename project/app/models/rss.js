@@ -110,13 +110,13 @@
       }
     },
     getEachArticle: (id, article) => {
+      let eachArticle = {}
       article.forEach((item) => {
         if (item.id == id) {
-          return item
-        } else {
-          return 'Không có dữ liệu'
-        }
+          eachArticle = item
+        } 
       })
+      return eachArticle
     },
     
     listItemArticleFrontend: async (req, obj, rssModel,articleRssFilterArrOutside, categoryRssEditedOutside) => {
